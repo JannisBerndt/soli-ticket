@@ -1,5 +1,10 @@
 {% extends "solisite/base.html" %}
 
 {% block content %}
-	{{ object.name }} - {{ object.description }} - {{ object.date }}
+	<p>{{ object.name }} - {{ object.description }} - {{ object.date }}</p>
+	{% for buyable in buyables %}
+		<p>{{ buyable.name}} - {{buyable.price}}</p>
+	{% endfor %}
+	<p>{{ address.country }}</p>
+
 {% endblock %}

@@ -5,12 +5,17 @@ from .models import Event
 
 def event_detail_view(request, id):
 	obj = get_object_or_404(Event, id=id)
-	context = {"object": obj}
+	buyables = obj.buyables.all()
+	context = {
+		"object": obj,
+		"buyables": buyables,
+		'address': obj.address,
+	}
 	return render(request, "event/event_detail.html", context)
 
 def event_list_view(request):
 	queryset = Event.objects.all()
 	context = {
-		"object_list": queryset
+		"object_list": queryset,
 	}
 	return render(request, "event/event_list.html", context)
