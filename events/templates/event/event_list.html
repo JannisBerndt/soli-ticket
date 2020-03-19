@@ -1,0 +1,7 @@
+{% extends "solisite/base.html" %}
+
+{% block content %}
+	{% for list_item in object_list %}	
+		{{ list_item.id }} - <a href="{{list_item.get_absolute_url}}">{{ list_item.name }}</a> - {{ list_item.description }} - {{ list_item.date }}
+	{% endfor %}
+{% endblock %}

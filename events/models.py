@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -24,3 +25,6 @@ class Event(models.Model):
 	#street = models.CharField(max_length=120)
 	#house_number = models.CharField(max_length=120)
 	#post_code = models.DecimalField(max_digits=5, decimal_places=0)
+
+	def get_absolute_url(self):
+		return reverse("events:event_detail", kwargs={"id": self.id})
