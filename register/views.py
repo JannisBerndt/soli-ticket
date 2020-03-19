@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from .models import User
 from .forms import RegisterForm
 
-def user_list(request):
+def home(request):
     users = User.objects.all()
-    return render(request, 'register/user_list.html', {'users': users})
+    return render(request, 'register/dashboard.html', {'users': users})
 
 def register_start(request):
     if request.method == "POST":
