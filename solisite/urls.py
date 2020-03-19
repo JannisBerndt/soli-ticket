@@ -21,5 +21,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dashboard),
-    path('register/', include('register.urls'))
+    path('register/', include('register.urls')),
+	path('event/', include('events.urls')),
 ]
