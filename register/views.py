@@ -1,11 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import User
 from .forms import RegisterForm
-
-def home(request):
-    users = User.objects.all()
-    return render(request, 'register/dashboard.html', {'users': users})
 
 def register_start(request):
     if request.method == "POST":
