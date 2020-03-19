@@ -1,7 +1,8 @@
 # Create your views here.
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.template import Context, loader
+from register.models import User
 
-def index(request):
-    return render(request, "index.html")
+def dashboard(request):
+    users = User.objects.all()
+    return render(request, "solisite/dashboard.html", {'users': users})
