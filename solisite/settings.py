@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 	# own
 	'events',
-  'register',
+    'register',
 ]
 
 MIDDLEWARE = [
