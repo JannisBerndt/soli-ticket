@@ -2,35 +2,10 @@
 
 {% block content %}
 
-<br>
-
-<div class="section cc-store-home-wrap">
-    <div class="form-header">
-      <div class="intro-content cc-homepage">
-        <div class="intro-text">
-          <div class="heading-jumbo">Willkommen!</div>
-          <div class="div-block"></div>
-          <div class="paragraph-bigger cc-bigger-white-light">Konto erstellen<br></div>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" class="form">
-          <div class="w-row">
-            <div class="w-col w-col-3"></div>
-            <div class="w-col w-col-6"><label for="name" class="field-label">EMAIL-Adresse</label><input type="email" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" id="email" required=""><label for="email">Passwort</label><input type="password" class="text-field-2 w-input" maxlength="256" name="email" data-name="Email" id="passwort" required=""><label for="name">Passwort wiederholen</label><input type="password" class="text-field-2 w-input" maxlength="256" name="email" data-name="Email" id="passwort2" required=""><input type="submit" value="Registrieren" data-wait="Please wait..." class="submit-button w-button"></div>
-            <div class="w-col w-col-3"></div>
-          </div>
-        </form>
-        <div class="w-form-done">
-          <div>Thank you! Your submission has been received!</div>
-        </div>
-        <div class="w-form-fail">
-          <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<h2>Konto erstellen</h2>
+      <form method="POST" class="post-form">{% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="save btn btn-default">Save</button>
+      </form>
 
 {% endblock %}
