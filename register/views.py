@@ -12,3 +12,7 @@ def register_start(request):
     else:
         form = RegisterForm()
     return render(request, 'register/register_start.html', {'form': form})
+    # for page 2:
+    #return render(request, 'register/register_start2.html', {'form': form})
+    # for page 3:
+    #return render(request, 'register/register_start3.html', {'form': form})
