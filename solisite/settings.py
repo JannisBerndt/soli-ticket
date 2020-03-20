@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	# own
 	'events',
     'register',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -129,4 +130,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
