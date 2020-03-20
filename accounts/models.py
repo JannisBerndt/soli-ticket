@@ -1,14 +1,14 @@
 from django.db import models
 
 class Account(models.Model):
-    mail = models.CharField(max_length=120)
-    password = models.CharField(max_length=120)
-    repeat_password = models.CharField(max_length=120)
+    mail = models.CharField(max_length=120, null=True)
+    password = models.CharField(max_length=120, null=True)
+    repeat_password = models.CharField(max_length=120, null=True)
 
-    def __str__(self):
-        return self.mail
+    class Meta:
+        abstract = True
 
-class Organiser(models.Model):
+class Organiser(Account):
     name = models.CharField(max_length=120)
     type = models.CharField(max_length=120)
     first_name_contact = models.CharField(max_length=120)
