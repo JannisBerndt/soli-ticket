@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dashboard, name='dashboard'),
     path('register/', include('register.urls')),
-	path('event/', include('events.urls')),
+    path('event/', include('events.urls')),
 ]

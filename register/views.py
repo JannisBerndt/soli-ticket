@@ -12,7 +12,11 @@ def register_start(request):
             return redirect('detail')
 
     context = {'form': form}
-    return render(request, 'register/register_start.html', context)
+    return render(request, 'register/register_start.html', {'form': form})
+    # for page 2:
+    #return render(request, 'register/register_start2.html', {'form': form})
+    # for page 3:
+    #return render(request, 'register/register_start3.html', {'form': form})
 
 def register_detail(request):
     form = DetailForm()
