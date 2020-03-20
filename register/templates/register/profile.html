@@ -1,0 +1,60 @@
+{%  extends 'solisite/base.html' %}
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="col-md-5">
+		<h5>PROFILE:</h5>
+		<hr>
+		<div class="card card-body">
+			<table class="table">
+				<tr>
+					<th>E-Mail</th>
+					<td></td>
+				</tr>
+        <tr>
+					<th>Organisation</th>
+					<td>{{organiser.name}}</td>
+				</tr>
+        <tr>
+					<th>Art der Organisation</th>
+					<td>{{organiser.type}}</td>
+				</tr>
+        <tr>
+					<th>Ansprechpartner-Vorname</th>
+					<td>{{organiser.first_name_contact}}</td>
+				</tr>
+        <tr>
+					<th>Ansprechpartner-Nachname</th>
+					<td>{{organiser.last_name_contact}}</td>
+				</tr>
+        <tr>
+					<th>Telefonnummer</th>
+					<td>{{organiser.phone_contact}}</td>
+				</tr>
+        <tr>
+					<th>IBAN</th>
+					<td>{{organiser.iban}}</td>
+				</tr>
+        <tr>
+					<th>BIC</th>
+					<td>{{organiser.bic}}</td>
+				</tr>
+        <tr>
+					<th>Kontoinhaber</th>
+					<td>{{organiser.bank_account_owner}}</td>
+				</tr>
+        <tr>
+					<th>Website</th>
+					<td>{{organiser.website}}</td>
+				</tr>
+        <tr>
+					<th>Shop</th>
+					<td>{{organiser.shop}}</td>
+				</tr>
+
+      </table>
+		</div>
+	</div>
+
+{% endblock %}

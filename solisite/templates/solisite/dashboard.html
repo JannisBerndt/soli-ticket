@@ -9,17 +9,17 @@
 		<h5>USERS:</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Create User</a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'start' %}">Create User</a>
 			<table class="table">
 				<tr>
-					<th>E-Mail</th>
-					<th>Password</th>
+					<th>Name</th>
+					<th>View</th>
 				</tr>
 
-        {% for user in users %}
+        {% for organiser in organisers %}
           <tr>
-              <td>mail: {{ user.mail }}</td>
-              <td>pwd: {{ user.pwd }}</td>
+              <td>{{ organiser.name }}</td>
+							<td><a class="btn btn-sm btn-info" href="{% url 'profile' organiser.id %}">View</a></td>
           </tr>
         {% endfor %}
 

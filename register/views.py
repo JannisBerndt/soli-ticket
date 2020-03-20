@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import RegisterForm, DetailForm
+from .models import Organiser
 
 def register_start(request):
     form = RegisterForm()
@@ -19,7 +20,13 @@ def register_detail(request):
         form = DetailForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('/')
 
     context = {'form': form}
     return render(request, 'register/register_detail.html', context)
+
+def profile(request, pk):
+    organiser = Organiser.objects.get(id=pk)
+
+    context = {'organiser': organiser}
+    return render(request, 'register/profile.html', context)
