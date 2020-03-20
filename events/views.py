@@ -6,12 +6,12 @@ from .forms import EventForm, AddressForm, BuyableForm
 # Create your views here.
 
 def event_detail_view(request, id):
-	obj = get_object_or_404(Event, id=id)
-	buyables = obj.buyables.all()
+	event = get_object_or_404(Event, id=id)
+	buyables = event.buyables.all()
 	context = {
-		"object": obj,
+		"event": event,
 		"buyables": buyables,
-		'address': obj.address,
+		'address': event.address,
 	}
 	return render(request, "event/event_detail.html", context)
 
@@ -65,8 +65,8 @@ def event_update_view(request, id):
 			event.address = address
 		event.save()
 		
-		# for buyable_form in buyable_formset:
-		# 	buyable_form.save()
+		for buyable_form in buyable_formset:
+			buyable_form.save()
 
 	context = {
 		'event_form': event_form,
@@ -74,6 +74,16 @@ def event_update_view(request, id):
 		'buyable_formset': buyable_formset,
 	}
 	return render(request, "event/event_update.html", context)
+
+def event_delete_view(request, id):
+	event = get_object_or_404(Event, id=id)
+	if request.method == "POST":
+		event.delete()
+		return redirect('../../')
+	context = {
+		"event": event,
+	}
+	return render(request, "event/event_delete.html", context)
 
 def address_create_view(request):
 	address_form = AddressForm(request.POST or None)
