@@ -36,24 +36,48 @@ class Register(View):
         # Wir waren auf page 1:
         if "pw1" in req:
             
-            # Tests der Inputs: (To-DO)
+
+            error = False
+            # keine Angabe:
+            if req.get("email") == "":
+                self.context["error1"] = "Bitte geben sie eine gültige Email ein!"
+                error = True
+            # versch. Passwörter
             if req.get("pw1") != req.get("pw2"):
-                self.context["error2"] = "Passw�rter stimmen nicht �berein"
+                self.context["error2"] = "Passwörter stimmen nicht überein!"
+                error = True
+            if req.get("pw1") == "":
+                self.context["error2"] = "Bitte geben Sie ein gültiges Passwort ein!"
+                error = True
+            if len(req.get("pw1")) < 6:
+                self.context["error2"] = "Das Passwort muss min. 6 Zeichen lang sein"
+                error = True
+            if error:
                 return render(request, self.template_name[0], self.context)
 
-
-            # Speichern der "sauberen" inputs in session
-            request.session["email"] = req.get("email")
-            request.session["pw"] = req.get("pw1")
-
-            # "jump" to next page
-            return render(request, self.template_name[1], self.context)
+            else:# Speichern der "sauberen" inputs in session
+                request.session["email"] = req.get("email")
+                request.session["pw"] = req.get("pw1")
+                # "jump" to next page
+                return render(request, self.template_name[1], self.context)
 
         # Wir waren auf page 2:
         elif "nname" in req:
             
             # Tests der Inputs (To-DO)
+            error_found = False
+            #checkt ob überall Daten gefunden wurden:
+            for tag,error in zip(["vname","nname","oname","art","strasse",
+                         "hnummer","plz","ort","telnr"], ["error1","error1","error2",
+                         "error3","error4","error4","error5","error5","error6"]):
 
+                if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]):
+                    error_found = True 
+                    self.context[error] = "Bitte geben Sie auch diese Daten an:"
+
+            if error_found:
+                return render(request, self.template_name[1], self.context)
+            
             for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr"]:
                 request.session[tag] = req.get(tag)
@@ -63,13 +87,33 @@ class Register(View):
 
         # Wir waren auf page 3:
         elif "iban" in req:
-           # Tests der Inputs (To-DO)
+
+
+            # Tests der Inputs (To-DO)
+            error_found = False
+            #checkt ob überall Daten gefunden wurden:
+            for tag,error in zip(["kontoinhaber","iban","bic"], 
+                                 ["error1","error2", "error2"]):
+
+                if (req.get(tag) == "" or req.get(tag) == None):
+                    error_found = True 
+                    self.context[error] = "Bitte geben Sie auch diese Daten an:"
+
+            if error_found:
+                return render(request, self.template_name[1], self.context)
+
             for tag in ["kontoinhaber","iban","bic","kontourl"]:
                 request.session[tag] = req.get(tag)
+            
             for tag in self.tags:
                 print(tag ,':', request.session[tag])
             #To Do: Umleitung auf Registrierung erfolgreich
             #To Do: Implementierung der Datenbank
+
+            # Löschen der Sessions IDs:
+            for tag in self.tags:
+                del request.session[tag]
+
             return render(request, self.template_name[0], self.context)
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
