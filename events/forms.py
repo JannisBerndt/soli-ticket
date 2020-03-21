@@ -1,18 +1,18 @@
 from django import forms
 from django.forms import formset_factory
 
-from .models import Event, Address, Buyable
+from .models import Event, Eventlocation, Buyable
 
-class AddressForm(forms.ModelForm):
-	country = forms.CharField(label='Land')
-	city = forms.CharField(label='Stadt')
-	street = forms.CharField(label='Straße')
-	house_number = forms.CharField(label='Hausnummer')
-	post_code = forms.DecimalField(label='Postleitzahl')
+class EventlocationForm(forms.ModelForm):
+	location_name = forms.CharField(label='Veranstaltungsort')
+	city = forms.CharField(label='Stadt', required=False)
+	street = forms.CharField(label='Straße', required=False)
+	house_number = forms.CharField(label='Hausnummer', required=False)
+	post_code = forms.DecimalField(label='Postleitzahl', required=False)
 	class Meta:
-		model = Address
+		model = Eventlocation
 		fields = [
-			'country',
+			'location_name',
 			'city',
 			'street',
 			'house_number',
