@@ -15,31 +15,39 @@
     </div>
     <div class="container">
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" class="form">
+        <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/register/">{% csrf_token %}
           <div class="w-row">
             <div class="w-col w-col-3"></div>
             <div class="w-col w-col-6"><label for="name" class="field-label">Ansprechpartner</label>
               <div class="w-row">
-                <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" placeholder="Vorname" id="vorname" required=""></div>
-                <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" maxlength="256" name="name" data-name="Name" placeholder="Nachname" id="nachname" required=""></div>
-              </div><label for="Name-der-Organisation">Name der organisation</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Name-der-Organisation" data-name="Name der Organisation" id="Name-der-Organisation" required=""><label for="Art-2">Art der Organisation</label><select id="Art-2" name="Art" data-name="Art" required="" class="select-field w-select"><option value="Another Choice">Bitte wählen</option><option value="">gemeinnützig</option><option value="Third">nicht gemeinnützig</option></select><label for="Art-3">Adresse</label>
+				<font size="3" color="red" disabled = "True">{{ error1 }}</font>
+                <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" autofocus="true" maxlength="256" name="vname" data-name="Name" placeholder="Vorname" id="vorname" required=""></div>
+                <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" maxlength="256" name="nname" data-name="Name" placeholder="Nachname" id="nachname" required=""></div>
+              </div>
+			  <label for="Name-der-Organisation">Name der organisation</label>
+			    <font size="3" color="red" disabled = "True">{{ error2 }}</font>
+				<input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required="">
+				<label for="Art-2">Art der Organisation</label>
+				<font size="3" color="red" disabled = "True">{{ error3 }}</font>
+				<select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="Another Choice">Bitte wählen</option><option value="">gemeinnützig</option><option value="Third">nicht gemeinnützig</option></select>
+				<label for="Art-3">Adresse</label>
               <div class="w-row">
-                <div class="w-col w-col-9"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Straße" placeholder="Straße" id="Stra-e" required=""></div>
-                <div class="w-col w-col-3"><input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr" id="HN" required=""></div>
+			    <font size="3" color="red" disabled = "True">{{ error4 }}</font>
+                <div class="w-col w-col-9"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="strasse" data-name="Straße" placeholder="Straße" id="Stra-e" required=""></div>
+                <div class="w-col w-col-3"><input type="text" class="text-field-2 w-input" maxlength="256" name="hnummer" data-name="HN" placeholder="HausNr" id="HN" required=""></div>
               </div>
               <div class="w-row">
-                <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl" id="PLZ" required=""></div>
-                <div class="w-col w-col-8"><input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort" id="Ort" required=""></div>
-              </div><label for="Art-3">Telefonnummer</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Telenummer" data-name="Telenummer" placeholder="(optional)" id="Telenummer"><input type="submit" value="Weiter" data-wait="Please wait..." class="submit-button w-button"></div>
+			    <font size="3" color="red" disabled = "True">{{ error5 }}</font>
+                <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="plz" data-name="PLZ" placeholder="Postleitzahl" id="PLZ" required=""></div>
+                <div class="w-col w-col-8"><input type="text" class="text-field-2 w-input" maxlength="256" name="ort" data-name="Ort" placeholder="Ort" id="Ort" required=""></div>
+				<font size="3" color="red" disabled = "True">{{ error5 }}</font>
+		
+              </div><label for="Art-3">Telefonnummer</label><input type="text" class="text-field-2 w-input" maxlength="256" name="telnr" data-name="Telenummer" placeholder="(optional)" id="Telenummer">
+			  <input type="submit" value="Weiter" data-wait="Please wait..." class="submit-button w-button" formmethod="post">
+			  </div>
             <div class="w-col w-col-3"></div>
           </div>
         </form>
-        <div class="w-form-done">
-          <div>Thank you! Your submission has been received!</div>
-        </div>
-        <div class="w-form-fail">
-          <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
-        </div>
       </div>
     </div>
   </div>

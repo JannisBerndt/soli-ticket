@@ -15,23 +15,19 @@
     </div>
     <div class="container">
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" class="form">
+        <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/register/">{% csrf_token %}
           <div class="w-row">
             <div class="w-col w-col-3"></div>
-            <div class="w-col w-col-6"><label for="Kontoinhaber">Kontodaten des spendenkontos ihrer organisation</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Kontoinhaber" data-name="Kontoinhaber" placeholder="Kontoinhaber" id="Kontoinhaber" required="">
+            <div class="w-col w-col-6"><label for="Kontoinhaber">Kontodaten des spendenkontos ihrer organisation</label><input type="text" class="text-field-2 w-input" maxlength="256" name="kontoinhaber" data-name="Kontoinhaber" placeholder="Kontoinhaber" id="Kontoinhaber" required="">
               <div class="w-row">
-                <div class="w-col w-col-8"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="IBAN" data-name="IBAN" placeholder="IBAN" id="IBAN" required=""></div>
-                <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="BIC" data-name="BIC" placeholder="BIC" id="BIC" required=""></div>
-              </div><label for="KontoVerifikationsLink">Sie haben Ihre Kontodaten auch auf ihrer offizielleN Webseite veröffentlicht? Bitte geben Sie hier den Link dorthin an, damit ihre Spender die echtheit der bei uns angezeigten Informationen überprüfen können:</label><input type="text" class="text-field-2 w-input" maxlength="256" name="KontoVerifikationsLink" data-name="KontoVerifikationsLink" placeholder="(optional)" id="KontoVerifikationsLink"><input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button"></div>
+                <div class="w-col w-col-8"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="iban" data-name="IBAN" placeholder="IBAN" id="IBAN" required=""></div>
+                <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="bic" data-name="BIC" placeholder="BIC" id="BIC" required=""></div>
+              </div><label for="KontoVerifikationsLink">Sie haben Ihre Kontodaten auch auf ihrer offiziellen Webseite veröffentlicht? Bitte geben Sie hier den Link dorthin an, damit ihre Spender die echtheit der bei uns angezeigten Informationen überprüfen können:</label><input type="text" class="text-field-2 w-input" maxlength="256" name="kontourl" data-name="KontoVerifikationsLink" placeholder="(optional)" id="KontoVerifikationsLink">
+			  <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post">
+			  </div>
             <div class="w-col w-col-3"></div>
           </div>
         </form>
-        <div class="w-form-done">
-          <div>Thank you! Your submission has been received!</div>
-        </div>
-        <div class="w-form-fail">
-          <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
-        </div>
       </div>
     </div>
   </div>
