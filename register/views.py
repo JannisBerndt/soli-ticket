@@ -19,7 +19,7 @@ class Register(View):
     tags = ["email","pw","vname","nname","oname","art","strasse",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl"]
 
-    
+
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name[0])
 
@@ -35,7 +35,7 @@ class Register(View):
 
         # Wir waren auf page 1:
         if "pw1" in req:
-            
+
             # Tests der Inputs: (To-DO)
             if req.get("pw1") != req.get("pw2"):
                 self.context["error2"] = "Passw�rter stimmen nicht �berein"
@@ -51,14 +51,14 @@ class Register(View):
 
         # Wir waren auf page 2:
         elif "nname" in req:
-            
+
             # Tests der Inputs (To-DO)
 
             for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr"]:
                 request.session[tag] = req.get(tag)
 
-            
+
             return render(request, self.template_name[2])
 
         # Wir waren auf page 3:
@@ -75,5 +75,3 @@ class Register(View):
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
         #else:
         #    return Fehler
-    
-
