@@ -20,12 +20,12 @@ class AddressForm(forms.ModelForm):
 		]
 
 class BuyableForm(forms.ModelForm):
-	name = forms.CharField(required=True)
-	price = forms.DecimalField(required=True)
+	buyable_name = forms.CharField(required=False)
+	price = forms.DecimalField(required=False)
 	class Meta:
 		model = Buyable
 		fields = [
-			'name',
+			'buyable_name',
 			'price',
 		]
 
@@ -34,6 +34,7 @@ BuyableFormSet = formset_factory(BuyableForm, extra=1)
 class EventForm(forms.ModelForm):
 	# address = AddressForm()
 	# buyables = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple, queryset = Buyable.objects.all().values_list('name'))
+	name = forms.CharField(label='Eventname')
 	class Meta:
 		model = Event
 		fields = [

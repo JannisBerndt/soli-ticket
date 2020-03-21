@@ -15,10 +15,15 @@
 	<p>Straße: {{ address.street }}</p>
 	<p>Hausnummer: {{ address.house_number }}</p>
 	<p>Postleitzahl: {{ address.post_code }}</p>
+	<p><a href='./update/'>Eventinformationen bearbeiten</a></p>
+	<p><a href='./delete/'>Dieses Event Löschen</a></p>
 	<h3>Alle angebotenen Produkte</h3>
 	{% for buyable in buyables %}
-	<h4>Produkt {{ forloop.counter }}</h4>
-	<p>{{ buyable.name }}</p>
-	<p>{{ buyable.price }}€</p>
+		<h4>Produkt {{ forloop.counter }}</h4>
+		<p>{{ buyable.buyable_name }}</p>
+		<p>{{ buyable.price }}€</p>
+		<a href='./buyable/{{buyable.id}}/update/'>Bearbeiten</a>
+		<a href='./buyable/{{buyable.id}}/delete/'>Löschen</a>
 	{% endfor %}
+	<p><a href='./buyable/create/'>Neues Produkt hinzufügen</a></p>
 {% endblock %}

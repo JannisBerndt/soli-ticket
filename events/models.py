@@ -8,8 +8,8 @@ class Buyable(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
-	name = models.CharField(max_length=120)
-	price = models.DecimalField(max_digits=1000, decimal_places=2)
+	buyable_name = models.CharField(max_length=120)
+	price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
 
 class Address(models.Model):
 	creator = models.ForeignKey(User, on_delete=models.CASCADE)

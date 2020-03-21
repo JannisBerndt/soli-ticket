@@ -4,7 +4,7 @@
 	<form action='.' method='POST'> {% csrf_token %}
 		{{ buyable_form.as_p }}
 		<p>{{ tip }}</p>
-		<input type='submit' value="Save"/>
-		<p><a href='../../'>Zurück</a></p>
+		<input type='submit' value="Speichern"/>
+		<p><a href='../../../'>Zurück</a></p>
 	</form>
 {% endblock %}

@@ -3,14 +3,13 @@
 {% block content %}
 	<form action='.' method='POST'> {% csrf_token %}
 		{{ event_form.as_p }}
-		<h2>Where will this Event take place?</h2>
 		{{ address_form.as_p }}
-		<h2>Which products du you want to sell at this event?</h2>
+		<!-- <h2>Which products du you want to sell at this event?</h2>
 		{{ buyable_formset.management_form }}
 		{% for form in buyable_formset %}
 			<p>Product {{ forloop.counter }}</p>
 			{{ form.as_p }}
-		{% endfor %}
+		{% endfor %} -->
 		<input type='submit' value="Save"/>
 	</form>
 {% endblock %}
