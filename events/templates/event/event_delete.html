@@ -1,0 +1,8 @@
+{% extends "solisite/base.html" %}
+
+{% block content %}
+	<form action='.' method='POST'> {% csrf_token %}
+		<h1>Möchtest du das Event {{event.name}} wirklich löschen?</h1>
+		<p><input type='submit' value='Löschen'/><a href='../'>Abbrechen</a></p>
+	</form>
+{% endblock %}

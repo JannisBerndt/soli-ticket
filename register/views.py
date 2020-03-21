@@ -38,7 +38,7 @@ class Register(View):
             
             # Tests der Inputs: (To-DO)
             if req.get("pw1") != req.get("pw2"):
-                self.context["error2"] = "Passwörter stimmen nicht überein"
+                self.context["error2"] = "Passwï¿½rter stimmen nicht ï¿½berein"
                 return render(request, self.template_name[0], self.context)
 
 
