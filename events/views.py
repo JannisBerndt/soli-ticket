@@ -62,26 +62,22 @@ def event_update_view(request, id):
 		address = get_object_or_404(Address, id=event.address.id)
 	else:
 		address = None
-	buyables = event.buyables.all()
 	event_form = EventForm(request.POST or None, instance = event)
 	address_form = AddressForm(request.POST or None, instance = address)
-	BuyableFormSet = formset_factory(BuyableForm, extra=0)
-	print(buyables.values())
-	buyable_formset = BuyableFormSet(request.POST or None, initial=buyables.values())
 	if event_form.is_valid():
 		event = event_form.save(commit=False)
 		if address_form.is_valid():
-			address = address_form.save()
+			address = address_form.save(commit=False)
+			address.creator = User.objects.get(id=1)
+			address.save()
 			event.address = address
+		event.creator = User.objects.get(id=1)
 		event.save()
-		
-		for buyable_form in buyable_formset:
-			buyable_form.save()
+		return redirect('../')
 
 	context = {
 		'event_form': event_form,
 		'address_form': address_form,
-		'buyable_formset': buyable_formset,
 	}
 	return render(request, "event/event_update.html", context)
 
@@ -176,6 +172,35 @@ def buyable_delete_view(request, id_b, id_e):
 # 		'buyable_formset': buyable_formset,
 # 	}
 # 	return render(request, "event/event_create.html", context)
+
+# def event_update_view(request, id):
+# 	event = get_object_or_404(Event, id=id)
+# 	if not event.address == None:
+# 		address = get_object_or_404(Address, id=event.address.id)
+# 	else:
+# 		address = None
+# 	buyables = event.buyables.all()
+# 	event_form = EventForm(request.POST or None, instance = event)
+# 	address_form = AddressForm(request.POST or None, instance = address)
+# 	BuyableFormSet = formset_factory(BuyableForm, extra=0)
+# 	print(buyables.values())
+# 	buyable_formset = BuyableFormSet(request.POST or None, initial=buyables.values())
+# 	if event_form.is_valid():
+# 		event = event_form.save(commit=False)
+# 		if address_form.is_valid():
+# 			address = address_form.save()
+# 			event.address = address
+# 		event.save()
+		
+# 		for buyable_form in buyable_formset:
+# 			buyable_form.save()
+
+# 	context = {
+# 		'event_form': event_form,
+# 		'address_form': address_form,
+# 		'buyable_formset': buyable_formset,
+# 	}
+# 	return render(request, "event/event_update.html", context)
 
 def address_create_view(request):
 	address_form = AddressForm(request.POST or None)

@@ -2,7 +2,7 @@
 
 {% block content %}
 	<form action='.' method='POST'> {% csrf_token %}
-		<h1>Do you really want to delete the Event {{event.name}}?</h1>
-		<p><input type='submit' value='yes'/><a href='../'>Cancel</a></p>
+		<h1>Möchtest du das Event {{event.name}} wirklich löschen?</h1>
+		<p><input type='submit' value='Löschen'/><a href='../'>Abbrechen</a></p>
 	</form>
 {% endblock %}
