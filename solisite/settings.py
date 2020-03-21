@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-	# third party
+    # third party
 
-	# own
-	'events',
+    # own
+    'events',
     'register',
     'accounts',
 ]
