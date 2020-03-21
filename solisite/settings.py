@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'events',
     'register',
 ]
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
