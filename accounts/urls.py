@@ -1,6 +1,8 @@
 from django.urls import path
-from .import views
+from .views import accounts, error
 
 urlpatterns = [
-    path('profile/<str:pk>', views.profile, name='profile')
+    path('', accounts.as_view()),
+    path('error/', error)
 ]
+ 

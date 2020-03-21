@@ -3,14 +3,18 @@ from django.urls import reverse
 from accounts.models import Organiser
 
 class Buyable(models.Model):
-	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE)
+	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
+								related_name = "buyable_contact_set+",
+								related_query_name="buyable"  )
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	buyable_name = models.CharField(max_length=120)
 	price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
 
 class Address(models.Model):
-	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE)
+	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
+								related_name = "address_contact_set+",
+								related_query_name="event_adress"    )
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	country = models.CharField(max_length=120)
@@ -20,7 +24,9 @@ class Address(models.Model):
 	post_code = models.DecimalField(max_digits=5, decimal_places=0)
 
 class Event(models.Model):
-	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE)
+	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
+								related_name = "event_contact_set+",
+								related_query_name="event"   )
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	name = models.CharField(max_length=120)

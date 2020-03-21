@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import Organiser
 
-class RegisterForm(forms.ModelForm):
+class accountsForm(forms.ModelForm):
 
     class Meta:
         model = Organiser

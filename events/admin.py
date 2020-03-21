@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+# accounts your models here.
 from .models import Event, Address, Buyable
 
 admin.site.register(Event)

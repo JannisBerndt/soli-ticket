@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 
     # own
     'events',
-    'register',
     'accounts',
+
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
@@ -63,7 +63,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, "solisite/templates"),
-                 os.path.join(BASE_DIR, "register/templates"),],
+                 os.path.join(BASE_DIR, "accounts/templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
