@@ -1,5 +1,5 @@
 from django import forms
-from .models import Organiser
+from accounts.models import Organiser
 
 class RegisterForm(forms.ModelForm):
 
