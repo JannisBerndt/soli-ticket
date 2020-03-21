@@ -142,7 +142,7 @@ class Register(View):
                                   iban = request.session["iban"],
                                   bic = request.session["bic"],
                                   bank_account_owner = request.session["kontoinhaber"],
-                                  website = request.session["kontourl"],
+                                  kontosite = request.session["kontourl"],
                                   email =request.session["email"],)
             organiser.set_password(request.session["pw"])
             organiser.save()
