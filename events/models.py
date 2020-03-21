@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from register.models import Organiser
+from accounts.models import Organiser
 
 class Buyable(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE)
