@@ -247,8 +247,4 @@ def location_create_view(request):
 	context = {
 		'location_form': location_form,
 	}
-<<<<<<< HEAD
 	return render(request, "location/location_create.html", context)
-=======
-	return render(request, "address/address_create.html", context)
->>>>>>> develop
