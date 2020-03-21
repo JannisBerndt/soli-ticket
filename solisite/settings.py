@@ -25,7 +25,7 @@ SECRET_KEY = '8mgeu+-e+j^twe+1ov!^=%228u5^j=m#vsg)^!asblbs56!43v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
 # Application definition
@@ -61,7 +61,8 @@ ROOT_URLCONF = 'solisite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "solisite/templates")],
+        'DIRS': [os.path.join(BASE_DIR, "solisite/templates"),
+                 os.path.join(BASE_DIR, "register/templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#test
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
