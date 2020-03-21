@@ -2,7 +2,31 @@
 
 {% load static %}
 
+{% block title %}
+	<title>{{ event.name }} ansehen</title>
+{% endblock title %}
+
 {% block content %}
+<body>
+	<div class="navbar">
+	  <div data-collapse="none" data-animation="default" data-duration="400" class="navigation w-nav">
+		<div class="navigation-wrap">
+		  <div class="columns w-row">
+			<div class="w-col w-col-3"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="93" alt="" class="image"></div>
+			<div class="column w-col w-col-9">
+			  <h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
+			</div>
+		  </div>
+		  <div class="menu">
+			<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
+			<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
+			<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
+			<div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
+		  </div>
+		</div>
+	  </div>
+	  <div class="headerline"></div>
+	</div>
   <div class="section cc-store-home-wrap">
     <div class="form-header">
       <div class="intro-content cc-homepage"></div>
@@ -84,4 +108,13 @@
       <p class="paragraph-5">Wir sind ein Team von Studierenden, die soli-ticket.de während der Corona-Krise ohne wirtschaftliche Hintergedanken entwickeln. Aufgrund der dynamischen Entwicklungen arbeiten wir unter Hochdruck daran, neue Funktionalitäten anzubieten. Wir halten alles so einfach wie möglich, um schnell helfen zu können. Bitte haben Sie Verständnis dafür, dass wir aber auch nicht zaubern können :-) Wir aktualisieren unserer Webseite regelmäßig bei Neuerungen! <br><strong>#SolidaritätIstAuchAnsteckend #StayAtHome #FlattenTheCurve </strong></p>
     </div>
   </div>
+<div class="section">
+    <div class="container">
+      <div class="footer-wrap"><a href="http://www.soli-ticket.de/impressum" class="link">Impressum</a><a href="http://www.soli-ticket.de/datenschutz" class="link">Datenschutz</a></div>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5e74a11331a7130e3cb649b9" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="{% static 'js/webflow.js' %}" type="text/javascript"></script>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
 {% endblock %}

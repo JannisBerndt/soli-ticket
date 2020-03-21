@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory
 
-from register.models import User
+from register.models import Organiser
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
 # Create your views here.
@@ -25,47 +25,39 @@ def event_list_view(request):
 	return render(request, "event/event_list.html", context)
 
 def event_create_view(request):
-	template_name = [
-		'event/event_create_1.html',
-		'event/event_create_2.html',
-	]
-
 	if request.method == 'POST':
-		req = request.POST
-		print(req)
-	context = {}
-	return render(request, "event/event_create_1.html", context)
+		event_form = EventForm(request.POST)
+		location_form = EventlocationForm(request.POST)
+		buyable_form = BuyableForm(request.POST)
+		print(event_form)
+		if event_form.is_valid() and location_form.is_valid():
+			event = event_form.save(commit=False)
+			location = location_form.save(commit=False)
+			location.creator = Organiser.objects.get(username='gfbds')
+			location.save()
+			event.location = location
+			event.creator = Organiser.objects.get(username='gfbds')
+			event.save()
+			if buyable_form.is_valid():
+				data = buyable_form.cleaned_data
+				print(data)
+				if not data['buyable_name'] == '':
+					buyable = buyable_form.save(commit=False)
+					buyable.creator = Organiser.objects.get(username='gfbds')
+					buyable.save()
+					event.buyables.add(buyable)
+		return redirect('../')		
+	else:
+		event_form = EventForm()
+		location_form = EventlocationForm()
+		buyable_form = BuyableForm()
 
-	# event_form = EventForm(request.POST or None)
-	# address_form = AddressForm(request.POST or None)
-	# buyable_form = BuyableForm(request.POST or None)
-	# if event_form.is_valid():
-	# 	event = event_form.save(commit=False)
-	# 	if address_form.is_valid():
-	# 		address = address_form.save(commit=False)
-	# 		address.creator = User.objects.get(id=1)
-	# 		address.save()
-	# 		event.address = address
-	# 	event.creator = User.objects.get(id=1)
-	# 	event.save()
-	# 	if buyable_form.is_valid():
-	# 		data = buyable_form.cleaned_data
-	# 		print(data)
-	# 		if not data['buyable_name'] == '':
-	# 			buyable = buyable_form.save(commit=False)
-	# 			buyable.creator = User.objects.get(id=1)
-	# 			buyable.save()
-	# 			event.buyables.add(buyable)
-	# 	event_form = EventForm()
-	# 	address_form = AddressForm()
-	# 	buyable_form = BuyableForm()
-
-	# context = {
-	# 	'event_form': event_form,
-	# 	'address_form': address_form,
-	# 	'buyable_form': buyable_form,
-	# }
-	# return render(request, "event/event_create.html", context)
+	context = {
+		'event_form': event_form,
+		'location_form': location_form,
+		'buyable_form': buyable_form,
+	}
+	return render(request, "event/event_create.html", context)
 
 def event_update_view(request, id):
 	event = get_object_or_404(Event, id=id)
@@ -79,10 +71,10 @@ def event_update_view(request, id):
 		event = event_form.save(commit=False)
 		if location_form.is_valid():
 			location = location_form.save(commit=False)
-			location.creator = User.objects.get(id=1)
+			location.creator = Organiser.objects.get(username='gfbds')
 			location.save()
 			event.location = location
-		event.creator = User.objects.get(id=1)
+		event.creator = Organiser.objects.get(username='gfbds')
 		event.save()
 		return redirect('../')
 
@@ -109,7 +101,7 @@ def buyable_create_view(request, id):
 		data = buyable_form.cleaned_data
 		if not data['buyable_name'] == '':
 			buyable = buyable_form.save(commit=False)
-			buyable.creator = User.objects.get(id=1) #needs change
+			buyable.creator = Organiser.objects.get(username='gfbds') #needs change
 			buyable.save()
 			Event.objects.get(id=id).buyables.add(buyable)
 			buyable_form = BuyableForm()
@@ -163,17 +155,17 @@ def buyable_delete_view(request, id_b, id_e):
 # 		event = event_form.save(commit=False)
 # 		if address_form.is_valid():
 # 			address = address_form.save(commit=False)
-# 			address.creator = User.objects.get(id=1)
+# 			address.creator = Organiser.objects.get(username='gfbds')
 # 			address.save()
 # 			event.address = address
-# 		event.creator = User.objects.get(id=1)
+# 		event.creator = Organiser.objects.get(username='gfbds')
 # 		event.save()
 # 		if buyable_form.is_valid():
 # 			data = buyable_form.cleaned_data
 # 			print(data)
 # 			if not data['buyable_name'] == '':
 # 				buyable = buyable_form.save(commit=False)
-# 				buyable.creator = User.objects.get(id=1)
+# 				buyable.creator = Organiser.objects.get(username='gfbds')
 # 				buyable.save()
 # 				event.buyables.add(buyable)
 # 		event_form = EventForm()

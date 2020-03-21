@@ -301,9 +301,10 @@ figcaption {
 .heading-jumbo {
   margin-top: 10px;
   margin-bottom: 0px;
+  margin-left: 15px;
   color: #000;
   font-size: 32px;
-  line-height: 80px;
+  line-height: 64px;
   text-transform: none;
 }
 
@@ -1138,7 +1139,7 @@ figcaption {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #1a1b1f;
+  background-color: #fff;
 }
 
 ._404-content-wrap {
@@ -1317,7 +1318,7 @@ figcaption {
   height: 1080px;
 }
 
-.div-block-2 {
+.headerline {
   position: -webkit-sticky;
   position: sticky;
   top: auto;
@@ -1327,7 +1328,7 @@ figcaption {
   line-height: 3px;
 }
 
-.section-2 {
+.navbar {
   position: -webkit-sticky;
   position: sticky;
   top: 0px;
@@ -1438,6 +1439,7 @@ figcaption {
 }
 
 .field-label-3 {
+  margin-top: 50px;
   margin-bottom: 0px;
 }
 
@@ -1545,6 +1547,35 @@ figcaption {
   padding-left: 0px;
 }
 
+.section-5 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.section-6 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.section-7 {
+  margin-top: 19px;
+  margin-bottom: 20px;
+}
+
+.button-3 {
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.section-8 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.heading-3 {
+  margin-top: 60px;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -1565,6 +1596,7 @@ figcaption {
   .heading-jumbo {
     font-size: 56px;
     line-height: 70px;
+    text-align: center;
     white-space: pre-wrap;
   }
   .logo-link.w--current {
@@ -1690,6 +1722,9 @@ figcaption {
   .blog-summary-wrap {
     width: 100%;
   }
+  ._404-wrap {
+    background-color: #fff;
+  }
   .about-grid {
     grid-row-gap: 50px;
     grid-template-areas: "." ".";
@@ -1727,6 +1762,30 @@ figcaption {
     width: 80%;
     padding-right: 15px;
     text-align: center;
+  }
+  .div-block-4 {
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  .section-5 {
+    margin-top: 40px;
+    margin-bottom: 19px;
+  }
+  .button-2 {
+    position: static;
+    text-align: left;
+  }
+  .section-6 {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  .section-7 {
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  .button-3 {
+    border-radius: 8px;
+    background-color: #8fcdff;
   }
 }
 

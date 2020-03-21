@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--  This site was created in Webflow. http://www.webflow.com  -->
-<!--  Last Published: Sat Mar 21 2020 10:47:23 GMT+0000 (Coordinated Universal Time)  -->
+<!--  Last Published: Sat Mar 21 2020 16:16:26 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="5e75ba749105fa215cdcd735" data-wf-site="5e74a11331a7130e3cb649b9">
 <head>
   <meta charset="utf-8">
@@ -20,8 +20,8 @@
   <link href="images/webclip.png" rel="apple-touch-icon">
 </head>
 <body>
-  <div class="section-2">
-    <div data-collapse="medium" data-animation="default" data-duration="400" class="navigation w-nav">
+  <div class="navbar">
+    <div data-collapse="none" data-animation="default" data-duration="400" class="navigation w-nav">
       <div class="navigation-wrap">
         <div class="columns w-row">
           <div class="w-col w-col-3"><img src="images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png" width="93" alt="" class="image"></div>
@@ -30,12 +30,14 @@
           </div>
         </div>
         <div class="menu">
+          <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>HOme</strong></a></nav>
+          <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
           <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
           <div class="menu-button w-nav-button"><img src="images/menu-icon_1menu-icon.png" width="22" alt="" class="menu-icon"></div>
         </div>
       </div>
     </div>
-    <div class="div-block-2"></div>
+    <div class="headerline"></div>
   </div>
   <div class="section cc-store-home-wrap">
     <div class="form-header">
@@ -52,7 +54,7 @@
         <form id="email-form" name="email-form" data-name="Email Form" class="form">
           <div class="w-row">
             <div class="w-col w-col-3"></div>
-            <div class="w-col w-col-6"><label for="Name-der-Organisation">Name der Veranstaltung</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Name-der-Organisation" data-name="Name der Organisation" placeholder="Veranstaltungsname" id="Name-der-Organisation" required=""><label for="Name-Des-Veranstaltungsortes">Wo Hätte die Veranstaltung stattgefunden?</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Name-Des-Veranstaltungsortes" data-name="Name Des Veranstaltungsortes" placeholder="Name des Veranstaltungsortes" id="Name-Des-Veranstaltungsortes" required="">
+            <div class="w-col w-col-6"><label for="Name-der-Organisation">Name der VEranstaltung</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Name-der-Organisation" data-name="Name der Organisation" placeholder="Veranstaltungsname" id="Name-der-Organisation" required=""><label for="Name-Des-Veranstaltungsortes">Wo Hätte die VEranstaltung stattgefunden?</label><input type="text" class="text-field-2 w-input" maxlength="256" name="Name-Des-Veranstaltungsortes" data-name="Name Des Veranstaltungsortes" placeholder="Name des Veranstaltungsortes" id="Name-Des-Veranstaltungsortes" required="">
               <div class="w-row">
                 <div class="w-col w-col-9"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Straße" placeholder="Straße (Optional)" id="Stra-e"></div>
                 <div class="w-col w-col-3"><input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr (Optional)" id="HN"></div>
@@ -60,7 +62,15 @@
               <div class="w-row">
                 <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl (Optional)" id="PLZ"></div>
                 <div class="w-col w-col-8"><input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort (Optional)" id="Ort"></div>
-              </div><label for="DateTime">Wann Hätte die Veranstaltung stattgefunden?</label><input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="Format: DD.MM.YYYY HH:MM:SS (Uhrzeit optional)" id="DateTime" required=""><input type="submit" value="Weiter" data-wait="Bitte warten..." class="submit-button w-button"></div>
+              </div><label for="DateTime">Wann Hätte die VEranstaltung stattgefunden?</label><input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="Design Tool hat kene DateTimePicker - Sollte mit bis jQuery oder so aber easy sein mit Django!? Wenn zu kompliziert macht für den ersten Prototypen nen TextField!!!!" id="DateTime" required=""><label for="Name-der-Organisation-2" class="field-label-3">Kurzbeschreibung / Spendenaufruf</label><label for="Name-der-Organisation-2" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer (Ihren &quot;Spendenaufruf&quot;)</label><textarea placeholder="Erzählen Sie mehr!" maxlength="5000" id="field-4" name="field-4" required="" data-name="Field 4" class="textarea text-field-2 w-input"></textarea>
+              <div class="w-row">
+                <div class="w-col w-col-10"><label>Tickets/Speisen/Getränke</label><label for="Name-der-Organisation-2" class="field-label-2">Fügen Sie nun die verschiedenen Dinge hinzu, die Ihre Besucher/Kunden üblicherweise vor und während Ihrer Veranstaltungen erworben hätten. Dazu gehören natürlich die Tickets, aber auch z.B. die Portion Popcorn, die Cola oder Anderes</label></div>
+                <div class="w-col w-col-2"><label>Preis (€)</label></div>
+              </div>
+              <div class="w-row">
+                <div class="w-col w-col-10"><input type="text" class="text-field-2 w-input" maxlength="256" name="Bezeichnung-3" data-name="Bezeichnung 3" placeholder="Bezeichnung (z.B. &quot;Solidaritätsticket Kat. A&quot;)" id="Bezeichnung-3" required=""></div>
+                <div class="w-col w-col-2"><input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0,00" id="field-3" required=""></div>
+              </div><input type="submit" value="Fertig!" data-wait="Bitte warten..." class="submit-button w-button"></div>
             <div class="w-col w-col-3"></div>
           </div>
         </form>
