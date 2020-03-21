@@ -1,8 +1,8 @@
 {%  extends 'register/base.html' %}
 
 {% block content %}
-<br>
 
+<br>
   <div class="section cc-store-home-wrap">
     <div class="form-header">
       <div class="intro-content cc-homepage">
@@ -20,31 +20,31 @@
             <div class="w-col w-col-3"></div>
             <div class="w-col w-col-6"><label for="name" class="field-label">Ansprechpartner</label>
               <div class="w-row">
-				<font size="3" color="red" disabled = "True">{{ error1 }}</font>
+                <font size="3" color="red" disabled = "True">{{ error1 }}</font>
                 <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" autofocus="true" maxlength="256" name="vname" data-name="Name" placeholder="Vorname" id="vorname" required=""></div>
                 <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" maxlength="256" name="nname" data-name="Name" placeholder="Nachname" id="nachname" required=""></div>
               </div>
-			  <label for="Name-der-Organisation">Name der Organisation</label>
-			    <font size="3" color="red" disabled = "True">{{ error2 }}</font>
-				<input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required="">
-				<label for="Art-2">Art der Organisation</label>
-				<font size="3" color="red" disabled = "True">{{ error3 }}</font>
-				<select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option><option value="nocht gemeinnützig">nicht gemeinnützig</option></select>
-				<label for="Art-3">Adresse</label>
+              <label for="Name-der-Organisation">Name der Organisation</label>
+              <font size="3" color="red" disabled = "True">{{ error2 }}</font
+              <input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required>
+              <label for="Art-2">Art der Organisation</label>
+              <font size="3" color="red" disabled = "True">{{ error3 }}</font>
+              <select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option><option value="nocht gemeinnützig">nicht gemeinnützig</option></select>
+              <label for="Art-3">Adresse</label>
               <div class="w-row">
-			    <font size="3" color="red" disabled = "True">{{ error4 }}</font>
+                <font size="3" color="red" disabled = "True">{{ error4 }}</font>
                 <div class="w-col w-col-9"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="strasse" data-name="Straße" placeholder="Straße" id="Stra-e" required=""></div>
                 <div class="w-col w-col-3"><input type="text" class="text-field-2 w-input" maxlength="256" name="hnummer" data-name="HN" placeholder="HausNr" id="HN" required=""></div>
               </div>
               <div class="w-row">
-			    <font size="3" color="red" disabled = "True">{{ error5 }}</font>
+                <font size="3" color="red" disabled = "True">{{ error5 }}</font>
                 <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="plz" data-name="PLZ" placeholder="Postleitzahl" id="PLZ" required=""></div>
                 <div class="w-col w-col-8"><input type="text" class="text-field-2 w-input" maxlength="256" name="ort" data-name="Ort" placeholder="Ort" id="Ort" required=""></div>
-				<font size="3" color="red" disabled = "True">{{ error6 }}</font>
-		
-              </div><label for="Art-3">Telefonnummer</label><input type="text" class="text-field-2 w-input" maxlength="256" name="telnr" data-name="Telenummer" placeholder="(optional)" id="Telenummer">
-			  <input type="submit" value="Weiter" data-wait="Please wait..." class="submit-button w-button" formmethod="post">
-			  </div>
+                <font size="3" color="red" disabled = "True">{{ error6 }}</font>
+              </div>
+              <label for="Art-3">Telefonnummer</label><input type="text" class="text-field-2 w-input" maxlength="256" name="telnr" data-name="Telenummer" placeholder="(optional)" id="Telenummer">
+              <input type="submit" value="Weiter" data-wait="Please wait..." class="submit-button w-button" formmethod="post">
+            </div>
             <div class="w-col w-col-3"></div>
           </div>
         </form>
