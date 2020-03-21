@@ -1,9 +1,9 @@
 /Soli
 /Soli-ticket
 *.pyc
-*~
 /.vscode
 __pycache__
 solivenv
 db.sqlite3
 .DS_Store
+*/migrations

@@ -1,16 +1,143 @@
-{% extends 'solisite/base.html' %}
+{% extends 'event/base.html' %}
+<!--  
+<form action='.' method='POST'> {% csrf_token %}
+	{{ event_form.as_p }}
+    <h2>Wo wird das Event stattfinden?</h2>
+    {{ location_form.as_p }}
+    <h2>Welche Produkte möchtest du verkaufen?</h2>
+    {{ buyable_form.as_p }}
+    <p>Hinweis: Du kannst später in deiner Eventübersicht noch mehr Produkte hinzufügen.</p>
+    <p>Hinweis 2: Sobald kein Name für ein Produkt angegeben wird wird dieses nicht gespeichert</p>
+    <input type='submit' value="Speichern" /><a href='../'>Abbrechen</a>
+</form>
+ -->
+
+{% load static %}
+
+{% block title %}
+<title>Neue Veranstaltung erstellen</title>
+{% endblock %}
 
 {% block content %}
-	<form action='.' method='POST'> {% csrf_token %}
-		{{ event_form.as_p }}
-		<h2>Where will this Event take place?</h2>
-		{{ address_form.as_p }}
-		<h2>Which products du you want to sell at this event?</h2>
-		{{ buyable_formset.management_form }}
-		{% for form in buyable_formset %}
-			<p>Product {{ forloop.counter }}</p>
-			{{ form.as_p }}
-		{% endfor %}
-		<input type='submit' value="Save"/>
-	</form>
+<body>
+    <div class="navbar">
+        <div data-collapse="none" data-animation="default" data-duration="400" class="navigation w-nav">
+            <div class="navigation-wrap">
+                <div class="columns w-row">
+                    <div class="w-col w-col-3"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="93" alt="" class="image"></div>
+                    <div class="column w-col w-col-9">
+                        <h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
+                    </div>
+                </div>
+                <div class="menu">
+                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
+                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
+                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
+                    <div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
+                </div>
+            </div>
+        </div>
+        <div class="headerline"></div>
+    </div>
+    <div class="section cc-store-home-wrap">
+        <div class="form-header">
+            <div class="intro-content cc-homepage">
+                <div class="intro-text">
+                    <div class="heading-jumbo">Erzählen Sie uns etwas über Ihre Veranstaltung</div>
+                    <div class="div-block"></div>
+                    <div class="paragraph-bigger cc-bigger-white-light">Veranstaltung erstellen<br></div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="w-form">
+                <form id="email-form" name="email-form" data-name="Email Form" class="form" method="POST"> {% csrf_token %}
+                    <div class="w-row">
+                        <div class="w-col w-col-3"></div>
+                        <div class="w-col w-col-6">
+							{{ event_form.name.errors }}
+							<label for="{{ event_form.name.id_for_label }}">Name der Veranstaltung</label>
+							{{event_form.name}}
+                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="{{ event_form.name.id_for_label }}" data-name="Name der Organisation" placeholder="Veranstaltungsname" id="Name-der-Organisation" required=""> -->
+							{{ location_form.location_name.errors }}
+							<label for="{{ location_form.location_name.id_for_label }}">Wo Hätte die Veranstaltung stattgefunden?</label>
+							{{ location_form.location_name }}
+                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Name-Des-Veranstaltungsortes" data-name="Name Des Veranstaltungsortes" placeholder="Name des Veranstaltungsortes" id="Name-Des-Veranstaltungsortes" required=""> -->
+                            <div class="w-row">
+                                <div class="w-col w-col-9">
+									{{ location_form.street.errors }}
+									{{ location_form.street }}
+                                    <!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Straße" placeholder="Straße (Optional)" id="Stra-e"> -->
+                                </div>
+                                <div class="w-col w-col-3">
+									{{ location_form.house_number.errors }}
+									{{ location_form.house_number }}
+                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr (Optional)" id="HN"> -->
+                                </div>
+                            </div>
+                            <div class="w-row">
+                                <div class="w-col w-col-4">
+									{{ location_form.post_code.errors }}
+									{{ location_form.post_code }}
+                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl (Optional)" id="PLZ"> -->
+                                </div>
+                                <div class="w-col w-col-8">
+									{{ location_form.city.errors }}
+									{{ location_form.city }}
+                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort (Optional)" id="Ort"> -->
+                                </div>
+							</div>
+							{{ event_form.date.errors }}
+							<label for="{{ event_form.date.id_for_label }}">Wann Hätte die Veranstaltung stattgefunden?</label>
+							{{ event_form.date }}
+                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="" id="DateTime" required=""> -->
+                            <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Spendenaufruf</label>
+							<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer (Ihren &quot;Spendenaufruf&quot;)</label>
+							{{ event_form.description.errors }}
+							{{ event_form.description }}
+                            <!-- <textarea placeholder="Erzählen Sie mehr!" maxlength="5000" id="field-4" name="field-4" required="" data-name="Field 4" class="textarea text-field-2 w-input"></textarea> -->
+                            <div class="w-row">
+								<div class="w-col w-col-10">
+									<label>Tickets/Speisen/Getränke</label>
+									<label for="Name-der-Organisation-2" class="field-label-2">Fügen Sie nun die verschiedenen Dinge hinzu, die Ihre Besucher/Kunden üblicherweise vor und während Ihrer Veranstaltungen erworben hätten. Dazu gehören natürlich die Tickets, aber auch z.B. die Portion Popcorn, die Cola oder Anderes</label>
+								</div>
+                                <div class="w-col w-col-2">
+									<label>Preis (€)</label>
+								</div>
+                            </div>
+                            <div class="w-row">
+                                <div class="w-col w-col-10">
+									{{ buyable_form.buyable_name.errors }}
+									{{ buyable_form.buyable_name }}
+									<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Bezeichnung-3" data-name="Bezeichnung 3" placeholder="Bezeichnung (z.B. &quot;Solidaritätsticket Kat. A&quot;)" id="Bezeichnung-3" required=""> -->
+								</div>
+                                <div class="w-col w-col-2">
+									{{ buyable_form.price.errors }}
+									{{ buyable_form.price }}
+									<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0,00" id="field-3" required=""> -->
+								</div>
+							</div>
+							<input type="submit" value="Fertig!" data-wait="Bitte warten..." class="submit-button w-button">
+						</div>
+                        <div class="w-col w-col-3"></div>
+                    </div>
+                </form>
+                <div class="w-form-done">
+                    <div>Thank you! Your submission has been received!</div>
+                </div>
+                <div class="w-form-fail">
+                    <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+            <div class="footer-wrap"><a href="http://www.soli-ticket.de/impressum" class="link">Impressum</a><a href="http://www.soli-ticket.de/datenschutz" class="link">Datenschutz</a></div>
+        </div>
+    </div>
+    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5e74a11331a7130e3cb649b9" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="js/webflow.js" type="text/javascript"></script>
+    <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+</body>
 {% endblock %}

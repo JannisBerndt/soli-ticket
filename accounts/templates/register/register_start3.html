@@ -1,0 +1,39 @@
+{%  extends 'register/base.html' %}
+
+{% block content %}
+<br>
+
+  <div class="section cc-store-home-wrap">
+    <div class="form-header">
+      <div class="intro-content cc-homepage">
+        <div class="intro-text">
+          <div class="heading-jumbo">Wie kommen die Spenden zu Ihnen?</div>
+          <div class="div-block"></div>
+          <div class="paragraph-bigger cc-bigger-white-light">Wir arbeiten unter Hochdruck daran, voll integrierte Zahlungslösungen anzubieten. Bis dahin bitten wir Ihre Unterstützer darum, den Zahlungsbeitrag direkt auf Ihr Spendenkonto zu überweisen. <br>Dafür brauchen wir noch die folgenden Informationen:<br></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="w-form">
+        <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/accounts/">{% csrf_token %}
+          <div class="w-row">
+            <div class="w-col w-col-3"></div>
+            <div class="w-col w-col-6"><label for="Kontoinhaber">Kontodaten des spendenkontos ihrer organisation</label>
+              <font size="3" color="red" disabled = "True">{{ error1 }}</font>
+              <input type="text" class="text-field-2 w-input" maxlength="256" name="kontoinhaber" data-name="Kontoinhaber" placeholder="Kontoinhaber" id="Kontoinhaber" required="">
+              <div class="w-row">
+                <font size="3" color="red" disabled = "True">{{ error2 }}</font>
+                <div class="w-col w-col-8"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="iban" data-name="IBAN" placeholder="IBAN" id="IBAN" required=""></div>
+                <div class="w-col w-col-4"><input type="text" class="text-field-2 w-input" maxlength="256" name="bic" data-name="BIC" placeholder="BIC" id="BIC" required=""></div>
+              </div>
+              <label for="KontoVerifikationsLink">Sie haben Ihre Kontodaten auch auf ihrer offiziellen Webseite veröffentlicht? Bitte geben Sie hier den Link dorthin an, damit ihre Spender die echtheit der bei uns angezeigten Informationen überprüfen können:</label><input type="text" class="text-field-2 w-input" maxlength="256" name="kontourl" data-name="KontoVerifikationsLink" placeholder="(optional)" id="KontoVerifikationsLink">
+              <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post">
+            </div>
+            <div class="w-col w-col-3"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
