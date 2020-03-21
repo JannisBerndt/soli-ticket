@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 	'events',
     'register',
 ]
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,8 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+#test
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
