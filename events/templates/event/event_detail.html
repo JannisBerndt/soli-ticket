@@ -1,10 +1,24 @@
 {% extends "solisite/base.html" %}
 
 {% block content %}
-	<p>{{ object.name }} - {{ object.description }} - {{ object.date }}</p>
+	<h2>Informationen über das Event {{event.name}}</h2>
+	<p>ID: {{ event.id }}</p>
+	<p>Name: {{ event.name }}</p>
+	<p>Beschreibung: {{ event.description }}</p>
+	<p>Veranstalter: {{ event.creator }}</p>
+	<p>Datum: {{ event.date }}</p>
+	<p>Erstellungsdatum: {{ event.createdDateTime }}</p>
+	<p>Änderungsdatum: {{ event.changedDateTime }}</p>
+	<h3>Adresse</h3>
+	<p>Land: {{ address.country }}</p>
+	<p>Stadt: {{ address.city }}</p>
+	<p>Straße: {{ address.street }}</p>
+	<p>Hausnummer: {{ address.house_number }}</p>
+	<p>Postleitzahl: {{ address.post_code }}</p>
+	<h3>Alle angebotenen Produkte</h3>
 	{% for buyable in buyables %}
-		<p>{{ buyable.name}} - {{buyable.price}}</p>
+	<h4>Produkt {{ forloop.counter }}</h4>
+	<p>{{ buyable.name }}</p>
+	<p>{{ buyable.price }}€</p>
 	{% endfor %}
-	<p>{{ address.country }}</p>
-
 {% endblock %}
