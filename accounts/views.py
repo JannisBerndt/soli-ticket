@@ -5,6 +5,13 @@ from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib.auth.models import User
 
+
+def profile(request, pk):
+    organiser = Organiser.objects.get(username=pk)
+    context = {'organiser': organiser}
+    return render(request, 'accounts/profile.html', context)
+
+
 def error(request):
     print("Error at registration")
     return render(request, 'register/error.html')
@@ -66,7 +73,7 @@ class accounts(View):
             if User.objects.filter(username = req.get("username")).exists():
                 self.context["error2"] = "Der Benutzername existiert bereits."
                 error = True
-            
+
             if User.objects.filter(email = req.get("email")).exists():
                 self.context["error1"] = "Die E-Mail Adresse wird bereits verwendet."
                 error = True
@@ -91,12 +98,12 @@ class accounts(View):
                          "error3","error4","error4","error5","error5","error6"]):
 
                 if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]):
-                    error_found = True 
+                    error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
 
             if error_found:
                 return render(request, self.template_name[1], self.context)
-            
+
             for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr"]:
                 request.session[tag] = req.get(tag)
@@ -111,11 +118,11 @@ class accounts(View):
             # Tests der Inputs (To-DO)
             error_found = False
             #checkt ob überall Daten gefunden wurden:
-            for tag,error in zip(["kontoinhaber","iban","bic"], 
+            for tag,error in zip(["kontoinhaber","iban","bic"],
                                  ["error1","error2", "error2"]):
 
                 if (req.get(tag) == "" or req.get(tag) == None):
-                    error_found = True 
+                    error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
 
             if error_found:
@@ -123,8 +130,8 @@ class accounts(View):
 
             for tag in ["kontoinhaber","iban","bic","kontourl"]:
                 request.session[tag] = req.get(tag)
-            
-            
+
+
             #To Do: Implementierung der Datenbank
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],

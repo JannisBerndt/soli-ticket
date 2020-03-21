@@ -1,0 +1,39 @@
+{% extends "solisite/base.html" %}
+
+{% block content %}
+
+	<link rel="stylesheet" type="text/css" href="../static/events/list.css">
+
+	<table>
+		<tr>
+			<th>Benutzername</th>
+			<th>Name</th>
+			<th>E-Mail</th>
+			<th>Organisation</th>
+			<th>Art</th>
+			<th>Ansprechpartner</th>
+			<th>Tel.</th>
+      <th>IBAN</th>
+      <th>BIC</th>
+      <th>Kontoinhaber</th>
+      <th>Website</th>
+      <th>Shop</th>
+		</tr>
+
+		<tr>
+			<td>{{ organiser.username }}</td>
+			<td>{{ organiser.first_name }} {{ organiser.last_name }}</td>
+			<td>{{ organiser.email }}</td>
+			<td>{{ organiser.organisation_name }}</td>
+      <td>{{ organiser.organisation_type }}</td>
+			<td>{{ organiser.contact_first_name }}{{ organiser.contact_last_name }}</td>
+			<td>{{ organiser.contact_phone }}</td>
+			<td>{{ organiser.iban }}</td>
+      <td>{{ organiser.bic }}</td>
+      <td>{{ organiser.bank_account_owner }}</td>
+      <td>{{ organiser.website }}</td>
+      <td>{{ organiser.shop }}</td>
+		</tr>
+	</table>
+
+{% endblock %}
