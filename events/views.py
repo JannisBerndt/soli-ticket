@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory
 
-from register.models import User
+from accounts.models import Organiser
 from .models import Event, Address, Buyable
 from .forms import EventForm, AddressForm, BuyableForm, BuyableFormSet
 # Create your views here.
@@ -125,7 +125,7 @@ def buyable_update_view(request, id_b, id_e):
 			return redirect('../../../')
 		else:
 			tip = 'Bitte geben sie mindestens einen Namen an oder gehen Sie zurück'
-	
+
 	context = {
 		'buyable_form': buyable_form,
 		'tip': tip,
@@ -191,7 +191,7 @@ def buyable_delete_view(request, id_b, id_e):
 # 			address = address_form.save()
 # 			event.address = address
 # 		event.save()
-		
+
 # 		for buyable_form in buyable_formset:
 # 			buyable_form.save()
 
