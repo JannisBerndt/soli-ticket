@@ -38,11 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-	# third party
+    # third party
 
-	# own
-	'events',
+    # own
+    'events',
     'register',
+    'accounts',
 ]
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
@@ -127,6 +128,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/home/twentyonecoders/soli-ticket/static'
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static' )
 ]
