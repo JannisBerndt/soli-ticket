@@ -30,7 +30,8 @@ class Organiser(User):
     bic = models.CharField(max_length=120, null=True)
     bank_account_owner = models.CharField(max_length=120, null=True)
     website = models.CharField(max_length=120, null=True)
-    shop = models.CharField(max_length=120, null=True)
+    shopsite = models.CharField(max_length=120, null=True)
+    kontosite = models.CharField(max_length=120, null=True)
     
     def __str__(self):
         return self.organisation_name
