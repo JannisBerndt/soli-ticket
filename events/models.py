@@ -11,10 +11,10 @@ class Buyable(models.Model):
 	buyable_name = models.CharField(max_length=120)
 	price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
 
-class Address(models.Model):
+class Eventlocation(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "address_contact_set+",
-								related_query_name="event_adress"    )
+								related_query_name="event_location")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	location_name = models.CharField(max_length=120)
@@ -27,7 +27,7 @@ class Address(models.Model):
 class Event(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "event_contact_set+",
-								related_query_name="event"   )
+								related_query_name="event")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	name = models.CharField(max_length=120)
