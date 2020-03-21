@@ -1,5 +1,4 @@
 # -*- coding: cp1252 -*-
-from .forms import accountsForm
 from .models import UserAddress, Organiser
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
