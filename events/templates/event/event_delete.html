@@ -1,8 +1,24 @@
-{% extends "solisite/base.html" %}
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>{{event.name}} Löschen?</title>
+{% endblock %}
 
 {% block content %}
-	<form action='.' method='POST'> {% csrf_token %}
-		<h1>Möchtest du das Event {{event.name}} wirklich löschen?</h1>
-		<p><input type='submit' value='Löschen'/><a href='../'>Abbrechen</a></p>
-	</form>
+		<div class="section-9">
+		  <div class="w-row">
+			<div class="w-col w-col-3"></div>
+			<div class="w-col w-col-6">
+			<form action='.' method='POST'> {% csrf_token %}				
+			  <h3>Möchten Sie das Event "{{event.name}}" wirklich löschen?</h3>
+			  <div class="container-3 w-container"><input type='submit' class="button-3 w-button" value='Ja, Löschen!'/></div>
+			  <p></p>
+			  <div class="container-4 w-container"><a href="../../{{organiser}}" class="button-3 w-button">Abbrechen</a></div>
+			</form>
+			</div>
+			<div class="w-col w-col-3"></div>
+		  </div>
+		</div>
 {% endblock %}
