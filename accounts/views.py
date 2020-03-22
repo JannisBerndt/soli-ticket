@@ -16,11 +16,10 @@ def login_page(request):
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile', user.username)
+                return redirect('profile')
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
@@ -35,8 +34,13 @@ def logout_user(request):
 
 
 @login_required(login_url='login')
-def profile(request, pk):
-    organiser = Organiser.objects.get(username=pk)
+def profile(request):
+    if request.user.is_authenticated:
+        pk = request.user.username
+    try:
+        organiser = Organiser.objects.get(username=pk)
+    except:
+        return redirect('home')
     context = {'organiser': organiser}
     return render(request, 'accounts/profile.html', context)
 
