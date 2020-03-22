@@ -23,7 +23,9 @@ def login_page(request):
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
-        context = {}
+        context = {
+			'authenticated': request.user.is_authenticated,
+		}
         return render(request, 'accounts/login.html', context)
 
 
@@ -41,7 +43,10 @@ def profile(request):
         organiser = Organiser.objects.get(username=pk)
     except:
         return redirect('home')
-    context = {'organiser': organiser}
+    context = {
+		'organiser': organiser,
+		'authenticated': request.user.is_authenticated,
+	}
     return render(request, 'accounts/profile.html', context)
 
 
@@ -60,7 +65,8 @@ class accounts(View):
                "error3" : "",
                "error4" : "",
                "error5" : "",
-               "error6" : "",}
+               "error6" : "",
+			   'authenticated': False,}
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl"]
 
