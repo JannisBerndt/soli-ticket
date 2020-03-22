@@ -15,7 +15,7 @@
     </div>
     <div class="container">
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/accounts/">{% csrf_token %}
+        <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/accounts/register/">{% csrf_token %}
           <div class="w-row">
             <div class="w-col w-col-3"></div>
             <div class="w-col w-col-6"><label for="name" class="field-label">Ansprechpartner</label>
@@ -25,7 +25,7 @@
                 <div class="w-col w-col-6"><input type="text" class="text-field-2 w-input" maxlength="256" name="nname" data-name="Name" placeholder="Nachname" id="nachname" required=""></div>
               </div>
               <label for="Name-der-Organisation">Name der Organisation</label>
-              <font size="3" color="red" disabled = "True">{{ error2 }}</font
+              <font size="3" color="red" disabled = "True">{{ error2 }}</font>
               <input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required>
               <label for="Art-2">Art der Organisation</label>
               <font size="3" color="red" disabled = "True">{{ error3 }}</font>
