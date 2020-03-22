@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from accounts import urls
+from . import urls
 
 from accounts.models import Organiser
 from .models import Event, Eventlocation, Buyable
@@ -28,6 +29,10 @@ def event_list_view(request):
 
 @login_required(login_url='login')
 def event_create_view(request):
+	user = request.user
+	organiser = get_object_or_404(Organiser, username=user.username)
+	print(organiser)
+	# print(user.organisation_name)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
@@ -36,20 +41,20 @@ def event_create_view(request):
 		if event_form.is_valid() and location_form.is_valid():
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
-			location.creator = Organiser.objects.get(username='gfbds')
+			location.creator = organiser
 			location.save()
 			event.location = location
-			event.creator = Organiser.objects.get(username='gfbds')
+			event.creator = organiser
 			event.save()
 			if buyable_form.is_valid():
 				data = buyable_form.cleaned_data
 				print(data)
 				if not data['buyable_name'] == '':
 					buyable = buyable_form.save(commit=False)
-					buyable.creator = Organiser.objects.get(username='gfbds')
+					buyable.creator = organiser
 					buyable.save()
 					event.buyables.add(buyable)
-		return redirect('../')		
+		return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
@@ -59,6 +64,7 @@ def event_create_view(request):
 		'event_form': event_form,
 		'location_form': location_form,
 		'buyable_form': buyable_form,
+		'organiser': organiser,
 	}
 	return render(request, "event/event_create.html", context)
 
@@ -149,6 +155,23 @@ def buyable_delete_view(request, id_b, id_e):
 		"buyable": buyable,
 	}
 	return render(request, "buyable/buyable_delete.html", context)
+
+def event_organiser_list_view(request, organiser):
+	o_object = get_object_or_404(Organiser, organisation_name = organiser)
+	event_list = Event.objects.filter(creator = o_object)
+	event_list = event_list.order_by('date')
+	user = request.user
+	print(user)
+	logged_in = user.username == o_object.username
+	print(logged_in)
+	print(event_list)
+	context = {
+		'organiser': o_object,
+		'event_list': event_list,
+		'logged_in': logged_in,
+	}
+
+	return render(request, "event/event_list_organiser.html", context)
 
 # def event_create_view(request):
 # 	event_form = EventForm(request.POST or None)

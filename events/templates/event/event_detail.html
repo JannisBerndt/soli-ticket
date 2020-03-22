@@ -41,7 +41,7 @@
       </div>
       <div class="w-row">
         <div class="w-col w-col-9">
-          <p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator.mail }} hätte am {{ event.date }} stattgefunden.</p>
+          <p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
         </div>
         <div class="w-col w-col-3"></div>
       </div>
@@ -55,8 +55,8 @@
         </div>
         <div class="column-4 w-col w-col-4"><a href="#Tickets" class="submit-button w-button">Zu den Tickets</a><img src="{% static 'images/sentiment_satisfied_alt-black-48dp.svg' %}" alt="" class="image-4">
           <p class="paragraph">Solidarität macht nicht arm! Helfen Sie mit dem Geld, das Sie sowieso ausgegeben hätten, den Fortbestand unserer Kulturlandschaft zu sichern.</p><img src="{% static 'images/money_off-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Solidarität bleibt gebührenfrei! Zahlungen gehen direkt an {Veranstalter}. Soli-Ticket behält keine Gebühr ein. Eventuell bitten wir hier in Zukunft um eine kleine Spende, um unsere Kosten zu decken.</p><img src="{% static 'images/share-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Solidarität ist ansteckend! <br>Jede Verlinkung oder Empfehlung hilft {Veranstalter} und Soli-Ticket dabei, die Folgen der Krise zu mildern.</p>
+          <p class="paragraph">Solidarität bleibt gebührenfrei! Zahlungen gehen direkt an {{ event.creator }}. Soli-Ticket behält keine Gebühr ein. Eventuell bitten wir hier in Zukunft um eine kleine Spende, um unsere Kosten zu decken.</p><img src="{% static 'images/share-black-48dp.svg' %}" alt="" class="image-4">
+          <p class="paragraph">Solidarität ist ansteckend! <br>Jede Verlinkung oder Empfehlung hilft {{ event.creator }} und Soli-Ticket dabei, die Folgen der Krise zu mildern.</p>
         </div>
       </div>
     </div>

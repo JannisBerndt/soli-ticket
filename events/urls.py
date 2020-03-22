@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from .views import event_detail_view, event_list_view, event_create_view, event_update_view, event_delete_view, buyable_create_view, buyable_update_view,buyable_delete_view
+from .views import event_detail_view, event_list_view, event_create_view, event_update_view, event_delete_view, buyable_create_view, buyable_update_view,buyable_delete_view, event_organiser_list_view
 
 app_name = "events"
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
 	path('<int:id>/buyable/create/', buyable_create_view, name='buyable_create'),
 	path('<int:id_e>/buyable/<int:id_b>/update/', buyable_update_view, name='buyable_update'),
 	path('<int:id_e>/buyable/<int:id_b>/delete/', buyable_delete_view, name='buyable_delete'),
+	path('<str:organiser>/', event_organiser_list_view, name='event_organiser_list'),
 ]
