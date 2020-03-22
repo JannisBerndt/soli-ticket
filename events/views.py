@@ -18,6 +18,7 @@ def event_detail_view(request, id):
 		"buyables": buyables,
 		'location': location,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_detail.html", context)
 
@@ -26,6 +27,7 @@ def event_list_view(request):
 	context = {
 		"event_list": queryset,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_list.html", context)
 
@@ -68,6 +70,7 @@ def event_create_view(request):
 		'buyable_form': buyable_form,
 		'organiser': organiser,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_create.html", context)
 
@@ -94,6 +97,7 @@ def event_update_view(request, id):
 		'event_form': event_form,
 		'location_form': location_form,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_update.html", context)
 
@@ -108,6 +112,7 @@ def event_delete_view(request, id):
 		"event": event,
 		'organiser': organiser,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_delete.html", context)
 
@@ -130,6 +135,7 @@ def buyable_create_view(request, id):
 		'buyable_form': buyable_form,
 		'tip': tip,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "buyable/buyable_create.html", context)
 
@@ -151,6 +157,7 @@ def buyable_update_view(request, id_b, id_e):
 		'buyable_form': buyable_form,
 		'tip': tip,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "buyable/buyable_update.html", context)
 
@@ -180,6 +187,7 @@ def event_organiser_list_view(request, organiser):
 		'event_list': event_list,
 		'logged_in': logged_in,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 
 	return render(request, "event/event_list_organiser.html", context)
@@ -284,5 +292,6 @@ def location_create_view(request):
 	context = {
 		'location_form': location_form,
 		'user': request.user,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "location/location_create.html", context)
