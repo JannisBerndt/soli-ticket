@@ -30,7 +30,7 @@ class Organiser(User):
     organisation_type = models.CharField(max_length=120)
     contact_first_name = models.CharField(max_length=120)
     contact_last_name = models.CharField(max_length=120)
-    contact_phone = models.IntegerField(null=True)
+    contact_phone = models.CharField(null=True, max_length=100)
     iban = models.CharField(max_length=120, null=True)
     bic = models.CharField(max_length=120, null=True)
     bank_account_owner = models.CharField(max_length=120, null=True)
