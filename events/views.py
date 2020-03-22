@@ -17,6 +17,7 @@ def event_detail_view(request, id):
 		"event": event,
 		"buyables": buyables,
 		'location': location,
+		'user': request.user,
 	}
 	return render(request, "event/event_detail.html", context)
 
@@ -24,6 +25,7 @@ def event_list_view(request):
 	queryset = Event.objects.all()
 	context = {
 		"event_list": queryset,
+		'user': request.user,
 	}
 	return render(request, "event/event_list.html", context)
 
@@ -65,6 +67,7 @@ def event_create_view(request):
 		'location_form': location_form,
 		'buyable_form': buyable_form,
 		'organiser': organiser,
+		'user': request.user,
 	}
 	return render(request, "event/event_create.html", context)
 
@@ -90,6 +93,7 @@ def event_update_view(request, id):
 	context = {
 		'event_form': event_form,
 		'location_form': location_form,
+		'user': request.user,
 	}
 	return render(request, "event/event_update.html", context)
 
@@ -100,6 +104,7 @@ def event_delete_view(request, id):
 		return redirect('../../')
 	context = {
 		"event": event,
+		'user': request.user,
 	}
 	return render(request, "event/event_delete.html", context)
 
@@ -121,6 +126,7 @@ def buyable_create_view(request, id):
 	context = {
 		'buyable_form': buyable_form,
 		'tip': tip,
+		'user': request.user,
 	}
 	return render(request, "buyable/buyable_create.html", context)
 
@@ -141,6 +147,7 @@ def buyable_update_view(request, id_b, id_e):
 	context = {
 		'buyable_form': buyable_form,
 		'tip': tip,
+		'user': request.user,
 	}
 	return render(request, "buyable/buyable_update.html", context)
 
@@ -169,6 +176,7 @@ def event_organiser_list_view(request, organiser):
 		'organiser': o_object,
 		'event_list': event_list,
 		'logged_in': logged_in,
+		'user': request.user,
 	}
 
 	return render(request, "event/event_list_organiser.html", context)
@@ -272,5 +280,6 @@ def location_create_view(request):
 
 	context = {
 		'location_form': location_form,
+		'user': request.user,
 	}
 	return render(request, "location/location_create.html", context)
