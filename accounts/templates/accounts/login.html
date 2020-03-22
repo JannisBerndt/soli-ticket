@@ -1,0 +1,44 @@
+{%  extends 'base.html' %}
+{% block content %}
+
+  <div>
+    <div class="section cc-store-home-wrap">
+      <div class="form-header">
+        <div class="intro-content cc-homepage">
+          <div class="intro-text">
+            <div class="heading-jumbo">Willkommen!</div>
+            <div class="div-block divider"></div>
+            <div class="paragraph-bigger cc-bigger-white-light">Als Veranstalter einloggen<br></div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="w-form">
+          {% for message in messages %}
+            <p style="color:red;text-align:center;" id='messages'>{{message}}</p>
+          {% endfor %}
+          <form  method ="POST" class = "form" action = "/accounts/login/"> {% csrf_token %}
+            <div class="w-row">
+              <div class="w-col w-col-3"></div>
+              <div class="w-col w-col-6">
+                <label for="username" class="field-label">Benutzername</label>
+                <input type="username" class="text-field-2 w-input" autofocus="true" maxlength="256" name="username" data-name="Name" required="">
+                <label for="password">Passwort</label>
+                <input type="password" class="text-field-2 w-input" maxlength="256" name="password" data-name="Email" id="passwort" required="">
+                <input type="submit" value="Einloggen" data-wait="Please wait..." class="submit-button w-button"></div>
+              <div class="w-col w-col-3"></div>
+            </div>
+          </form>
+          
+          <div class="w-form-done">
+            <div>Thank you! Your submission has been received!</div>
+          </div>
+          <div class="w-form-fail">
+            <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

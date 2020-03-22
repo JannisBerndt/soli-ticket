@@ -1,7 +1,12 @@
 from django.urls import path
-from .views import accounts, error
+from . import views
+
+app_name='accounts'
 
 urlpatterns = [
-    path('register/', accounts.as_view(), name='register'),
-    path('error/', error, name='register_error')
+    path('login/', views.login_page, name = 'login'),
+    path('logout/', views.logout_user, name = 'logout'),
+    path('profile/', views.profile, name='profile'),
+    path('register/', views.accounts.as_view(), name='register'),
+    path('error/', views.error, name='register_error')
 ]

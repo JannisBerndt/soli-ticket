@@ -1,4 +1,4 @@
-{%  extends 'register/base.html' %}
+{%  extends 'base.html' %}
 {% block content %}
 
 <br>
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="container">
-    <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/accounts/">{% csrf_token %}
+    <form id="email-form" name="email-form" data-name="Email Form" class="form" method="post" action="/accounts/register/">{% csrf_token %}
       <div class="w-row">
         <div class="w-col w-col-3"></div>
         <div class="w-col w-col-6">

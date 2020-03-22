@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>Events von {{ organiser }}</title>
+{% endblock %}
+
+{% block content %}
+	<div class="section cc-store-home-wrap">
+	  <div class="form-header">
+		<div class="intro-content cc-homepage">
+		  <div class="intro-text">
+			<h1 class="heading-2">Alle Events<br>von {{ organiser }}</h1>
+			<div class="div-block"></div>
+		  </div>
+		</div>
+	  </div>
+	  <div>
+		  {% for event in event_list %}
+		<div class="w-container">
+		  <div class="w-row">
+			<div class="w-col w-col-2">
+			  <div class="text-block-2">{{ event.date }}</div>
+			</div>
+			<div class="w-col w-col-9">
+			  <div class="text-block-3"><a href='{{event.get_absolute_url}}'>{{ event.name }}</a></div>
+			</div>
+			{% if logged_in %}
+			<div class="w-col w-col-1"><a href="{{event.get_absolute_url}}delete/" class="w-inline-block"><img src="{% static 'images/delete-24px.svg' %}" alt="Löschen" class="image-2"></a></div>
+			{% endif %}
+		  </div>
+		</div>
+		{% endfor %}
+	  </div>
+	</div>
+	{% if logged_in %}
+	<div class="w-container"><a href="../create" class="submit-button w-button">Neue Veranstaltung erstellen</a></div>
+	{% endif %}
+{% endblock %}

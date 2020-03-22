@@ -1282,7 +1282,7 @@ figcaption {
 .text-field-2 {
   margin-left: 0px;
   border-radius: 8px;
-  text-align: right;
+  text-align: left;
   -o-object-fit: fill;
   object-fit: fill;
 }
@@ -1299,8 +1299,21 @@ figcaption {
 }
 
 .submit-button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   border-radius: 8px;
   background-color: #8fcdff;
+  text-align: left;
 }
 
 .submit-button.ticketconfirmbutton {
@@ -1312,6 +1325,10 @@ figcaption {
   display: block;
   margin-top: 24px;
   text-align: left;
+}
+
+.submit-button.abbrechen-button {
+  background-color: #ccc;
 }
 
 .container-2 {
@@ -1563,6 +1580,8 @@ figcaption {
 }
 
 .button-3 {
+  margin-right: 0px;
+  margin-left: 0px;
   border-radius: 8px;
   background-color: #8fcdff;
 }
@@ -1574,6 +1593,25 @@ figcaption {
 
 .heading-3 {
   margin-top: 60px;
+}
+
+.paragraph-6 {
+  font-size: 12px;
+}
+
+.section-9 {
+  margin-top: 25px;
+  margin-bottom: 130px;
+}
+
+.container-3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container-4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 991px) {

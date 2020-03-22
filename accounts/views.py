@@ -4,6 +4,51 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('profile')
+            else:
+                messages.info(request, 'Username or Password is incorrect')
+
+        context = {
+			'authenticated': request.user.is_authenticated,
+		}
+        return render(request, 'accounts/login.html', context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+    return render(request, 'accounts/login.html')
+
+
+@login_required(login_url='login')
+def profile(request):
+    if request.user.is_authenticated:
+        pk = request.user.username
+    try:
+        organiser = Organiser.objects.get(username=pk)
+    except:
+        return redirect('home')
+    context = {
+		'organiser': organiser,
+		'authenticated': request.user.is_authenticated,
+	}
+    return render(request, 'accounts/profile.html', context)
+
 
 def error(request):
     print("Error at registration")
@@ -20,7 +65,8 @@ class accounts(View):
                "error3" : "",
                "error4" : "",
                "error5" : "",
-               "error6" : "",}
+               "error6" : "",
+			   'authenticated': False,}
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl"]
 
@@ -66,7 +112,7 @@ class accounts(View):
             if User.objects.filter(username = req.get("username")).exists():
                 self.context["error2"] = "Der Benutzername existiert bereits."
                 error = True
-            
+
             if User.objects.filter(email = req.get("email")).exists():
                 self.context["error1"] = "Die E-Mail Adresse wird bereits verwendet."
                 error = True
@@ -91,12 +137,12 @@ class accounts(View):
                          "error3","error4","error4","error5","error5","error6"]):
 
                 if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]):
-                    error_found = True 
+                    error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
 
             if error_found:
                 return render(request, self.template_name[1], self.context)
-            
+
             for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr"]:
                 request.session[tag] = req.get(tag)
@@ -111,11 +157,11 @@ class accounts(View):
             # Tests der Inputs (To-DO)
             error_found = False
             #checkt ob überall Daten gefunden wurden:
-            for tag,error in zip(["kontoinhaber","iban","bic"], 
+            for tag,error in zip(["kontoinhaber","iban","bic"],
                                  ["error1","error2", "error2"]):
 
                 if (req.get(tag) == "" or req.get(tag) == None):
-                    error_found = True 
+                    error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
 
             if error_found:
@@ -123,8 +169,8 @@ class accounts(View):
 
             for tag in ["kontoinhaber","iban","bic","kontourl"]:
                 request.session[tag] = req.get(tag)
-            
-            
+
+
             #To Do: Implementierung der Datenbank
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],

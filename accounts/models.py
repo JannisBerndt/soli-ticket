@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserAddress(models.Model):
-    
+
     strasse = models.CharField(max_length=120, null=True)
     hnummer = models.CharField(max_length=120, null=True)
     plz= models.CharField(max_length=120, null=True)
@@ -15,11 +15,14 @@ class UserAddress(models.Model):
         verbose_name='User_Address'
         verbose_name_plural='User_Address'
 
+    def __str__(self):
+        return self.strasse
+
 class Organiser(User):
     user_address = models.OneToOneField(
         UserAddress,
         on_delete=models.CASCADE,
-        null = True, 
+        null = True,
         related_name = "user_adress_contact_set",
         related_query_name="organiser_address"
     )
@@ -27,14 +30,14 @@ class Organiser(User):
     organisation_type = models.CharField(max_length=120)
     contact_first_name = models.CharField(max_length=120)
     contact_last_name = models.CharField(max_length=120)
-    contact_phone = models.IntegerField(null=True)
+    contact_phone = models.CharField(null=True, max_length=100)
     iban = models.CharField(max_length=120, null=True)
     bic = models.CharField(max_length=120, null=True)
     bank_account_owner = models.CharField(max_length=120, null=True)
     website = models.CharField(max_length=120, null=True)
     shopsite = models.CharField(max_length=120, null=True)
     kontosite = models.CharField(max_length=120, null=True)
-    
+
     def __str__(self):
         return self.organisation_name
 
