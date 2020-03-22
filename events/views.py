@@ -99,11 +99,14 @@ def event_update_view(request, id):
 
 def event_delete_view(request, id):
 	event = get_object_or_404(Event, id=id)
+	user = request.user
+	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == "POST":
 		event.delete()
 		return redirect('../../')
 	context = {
 		"event": event,
+		'organiser': organiser,
 		'user': request.user,
 	}
 	return render(request, "event/event_delete.html", context)
