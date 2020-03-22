@@ -1580,6 +1580,8 @@ figcaption {
 }
 
 .button-3 {
+  margin-right: 0px;
+  margin-left: 0px;
   border-radius: 8px;
   background-color: #8fcdff;
 }
@@ -1595,6 +1597,21 @@ figcaption {
 
 .paragraph-6 {
   font-size: 12px;
+}
+
+.section-9 {
+  margin-top: 25px;
+  margin-bottom: 130px;
+}
+
+.container-3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container-4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 991px) {

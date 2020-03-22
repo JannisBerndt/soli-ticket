@@ -1,8 +1,53 @@
-{% extends "solisite/base.html" %}
+{% extends "event/base.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>{{event.name}} Löschen?</title>
+{% endblock %}
 
 {% block content %}
-	<form action='.' method='POST'> {% csrf_token %}
-		<h1>Möchtest du das Event {{event.name}} wirklich löschen?</h1>
-		<p><input type='submit' value='Löschen'/><a href='../'>Abbrechen</a></p>
-	</form>
+	<body>
+		<div>
+		  <div data-collapse="none" data-animation="default" data-duration="400" class="navigation w-nav">
+			<div class="navigation-wrap">
+			  <div class="columns w-row">
+				<div class="w-col w-col-3"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="93" alt="" class="image"></div>
+				<div class="column w-col w-col-9">
+				  <h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
+				</div>
+			  </div>
+			  <div class="menu">
+				<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
+				<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
+				<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
+				<div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
+			  </div>
+			</div>
+		  </div>
+		  <div class="divider"></div>
+		</div>
+		<div class="section-9">
+		  <div class="w-row">
+			<div class="w-col w-col-3"></div>
+			<div class="w-col w-col-6">
+			<form action='.' method='POST'> {% csrf_token %}				
+			  <h3>Möchten Sie das Event "{{event.name}}" wirklich löschen?</h3>
+			  <div class="container-3 w-container"><input type='submit' class="button-3 w-button" value='Ja, Löschen!'/></div>
+			  <p></p>
+			  <div class="container-4 w-container"><a href="../" class="button-3 w-button">Abbrechen</a></div>
+			</form>
+			</div>
+			<div class="w-col w-col-3"></div>
+		  </div>
+		</div>
+		<div class="section">
+		  <div class="container">
+			<div class="footer-wrap"><a href="http://www.soli-ticket.de/impressum" class="link">Impressum</a><a href="http://www.soli-ticket.de/datenschutz" class="link">Datenschutz</a></div>
+		  </div>
+		</div>
+		<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5e74a11331a7130e3cb649b9" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+		<script src="js/webflow.js" type="text/javascript"></script>
+		<!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+	  </body>
 {% endblock %}

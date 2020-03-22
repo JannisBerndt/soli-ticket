@@ -40,10 +40,10 @@
 		  {% for event in event_list %}
 		<div class="w-container">
 		  <div class="w-row">
-			<div class="w-col w-col-1">
+			<div class="w-col w-col-2">
 			  <div class="text-block-2">{{ event.date }}</div>
 			</div>
-			<div class="w-col w-col-10">
+			<div class="w-col w-col-9">
 			  <div class="text-block-3"><a href='{{event.get_absolute_url}}'>{{ event.name }}</a></div>
 			</div>
 			{% if logged_in %}
