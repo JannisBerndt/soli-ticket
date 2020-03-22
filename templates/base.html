@@ -35,8 +35,12 @@
                 </div>
                 <div class="menu">
                     <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
-                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
-                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
+					<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
+					{% if authenticated %}
+						<nav role="navigation" class="navigation-items w-nav-menu"><a href="{% url 'accounts:logout' %}" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
+					{% else %}
+						<nav role="navigation" class="navigation-items w-nav-menu"><a href="{% url 'accounts:login' %}" class="navigation-item w-nav-link"><strong>Anmelden</strong></a></nav>
+					{% endif %}
                     <div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
                 </div>
             </div>
