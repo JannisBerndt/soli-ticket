@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory
+from django.contrib.auth.decorators import login_required
+from accounts import urls
 
 from accounts.models import Organiser
 from .models import Event, Eventlocation, Buyable
@@ -24,6 +26,7 @@ def event_list_view(request):
 	}
 	return render(request, "event/event_list.html", context)
 
+@login_required(login_url='login')
 def event_create_view(request):
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
