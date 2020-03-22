@@ -31,7 +31,6 @@ def event_list_view(request):
 	}
 	return render(request, "event/event_list.html", context)
 
-@login_required(login_url='login')
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)

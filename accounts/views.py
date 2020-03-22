@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Organiser
 
 
 def login_page(request):
@@ -19,7 +20,7 @@ def login_page(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
 
@@ -31,8 +32,7 @@ def login_page(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('login')
-    return render(request, 'accounts/login.html')
+    return redirect('accounts:login')
 
 
 @login_required(login_url='login')
