@@ -11,29 +11,30 @@ class Buyable(models.Model):
 	buyable_name = models.CharField(max_length=120)
 	price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
 
-class Address(models.Model):
+class Eventlocation(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "address_contact_set+",
-								related_query_name="event_adress"    )
+								related_query_name="event_location")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
-	country = models.CharField(max_length=120)
-	city = models.CharField(max_length=120)
-	street = models.CharField(max_length=120)
-	house_number = models.CharField(max_length=120)
-	post_code = models.DecimalField(max_digits=5, decimal_places=0)
+	location_name = models.CharField(max_length=120)
+	country = models.CharField(max_length=120, null=True, blank=True)
+	city = models.CharField(max_length=120, null=True, blank=True)
+	street = models.CharField(max_length=120, null=True, blank=True)
+	house_number = models.CharField(max_length=120, null=True, blank=True)
+	post_code = models.DecimalField(max_digits=5, decimal_places=0, null=True, blank=True)
 
 class Event(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "event_contact_set+",
-								related_query_name="event"   )
+								related_query_name="event")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	name = models.CharField(max_length=120)
 	description = models.TextField(null=True, blank=True)
 	date = models.DateTimeField(null=True, blank=True)
-	address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-	buyables = models.ManyToManyField(Buyable, blank=True)
+	location = models.ForeignKey(Eventlocation, on_delete=models.SET_NULL, null=True, related_name='+')
+	buyables = models.ManyToManyField(Buyable, blank=True, related_name='+')
 
 	def get_absolute_url(self):
 		return reverse("events:event_detail", kwargs={"id": self.id})
