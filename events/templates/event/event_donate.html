@@ -17,17 +17,19 @@
           <div class="w-row">
             <div class="w-col w-col-8">
 				<label for="name"><strong>TICKETS</strong></label>
-				{% for buyable in buyables %}  
+				{% for buyable in buyables %}
 					<p>{{ buyable.buyable_name }}</p>
 				{% endfor %}
             </div>
-            <div class="w-col w-col-2"><label>PREIS (€)</label>
-				{% for buyable in buyables %}	  
-					<p>{{ buyable.price }}</p>
-				{% endfor %}
-            </div>
             <div class="w-col w-col-2"><label>Anzahl</label>
-				<p>{{ count }}</p>
+              <p>{{ count }}</p>
+
+            </div>
+            <div class="w-col w-col-2"><label>PREIS (€)</label>
+              {% for buyable in buyables %}
+      					<p>{{ buyable.price }}</p>
+      				{% endfor %}
+
             </div>
           </div>
           <div class="divider"></div>
