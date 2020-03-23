@@ -86,7 +86,7 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-8">
-		  {% if organiser.kontosite is not None %}
+		  {% if organiser.kontosite != '' %}
 		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
 		{% endif %}
       </div>
