@@ -54,7 +54,7 @@ class Customer(User):
 
 
 class Order(models.Model):
-    buyable = models.ForeignKey('events.Buyable', null=True, on_delete=models.CASCADE)
+    article = models.ForeignKey('events.Buyable', null=True, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(null=True)
     createdDateTime = models.DateTimeField(auto_now_add=True)
