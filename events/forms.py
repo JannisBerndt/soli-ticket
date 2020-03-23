@@ -32,8 +32,6 @@ class BuyableForm(forms.ModelForm):
 BuyableFormSet = formset_factory(BuyableForm, extra=1)
 
 class EventForm(forms.ModelForm):
-	# address = AddressForm()
-	# buyables = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple, queryset = Buyable.objects.all().values_list('name'))
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
 	description = forms.CharField(label='Beschreibung', widget=forms.Textarea(attrs={'class': 'textarea text-field-2 w-input', 'id': 'field-4', 'placeholder': 'Erzählen Sie mehr!'}))
 	date = forms.DateTimeField(label='Veranstaltungsdatum', widget=forms.DateTimeInput(attrs={'class': 'text-field-2 w-input', 'id': 'DateTime', 'placeholder': "Format: DD.MM.YYYY HH:MM:SS (Uhrzeit optional)"}))
@@ -43,6 +41,4 @@ class EventForm(forms.ModelForm):
 			'name',
 			'description',
 			'date',
-			# 'address',
-			# 'buyables',
 		]
