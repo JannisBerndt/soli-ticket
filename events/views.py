@@ -202,6 +202,7 @@ def event_organiser_list_view(request, organiser):
 	print(logged_in)
 	print(event_list)
 	context = {
+		'request': request,
 		'organiser': o_object,
 		'event_list': event_list,
 		'logged_in': logged_in,

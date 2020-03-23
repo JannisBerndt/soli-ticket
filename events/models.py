@@ -45,5 +45,8 @@ class Event(models.Model):
 	def get_absolute_url(self):
 		return reverse("events:event_detail", kwargs={"id": self.id})
 
+	def get_share_url(self):
+		return reverse("events:event_organiser_list", kwargs={'organiser': self.creator.organisation_name})
+
 	def __str__(self):
 		return self.name
