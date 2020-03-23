@@ -13,6 +13,25 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = event.buyables.all()
 	location = event.location
+	if request.method == 'POST':
+		print(request.POST)
+		sum = request.POST.get('field-3')
+		count = request.POST.get('field-3')
+		for buyable in buyables:
+			sum = int(sum) * int(buyable.price)
+		print(sum)
+		organiser = Organiser.objects.get(username = request.user.username)
+		context = {
+			'buyables' : buyables,
+			'sum': sum,
+			'organiser': organiser,
+			'event': event,
+			'count': count,
+		}
+		return render(request, "event/event_donate.html", context)
+	else:
+		pass
+		
 	context = {
 		"event": event,
 		"buyables": buyables,
