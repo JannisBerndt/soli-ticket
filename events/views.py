@@ -3,8 +3,8 @@ from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from accounts import urls, forms
 from . import urls
-from accounts.forms import OrderFormSet
-from accounts.models import Organiser
+from accounts.forms import OrderForm
+from accounts.models import Organiser, Customer
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
 # Create your views here.
@@ -13,28 +13,21 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
+	OrderFormSet = formset_factory(OrderForm, extra=0)
+	order_formset = OrderFormSet(initial=buyables.values('buyable_name'))
+	print(order_formset)
 	if request.method == 'POST':
-		order_formset = OrderFormSet(request.POST, instance=buyables)
-		
-		
-		print(request.POST)
-		sum = request.POST.get('field-3')
-		count = request.POST.get('field-3')
-		for buyable in buyables:
-			sum = int(sum) * int(buyable.price)
-		print(sum)
-		organiser = Organiser.objects.get(username = request.user.username)
-		context = {
-			'buyables' : buyables,
-			'sum': sum,
-			'organiser': organiser,
-			'event': event,
-			'count': count,
-			'order_formset': order_formset,
-		}
-		return render(request, "event/event_donate.html", context)
-	else:
-		order_formset = OrderFormSet()
+		order_formset = OrderFormSet(request.POST, initial=buyables.values('buyable_name'))
+		print(order_formset)
+		if order_formset.is_valid():
+			for order_form in order_formset:
+				print(order_form.cleaned_data)
+				order = order_form.save(commit=False)
+				order.customer = Customer.objects.get(username=request.user)
+				order.article = buyable
+				order.save()
+
+			return redirect('event/event_donate.html')
 
 	context = {
 		"event": event,
@@ -42,8 +35,27 @@ def event_detail_view(request, id):
 		'location': location,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
+		'order_formset': order_formset,
 	}
 	return render(request, "event/event_detail.html", context)
+
+def event_donate_view(request):
+	print(request.POST)
+	sum = request.POST.get('field-3')
+	count = request.POST.get('field-3')
+	for buyable in buyables:
+		sum = int(sum) * int(buyable.price)
+	print(sum)
+	organiser = Organiser.objects.get(username = request.user.username)
+	context = {
+		'buyables' : buyables,
+		'sum': sum,
+		'organiser': organiser,
+		'event': event,
+		'count': count,
+		'order_formset': order_formset,
+	}
+	return render(request, "event/event_donate.html", context)
 
 # def event_list_view(request):
 # 	queryset = Event.objects.all()

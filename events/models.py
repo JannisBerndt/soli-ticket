@@ -41,7 +41,7 @@ class Event(models.Model):
 class Buyable(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "buyable_contact_set",
-								related_query_name="buyable"  )
+								related_query_name="buyable")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	buyable_name = models.CharField(max_length=120)
