@@ -13,6 +13,25 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = event.buyables.all()
 	location = event.location
+	if request.method == 'POST':
+		print(request.POST)
+		sum = request.POST.get('field-3')
+		count = request.POST.get('field-3')
+		for buyable in buyables:
+			sum = int(sum) * int(buyable.price)
+		print(sum)
+		organiser = Organiser.objects.get(username = request.user.username)
+		context = {
+			'buyables' : buyables,
+			'sum': sum,
+			'organiser': organiser,
+			'event': event,
+			'count': count,
+		}
+		return render(request, "event/event_donate.html", context)
+	else:
+		pass
+
 	context = {
 		"event": event,
 		"buyables": buyables,
@@ -170,6 +189,7 @@ def buyable_delete_view(request, id_b, id_e):
 		return redirect('../../../')
 	context = {
 		"buyable": buyable,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "buyable/buyable_delete.html", context)
 
@@ -183,6 +203,7 @@ def event_organiser_list_view(request, organiser):
 	print(logged_in)
 	print(event_list)
 	context = {
+		'request': request,
 		'organiser': o_object,
 		'event_list': event_list,
 		'logged_in': logged_in,

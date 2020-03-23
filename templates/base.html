@@ -34,8 +34,8 @@
                     </div>
                 </div>
                 <div class="menu">
-                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
-					<nav role="navigation" class="navigation-items w-nav-menu"><a href="#" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
+                    <nav role="navigation" class="navigation-items w-nav-menu"><a href="{% url 'home' %}" class="navigation-item w-nav-link"><strong>Home</strong></a></nav>
+					<nav role="navigation" class="navigation-items w-nav-menu"><a href="{% url 'about' %}" class="navigation-item w-nav-link"><strong>Über Uns</strong></a></nav>
 					{% if authenticated %}
 						<nav role="navigation" class="navigation-items w-nav-menu"><a href="{% url 'accounts:logout' %}" class="navigation-item w-nav-link"><strong>Abmelden</strong></a></nav>
 					{% else %}
@@ -52,7 +52,7 @@
 	{% endblock %}
 	<div class="section">
 		<div class="container">
-		  <div class="footer-wrap"><a href="http://www.soli-ticket.de/impressum" class="link">Impressum</a><a href="http://www.soli-ticket.de/datenschutz" class="link">Datenschutz</a></div>
+		  <div class="footer-wrap"><a href="{% url 'imprint' %}" class="link">Impressum</a><a href="{% url 'privacy_policy' %}" class="link">Datenschutz</a></div>
 		</div>
 	  </div>
 	  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5e74a11331a7130e3cb649b9" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
