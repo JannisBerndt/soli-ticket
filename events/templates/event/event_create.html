@@ -84,8 +84,10 @@
                                 <div class="w-col w-col-2">
 									<label>Preis (€)</label>
 								</div>
-                            </div>
-                            <div class="w-row">
+							</div>
+							{{ buyable_formset.management_form }}
+							{% for buyable_form in buyable_formset %}
+							<div class="w-row">
                                 <div class="w-col w-col-10">
 									{{ buyable_form.buyable_name.errors }}
 									{{ buyable_form.buyable_name }}
@@ -97,6 +99,7 @@
 									<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0,00" id="field-3" required=""> -->
 								</div>
 							</div>
+							{% endfor %}
 							<div class="w-row">
 								<div class="w-col w-col-2"><input type="submit" value="Fertig!" data-wait="Bitte warten..." class="submit-button w-button"></div>
 								<div class="w-col w-col-2"><a href="../{{organiser}}" class="submit-button abbrechen-button w-button">Abbrechen</a></div>

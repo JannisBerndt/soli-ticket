@@ -11,7 +11,7 @@ from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
-	buyables = event.buyables.all()
+	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
 	if request.method == 'POST':
 		print(request.POST)
@@ -58,7 +58,7 @@ def event_create_view(request):
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_form = BuyableForm(request.POST)
+		buyable_formset = BuyableFormSet(request.POST)
 		print(event_form)
 		if event_form.is_valid() and location_form.is_valid():
 			event = event_form.save(commit=False)
@@ -68,24 +68,31 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
-			if buyable_form.is_valid():
+			for buyable_form in buyable_formset:
+				print(buyable_form)
+				buyable_form.is_valid()
 				data = buyable_form.cleaned_data
-				print(data)
-				if not data['buyable_name'] == '':
-					buyable = buyable_form.save(commit=False)
-					buyable.creator = organiser
-					buyable.save()
-					event.buyables.add(buyable)
-		return redirect('events:event_organiser_list', organiser=organiser)
+				try:
+					valid = (data['buyable_name'] != '') and (data['price'] != 0)
+					if valid:
+						print('In If')
+						print(buyable_form.cleaned_data)
+						buyable = buyable_form.save(commit=False)
+						buyable.creator = organiser
+						buyable.belonging_event = event
+						buyable.save()
+				except KeyError:
+					pass
+			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_form = BuyableForm()
+		buyable_formset = BuyableFormSet()
 
 	context = {
 		'event_form': event_form,
 		'location_form': location_form,
-		'buyable_form': buyable_form,
+		'buyable_formset': buyable_formset,
 		'organiser': organiser,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
