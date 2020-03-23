@@ -1771,6 +1771,8 @@ figcaption {
 
 .heading-14 {
   color: #8fcdff;
+  font-size: 22px;
+  line-height: 30px;
   text-align: right;
 }
 
@@ -1780,6 +1782,22 @@ figcaption {
 }
 
 .heading-16 {
+  text-align: center;
+}
+
+.paragraph-11 {
+  font-weight: 400;
+}
+
+.heading-17 {
+  text-align: center;
+}
+
+.heading-18 {
+  text-align: center;
+}
+
+.paragraph-12 {
   text-align: center;
 }
 
@@ -2333,6 +2351,10 @@ figcaption {
   .image-8.icons {
     margin-right: auto;
     margin-left: auto;
+  }
+  .heading-14 {
+    font-size: 20px;
+    line-height: 32px;
   }
   .container-10 {
     padding-right: 10px;

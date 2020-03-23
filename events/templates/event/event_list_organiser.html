@@ -11,8 +11,11 @@
 	  <div class="form-header">
 		<div class="intro-content cc-homepage">
 		  <div class="intro-text">
-			<h1 class="heading-2">Alle Events<br>von {{ organiser }}</h1>
+			<h1 class="heading-2">Alle Events von {{ organiser }}</h1>
 			<div class="div-block"></div>
+			{% if logged_in %}
+			<div class="paragraph-bigger cc-bigger-white-light">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen: http://soli-ticket{{ request.get_full_path }}<br></div>
+			{% endif %}
 		  </div>
 		</div>
 	  </div>
