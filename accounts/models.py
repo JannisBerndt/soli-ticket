@@ -1,22 +1,24 @@
 from django.db import models
-
 from django.contrib.auth.models import User
 
-class UserAddress(models.Model):
 
+class UserAddress(models.Model):
     strasse = models.CharField(max_length=120, null=True)
     hnummer = models.CharField(max_length=120, null=True)
-    plz= models.CharField(max_length=120, null=True)
+    plz= models.PositiveIntegerField(null=True)
     ort = models.CharField(max_length=120, null=True)
     state = models.CharField(max_length= 40, null = True , default = None)
     country = models.CharField(max_length= 40, null = True , default = "Deutschland")
 
+
     class Meta:
-        verbose_name='User_Address'
-        verbose_name_plural='User_Address'
+        verbose_name='User Address'
+        verbose_name_plural='User Address'
+
 
     def __str__(self):
         return self.strasse
+
 
 class Organiser(User):
     user_address = models.OneToOneField(
@@ -34,13 +36,29 @@ class Organiser(User):
     iban = models.CharField(max_length=120, null=True)
     bic = models.CharField(max_length=120, null=True)
     bank_account_owner = models.CharField(max_length=120, null=True)
-    website = models.CharField(max_length=120, null=True)
-    shopsite = models.CharField(max_length=120, null=True)
-    kontosite = models.CharField(max_length=120, null=True)
+    kontosite = models.CharField(max_length=120, null=True, blank=True)
+
 
     def __str__(self):
         return self.organisation_name
 
+
     class Meta:
-        verbose_name='Veranstalter'
-        verbose_name_plural='Veranstalter'
+        verbose_name='Organiser'
+        verbose_name_plural='Organiser'
+
+
+class Customer(User):
+    def __str__(self):
+        return self.username
+
+
+class Order(models.Model):
+    buyable = models.ForeignKey('events.Buyable', null=True, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField(null=True)
+    createdDateTime = models.DateTimeField(auto_now_add=True)
+    changedDateTime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
