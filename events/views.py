@@ -41,16 +41,16 @@ def event_detail_view(request, id):
 	}
 	return render(request, "event/event_detail.html", context)
 
-def event_list_view(request):
-	queryset = Event.objects.all()
-	context = {
-		"event_list": queryset,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-	}
-	return render(request, "event/event_list.html", context)
+# def event_list_view(request):
+# 	queryset = Event.objects.all()
+# 	context = {
+# 		"event_list": queryset,
+# 		'user': request.user,
+# 		'authenticated': request.user.is_authenticated,
+# 	}
+# 	return render(request, "event/event_list.html", context)
 
-@login_required(login_url='login')
+@login_required(login_url='accounts:login')
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
