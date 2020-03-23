@@ -1,37 +1,49 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import formset_factory
+from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from accounts import urls, forms
 from . import urls
 from accounts.forms import OrderForm
-from accounts.models import Organiser, Customer
+from accounts.models import Organiser, Customer, Order
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
+from django.contrib.auth.models import User
 # Create your views here.
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
-	OrderFormSet = formset_factory(OrderForm, extra=0)
-	order_formset = OrderFormSet(initial=buyables.values('buyable_name'))
-	print(order_formset)
+	OrderFormSet = inlineformset_factory(User, Order, fields=('amount',), extra=3)
+	customer = User.objects.get(username=request.user.username)
+	order_formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
 	if request.method == 'POST':
-		order_formset = OrderFormSet(request.POST, initial=buyables.values('buyable_name'))
-		print(order_formset)
+		order_formset = OrderFormSet(request.POST, instance=customer)
 		if order_formset.is_valid():
+			i=0
 			for order_form in order_formset:
-				print(order_form.cleaned_data)
 				order = order_form.save(commit=False)
-				order.customer = Customer.objects.get(username=request.user)
-				order.article = buyable
-				order.save()
+				if order.amount:
+					order.article = buyables[i]
+					order.price = buyables[i].price * order.amount
+					#print(order.price)
+					#print(order.article)
+					#if customer.customer_set.first():
+					#	print("Gibts schon")
+					#	Order.objects.get(article=customer.customer_set.first().article).amount = Order.objects.get(article=customer.customer_set.first().article).amount + order.amount
+					#	customer.customer_set.first().price += order.price
+					#	print(customer.customer_set.first().price + order.price)
+					#	Order.objects.get(article=customer.customer_set.first().article).save()
+					#	print(customer.customer_set.first().amount)
+					#else:
+					order.save()
+				i += 1
 
-			return redirect('event/event_donate.html')
+			return redirect('events:checkout', event.id)
 
 	context = {
-		"event": event,
-		"buyables": buyables,
+		'event': event,
+		'buyables': buyables,
 		'location': location,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
@@ -39,21 +51,17 @@ def event_detail_view(request, id):
 	}
 	return render(request, "event/event_detail.html", context)
 
-def event_donate_view(request):
-	print(request.POST)
-	sum = request.POST.get('field-3')
-	count = request.POST.get('field-3')
-	for buyable in buyables:
-		sum = int(sum) * int(buyable.price)
-	print(sum)
-	organiser = Organiser.objects.get(username = request.user.username)
+def checkout_view(request, id):
+	customer = User.objects.get(username=request.user.username)
+	orders = customer.customer_set.all()
+	sum = 0
+	for order in orders:
+		sum += order.price
+	organiser = Event.objects.get(id=id).creator
 	context = {
-		'buyables' : buyables,
 		'sum': sum,
 		'organiser': organiser,
-		'event': event,
-		'count': count,
-		'order_formset': order_formset,
+		'orders': orders,
 	}
 	return render(request, "event/event_donate.html", context)
 

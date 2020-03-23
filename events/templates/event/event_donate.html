@@ -15,16 +15,18 @@
           <div class="w-row">
             <div class="w-col w-col-8">
 				<label for="name"><strong>TICKETS</strong></label>
-				{% for buyable in buyables %}  
-					<p>{{ buyable.buyable_name }}</p>
+				{% for order in orders %}
+					<p>{{ order.article }}</p>
 				{% endfor %}
           </div>
           <div class="w-col w-col-2"><label>Anzahl</label>
-          <p>{{ count }}</p>
+            {% for order in orders %}
+    					<p>{{ order.amount }}</p>
+    				{% endfor %}
           </div>
           <div class="w-col w-col-2"><label>PREIS (€)</label>
-            {% for buyable in buyables %}
-    					<p>{{ buyable.price }}</p>
+            {% for order in orders %}
+    					<p>{{ order.price }}</p>
     				{% endfor %}
           </div>
         </div>
@@ -35,7 +37,7 @@
             <p class="paragraph-4">Gesamt:</p>
           </div>
           <div class="w-col w-col-2">
-            <p class="paragraph-3">0,00</p>
+            <p class="paragraph-3">{{ sum }}</p>
           </div>
         </div>
       </form>
