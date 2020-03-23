@@ -6,3 +6,9 @@ def dashboard(request):
     organisers = Organiser.objects.all()
     context = {'organisers': organisers}
     return render(request, "solisite/dashboard.html")
+
+def landingpage_view(request):
+	context = {
+
+	}
+	return render(request, 'solisite/landingpage.html', context)
