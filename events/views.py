@@ -31,7 +31,7 @@ def event_detail_view(request, id):
 		return render(request, "event/event_donate.html", context)
 	else:
 		pass
-		
+
 	context = {
 		"event": event,
 		"buyables": buyables,
@@ -189,6 +189,7 @@ def buyable_delete_view(request, id_b, id_e):
 		return redirect('../../../')
 	context = {
 		"buyable": buyable,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "buyable/buyable_delete.html", context)
 
