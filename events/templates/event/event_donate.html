@@ -7,95 +7,95 @@
 {% endblock %}
 
 {% block content %}
-  <h1 class="heading-jumbo">Spende</h1>
-  <div id="Tickets" class="section-3">
-    <div class="w-container">
-      <div class="w-form">
-        <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form">
-          <div class="w-row">
-            <div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
-              {% for buyable in buyables %}
-              <p>{{ buyable.buyable_name }}</p>
-              {% endfor %}
-            </div>
-            <div class="w-col w-col-2"><label>Anzahl</label>
-              <p>{{ count }}</p>
-            </div>
-            <div class="w-col w-col-2"><label>PREIS (€)</label>
+<h1 class="heading-jumbo">Spende</h1>
+<div id="Tickets" class="section-3">
+  <div class="w-container">
+    <div class="w-form">
+      <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form">
+        <div class="w-row">
+          <div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
+            {% for buyable in buyables %}
+					<p>{{ buyable.buyable_name }}</p>
+				{% endfor %}
+          </div>
+          <div class="w-col w-col-2"><label>Anzahl</label>
+          <p>{{ count }}</p>
+          </div>
+          <div class="w-col w-col-2"><label>PREIS (€)</label>
             {% for buyable in buyables %}
     					<p>{{ buyable.price }}</p>
     				{% endfor %}
-            </div>
           </div>
-          <div class="divider"></div>
-          <div class="columns-2 w-row">
-            <div class="w-col w-col-8"></div>
-            <div class="w-col w-col-2">
-              <p class="paragraph-4">Gesamt:</p>
-            </div>
-            <div class="w-col w-col-2">
-              <p class="paragraph-3">{{ sum }}€</p>
-            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="columns-2 w-row">
+          <div class="w-col w-col-8"></div>
+          <div class="w-col w-col-2">
+            <p class="paragraph-4">Gesamt:</p>
           </div>
-        </form>
-        <div class="w-form-done">
-          <div>Thank you! Your submission has been received!</div>
+          <div class="w-col w-col-2">
+            <p class="paragraph-3">0,00</p>
+          </div>
         </div>
-        <div class="w-form-fail">
-          <div>Oops! Something went wrong while submitting the form.</div>
-          <div class="divider"></div>
-          <div class="divider"></div>
-        </div>
+      </form>
+      <div class="w-form-done">
+        <div>Thank you! Your submission has been received!</div>
+      </div>
+      <div class="w-form-fail">
+        <div>Oops! Something went wrong while submitting the form.</div>
+        <div class="divider"></div>
+        <div class="divider"></div>
       </div>
     </div>
   </div>
-  <div class="divider"></div>
-  <div class="section-8">
-    <h1 class="heading-jumbo">Überweisungsdaten</h1>
-    <div class="w-row">
-      <div class="w-col w-col-2"></div>
-      <div class="w-col w-col-4">
-        <div>Kontoinhaber: </div>
-        <div>IBAN: </div>
-        <div>BIC:</div>
-        <div>Verwendungszweck:</div>
-      </div>
-      <div class="w-col w-col-4">
-        <div>{{ organiser.bank_account_owner }}</div>
+</div>
+<div class="divider"></div>
+<div class="section-8">
+  <h1 class="heading-jumbo">Überweisungsdaten</h1>
+  <div class="w-row">
+    <div class="w-col w-col-2"></div>
+    <div class="w-col w-col-4">
+      <div>Kontoinhaber: </div>
+      <div>IBAN: </div>
+      <div>BIC:</div>
+      <div>Verwendungszweck:</div>
+    </div>
+    <div class="w-col w-col-4">
+      <div>{{ organiser.bank_account_owner }}</div>
         <div>{{ organiser.iban }}</div>
         <div>{{ organiser.bic }}</div>
-        <div>Spende über Soli-Ticket</div>
-      </div>
-      <div class="w-col w-col-2"></div>
+      <div>Spende über Soli-Ticket</div>
     </div>
+    <div class="w-col w-col-2"></div>
   </div>
-  <div class="divider"></div>
-  <div class="section-5">
-    <div class="w-row">
-      <div class="w-col w-col-2"></div>
-      <div class="w-col w-col-8">
-        <div>Wir arbeiten unter Hochdruck daran, voll integrierte Zahlungslösungen anzubieten. Bis dahin bitten wir Sie darum, den Zahlungsbeitrag direkt auf das Spendenkonto von {{ organiser }} zu überweisen. <br></div>
-      </div>
-      <div class="w-col w-col-2"></div>
+</div>
+<div class="divider"></div>
+<div class="section-5">
+  <div class="w-row">
+    <div class="w-col w-col-2"></div>
+    <div class="w-col w-col-8">
+      <div>Wir arbeiten unter Hochdruck daran, voll integrierte Zahlungslösungen anzubieten. Bis dahin bitten wir Sie darum, den Zahlungsbeitrag direkt auf das Spendenkonto von {Veranstalter} zu überweisen. <br></div>
     </div>
+    <div class="w-col w-col-2"></div>
   </div>
-  <div class="section-6">
-    <div class="w-row">
-      <div class="w-col w-col-2"></div>
-      <div class="w-col w-col-8">
-		  {% if organiser.kontosite != '' %}
+</div>
+<div class="section-6">
+  <div class="w-row">
+    <div class="w-col w-col-2"></div>
+    <div class="w-col w-col-8">
+      {% if organiser.kontosite is not None %}
 		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
 		{% endif %}
-      </div>
-      <div class="w-col w-col-2"></div>
     </div>
+    <div class="w-col w-col-2"></div>
   </div>
-  <div class="section-7">
-    <div class="w-row">
-      <div class="w-col w-col-2"></div>
-      <div class="w-col w-col-8"><a href="../{{organiser}}" class="button-3 w-button">Fertig</a></div>
-      <div class="w-col w-col-2"></div>
-    </div>
+</div>
+<div class="section-7">
+  <div class="w-row">
+    <div class="w-col w-col-2"></div>
+    <div class="w-col w-col-8"><a href="#" class="button-3 w-button">Fertig</a></div>
+    <div class="w-col w-col-2"></div>
   </div>
+</div>
 
   {% endblock %}
