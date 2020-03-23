@@ -44,7 +44,7 @@
   <div id="Tickets" class="section-3">
     <div class="w-container">
       <div class="w-form">
-        <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form">
+        <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST"> {% csrf_token %}
           <div class="w-row">
 			<div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
 				{% for buyable in buyables %}
@@ -56,10 +56,13 @@
 				<p>{{ buyable.price }}</p>
 				{% endfor %}
             </div>
-            <div class="w-col w-col-2"><label>Anzahl</label><input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required=""></div>
+            <div class="w-col w-col-2">
+				<label>Anzahl</label>
+				<input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required="">
+			</div>
           </div>
           <div class="divider"></div>
-          <div class="columns-2 w-row">
+          <!-- <div class="columns-2 w-row">
             <div class="w-col w-col-8"></div>
             <div class="w-col w-col-2">
               <p class="paragraph-4">Gesamt:</p>
@@ -67,10 +70,12 @@
             <div class="w-col w-col-2">
               <p class="paragraph-3">0,00</p>
             </div>
-          </div>
+          </div> -->
           <div class="w-row">
             <div class="w-col w-col-9"></div>
-            <div class="column-5 w-col w-col-3"><input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button"></div>
+            <div class="column-5 w-col w-col-3">
+				<input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
+			</div>
           </div>
         </form>
         <div class="w-form-done">
@@ -88,4 +93,8 @@
       <p class="paragraph-5">Wir sind ein Team von Studierenden, die soli-ticket.de während der Corona-Krise ohne wirtschaftliche Hintergedanken entwickeln. Aufgrund der dynamischen Entwicklungen arbeiten wir unter Hochdruck daran, neue Funktionalitäten anzubieten. Wir halten alles so einfach wie möglich, um schnell helfen zu können. Bitte haben Sie Verständnis dafür, dass wir aber auch nicht zaubern können :-) Wir aktualisieren unserer Webseite regelmäßig bei Neuerungen! <br><strong>#SolidaritätIstAuchAnsteckend #StayAtHome #FlattenTheCurve </strong></p>
     </div>
   </div>
+{% endblock %}
+
+{% block js %}
+
 {% endblock %}

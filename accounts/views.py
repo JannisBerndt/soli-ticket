@@ -89,7 +89,7 @@ class accounts(View):
             error = False
             # keine Angabe:
             if req.get("email") == "":
-                self.context["error1"] = "Bitte geben Sie eine gültige Email ein!"
+                self.context["error1"] = "Bitte geben Sie eine gueltige Email ein!"
                 error = True
 
             if req.get("username") == "":
@@ -98,11 +98,11 @@ class accounts(View):
             # versch. Passwörter
             # Tests der Inputs: (To-DO)
             if req.get("pw1") != req.get("pw2"):
-                self.context["error3"] = "Passwörter stimmen nicht überein!"
+                self.context["error3"] = "Passwoerter stimmen nicht ueberein!"
                 error = True
 
             if req.get("pw1") == "":
-                self.context["error3"] = "Bitte geben Sie ein gültiges Passwort ein!"
+                self.context["error3"] = "Bitte geben Sie ein gueltiges Passwort ein!"
                 error = True
 
             if len(req.get("pw1")) < 6:
@@ -139,6 +139,10 @@ class accounts(View):
                 if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]):
                     error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
+
+            if Organiser.objects.filter(organisation_name = req.get('oname')).exists():
+                error_found = True
+                self.context['error2'] = "Diese Organisation ist bereits registriert."
 
             if error_found:
                 return render(request, self.template_name[1], self.context)
@@ -192,10 +196,21 @@ class accounts(View):
 
             organiser.set_password(request.session["pw"])
             organiser.save()
+            organiser_user = Organiser.objects.get(username=request.session["username"])
+			# user direkt einloggen
+
+            # user = authenticate(request, username=organiser.username, password=organiser.password)
+            # if user is not None:
+            login(request, organiser_user)
+                # return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
+
             #To Do: Umleitung auf Registrierung erfolgreich
             # Löschen der Sessions IDs:
             for tag in self.tags:
-                del request.session[tag]
+                try:
+                    del request.session[tag]
+                except KeyError:
+                    pass
 
             return render(request, self.template_name[3], self.context)
 

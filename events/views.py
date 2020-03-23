@@ -13,6 +13,25 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = event.buyables.all()
 	location = event.location
+	if request.method == 'POST':
+		print(request.POST)
+		sum = request.POST.get('field-3')
+		count = request.POST.get('field-3')
+		for buyable in buyables:
+			sum = int(sum) * int(buyable.price)
+		print(sum)
+		organiser = Organiser.objects.get(username = request.user.username)
+		context = {
+			'buyables' : buyables,
+			'sum': sum,
+			'organiser': organiser,
+			'event': event,
+			'count': count,
+		}
+		return render(request, "event/event_donate.html", context)
+	else:
+		pass
+		
 	context = {
 		"event": event,
 		"buyables": buyables,
@@ -22,16 +41,16 @@ def event_detail_view(request, id):
 	}
 	return render(request, "event/event_detail.html", context)
 
-def event_list_view(request):
-	queryset = Event.objects.all()
-	context = {
-		"event_list": queryset,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-	}
-	return render(request, "event/event_list.html", context)
+# def event_list_view(request):
+# 	queryset = Event.objects.all()
+# 	context = {
+# 		"event_list": queryset,
+# 		'user': request.user,
+# 		'authenticated': request.user.is_authenticated,
+# 	}
+# 	return render(request, "event/event_list.html", context)
 
-@login_required(login_url='login')
+@login_required(login_url='accounts:login')
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
@@ -183,6 +202,7 @@ def event_organiser_list_view(request, organiser):
 	print(logged_in)
 	print(event_list)
 	context = {
+		'request': request,
 		'organiser': o_object,
 		'event_list': event_list,
 		'logged_in': logged_in,
