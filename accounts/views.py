@@ -12,7 +12,8 @@ from .models import Organiser
 
 def login_page(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        username = request.user.username
+        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
