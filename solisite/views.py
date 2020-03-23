@@ -1,14 +1,7 @@
-from django.shortcuts import render
-from django.template import Context, loader
-from accounts.models import Organiser
-
-def dashboard(request):
-    organisers = Organiser.objects.all()
-    context = {'organisers': organisers}
-    return render(request, "solisite/dashboard.html")
+from django.shortcuts import render, redirect
 
 def landingpage_view(request):
-	context = {
+    context = {
 
-	}
-	return render(request, 'solisite/landingpage.html', context)
+    }
+    return render(request, 'solisite/landingpage.html', context)
