@@ -55,7 +55,6 @@ def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	print(organiser)
-	# print(user.organisation_name)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
