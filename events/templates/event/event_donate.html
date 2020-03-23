@@ -7,14 +7,15 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="heading-jumbo">Spende</h1>
-<div id="Tickets" class="section-3">
-  <div class="w-container">
-    <div class="w-form">
-      <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form">
-        <div class="w-row">
-          <div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
-            {% for buyable in buyables %}
+  <h1 class="heading-jumbo">Spende</h1>
+  <div id="Tickets" class="section-3">
+    <div class="w-container">
+      <div class="w-form">
+        <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form">
+          <div class="w-row">
+            <div class="w-col w-col-8">
+				<label for="name"><strong>TICKETS</strong></label>
+				{% for buyable in buyables %}  
 					<p>{{ buyable.buyable_name }}</p>
 				{% endfor %}
           </div>
@@ -83,7 +84,7 @@
   <div class="w-row">
     <div class="w-col w-col-2"></div>
     <div class="w-col w-col-8">
-      {% if organiser.kontosite is not None %}
+      {% if organiser.kontosite != '' %}
 		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
 		{% endif %}
     </div>
@@ -93,7 +94,7 @@
 <div class="section-7">
   <div class="w-row">
     <div class="w-col w-col-2"></div>
-    <div class="w-col w-col-8"><a href="#" class="button-3 w-button">Fertig</a></div>
+    <div class="w-col w-col-8"><a href="../{{organiser}}" class="button-3 w-button">Fertig</a></div>
     <div class="w-col w-col-2"></div>
   </div>
 </div>
