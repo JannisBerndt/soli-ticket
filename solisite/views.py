@@ -1,8 +1,4 @@
-from django.shortcuts import render
-from django.template import Context, loader
-from accounts.models import Organiser
+from django.shortcuts import render, redirect
 
-def dashboard(request):
-    organisers = Organiser.objects.all()
-    context = {'organisers': organisers}
-    return render(request, "solisite/dashboard.html")
+def home(request):
+    return redirect('https://www.soli-ticket.de')
