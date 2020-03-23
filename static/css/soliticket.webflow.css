@@ -1290,7 +1290,7 @@ figcaption {
 .text-field-2 {
   margin-left: 0px;
   border-radius: 8px;
-  text-align: left;
+  text-align: right;
   -o-object-fit: fill;
   object-fit: fill;
 }
@@ -1311,10 +1311,16 @@ figcaption {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  clear: none;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
@@ -1322,6 +1328,8 @@ figcaption {
   border-radius: 8px;
   background-color: #8fcdff;
   text-align: left;
+  -o-object-fit: contain;
+  object-fit: contain;
 }
 
 .submit-button.ticketconfirmbutton {
@@ -1337,6 +1345,8 @@ figcaption {
 
 .submit-button.abbrechen-button {
   background-color: #ccc;
+  -o-object-fit: none;
+  object-fit: none;
 }
 
 .submit-button.hero-button {
@@ -1466,6 +1476,8 @@ figcaption {
 }
 
 .field-label-2 {
+  margin-top: 2px;
+  font-size: 12px;
   text-transform: none;
 }
 
@@ -1566,12 +1578,12 @@ figcaption {
 
 .paragraph-3 {
   margin-bottom: 0px;
-  text-align: right;
+  text-align: left;
 }
 
 .paragraph-4 {
   margin-bottom: 0px;
-  text-align: right;
+  text-align: left;
 }
 
 .paragraph-5 {
@@ -1647,15 +1659,16 @@ figcaption {
 }
 
 .container-5 {
-  margin-top: 0px;
-  padding: 195px 15px 70px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 18% 15px;
 }
 
 .section-10 {
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 96px;
+  padding-bottom: 109px;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#93d7c5), to(#93d7c5));
   background-image: linear-gradient(180deg, #93d7c5, #93d7c5);
 }
@@ -1740,8 +1753,9 @@ figcaption {
 
 .section-11 {
   margin-top: 0px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  margin-bottom: 0px;
+  padding-top: 109px;
+  padding-bottom: 80px;
 }
 
 .image-5 {
@@ -1776,6 +1790,11 @@ figcaption {
   text-align: right;
 }
 
+.section-12 {
+  padding-top: 100px;
+  padding-bottom: 90px;
+}
+
 .icons {
   margin-right: auto;
   margin-left: auto;
@@ -1799,6 +1818,26 @@ figcaption {
 
 .paragraph-12 {
   text-align: center;
+}
+
+.div-block-7 {
+  margin-top: 45px;
+}
+
+.field-label-4 {
+  margin-top: 51px;
+}
+
+.field-label-5 {
+  margin-top: 54px;
+  text-transform: capitalize;
+}
+
+.button-4 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  background-color: #ccc;
 }
 
 @media screen and (max-width: 991px) {
@@ -2028,6 +2067,9 @@ figcaption {
     margin-right: auto;
     margin-left: auto;
   }
+  .div-block-7 {
+    margin-top: 65px;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -2178,6 +2220,9 @@ figcaption {
     margin-right: 18px;
     margin-left: 18px;
   }
+  .div-block-7 {
+    margin-top: 0px;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -2195,16 +2240,16 @@ figcaption {
   }
   .heading-jumbo {
     display: block;
-    font-size: 36px;
-    line-height: 48px;
+    margin-left: 0px;
+    font-size: 32px;
+    line-height: 42px;
     white-space: normal;
   }
   .menu {
     margin-left: 15px;
   }
   .navigation {
-    padding-right: 20px;
-    padding-left: 20px;
+    padding: 0px 20px;
   }
   .menu-button {
     -webkit-box-flex: 0;
@@ -2248,6 +2293,12 @@ figcaption {
   .blog-item {
     width: 100%;
     max-width: none;
+  }
+  .submit-button {
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 18px;
+    padding-left: 18px;
   }
   .submit-button.hero-button {
     width: 80%;
@@ -2316,6 +2367,10 @@ figcaption {
     background-image: url('../images/frak-lopez-FI_jpaK_fzQ-unsplash.jpg');
     background-position: 50% 50%;
     background-size: cover;
+    background-repeat: repeat;
+  }
+  .heading-4 {
+    margin-top: 40px;
   }
   .paragraph-7 {
     font-size: 18px;
@@ -2325,8 +2380,10 @@ figcaption {
   }
   .section-10 {
     margin-left: 0px;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding: 28px 10px 13px;
+  }
+  .section-11 {
+    padding-top: 83px;
   }
   .image-5 {
     margin-right: 33%;
@@ -2363,9 +2420,57 @@ figcaption {
   .section-12 {
     margin-right: 10px;
     margin-left: 10px;
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
   .heading-15 {
     font-size: 32px;
     line-height: 36px;
+  }
+  .column-6 {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .column-7 {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .column-8 {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .column-9 {
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .heading-19 {
+    font-size: 28px;
+    line-height: 30px;
+  }
+  .section-13 {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .section-14 {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .section-15 {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .section-16 {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .container-11 {
+    padding-right: 15px;
+    padding-left: 15px;
+    -o-object-fit: contain;
+    object-fit: contain;
+  }
+  .column-10 {
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 }
