@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
-from accounts import urls
+from accounts import urls, forms
 from . import urls
-
+from accounts.forms import OrderFormSet
 from accounts.models import Organiser
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
@@ -14,6 +14,9 @@ def event_detail_view(request, id):
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
 	if request.method == 'POST':
+		order_formset = OrderFormSet(request.POST, instance=buyables)
+		
+		
 		print(request.POST)
 		sum = request.POST.get('field-3')
 		count = request.POST.get('field-3')
@@ -27,10 +30,11 @@ def event_detail_view(request, id):
 			'organiser': organiser,
 			'event': event,
 			'count': count,
+			'order_formset': order_formset,
 		}
 		return render(request, "event/event_donate.html", context)
 	else:
-		pass
+		order_formset = OrderFormSet()
 
 	context = {
 		"event": event,
