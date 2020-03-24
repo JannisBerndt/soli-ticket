@@ -26,7 +26,8 @@ class Event(models.Model):
 	changedDateTime = models.DateTimeField(auto_now=True)
 	name = models.CharField(max_length=120)
 	description = models.TextField(null=True, blank=True)
-	date = models.DateTimeField(null=True, blank=True)
+	date = models.DateField(null=True, blank=True)
+	time = models.TimeField(null=True, blank=True)
 	location = models.ForeignKey(Eventlocation, on_delete=models.SET_NULL, null=True, related_name='+')
 
 	def get_absolute_url(self):
