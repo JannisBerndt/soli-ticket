@@ -1,3 +1,15 @@
+.w-layout-grid {
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: auto auto;
+  grid-template-rows: auto auto;
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
+}
+
 body {
   font-family: Montserrat, sans-serif;
   color: #1a1b1f;
@@ -1872,6 +1884,31 @@ figcaption {
   margin-bottom: 30px;
 }
 
+.grid {
+  margin-right: 6px;
+  margin-left: 6px;
+  -ms-grid-columns: 1fr 0.5fr 0.5fr;
+  grid-template-columns: 1fr 0.5fr 0.5fr;
+  -ms-grid-rows: auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.grid-2 {
+  -ms-grid-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  -ms-grid-rows: auto auto auto;
+  grid-template-rows: auto auto auto;
+}
+
+.grid-3 {
+  margin-right: 6px;
+  margin-left: 6px;
+  -ms-grid-columns: 1fr 0.25fr 0.25fr;
+  grid-template-columns: 1fr 0.25fr 0.25fr;
+  -ms-grid-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto auto;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -2277,7 +2314,7 @@ figcaption {
   .heading-jumbo {
     display: block;
     margin-left: 0px;
-    font-size: 32px;
+    font-size: 24px;
     line-height: 42px;
     white-space: normal;
   }
@@ -2509,5 +2546,12 @@ figcaption {
   .column-10 {
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+  .grid {
+    grid-template-areas: "Area";
+    -ms-grid-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    -ms-grid-rows: auto auto auto;
+    grid-template-rows: auto auto auto;
   }
 }

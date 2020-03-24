@@ -4,13 +4,13 @@ from django.contrib.auth.decorators import login_required
 from accounts.models import Organiser, Customer, Order
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
-
+from accounts.forms import OrderForm
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
-	OrderFormSet = inlineformset_factory(Customer, Order, fields=('amount',), extra=buyables.count())
+	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
 	order_formset = OrderFormSet(queryset=Order.objects.none())
 	if request.method == 'POST':
 		try:
@@ -54,7 +54,8 @@ def event_detail_view(request, id):
 
 			return render(request, "event/event_donate.html", context)
 			# return redirect('events:checkout', event.id)
-
+	formset = zip(buyables, order_formset)
+	print(order_formset)
 	context = {
 		'event': event,
 		'buyables': buyables,
@@ -62,6 +63,7 @@ def event_detail_view(request, id):
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
 		'order_formset': order_formset,
+		'formset': formset,
 	}
 	return render(request, "event/event_detail.html", context)
 
