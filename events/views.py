@@ -62,6 +62,7 @@ def checkout_view(request, id):
 		'sum': sum,
 		'organiser': organiser,
 		'orders': orders,
+		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_donate.html", context)
 
