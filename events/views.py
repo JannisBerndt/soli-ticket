@@ -1,45 +1,69 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import formset_factory
+from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
-from accounts import urls
+from accounts import urls, forms
 from . import urls
-
-from accounts.models import Organiser
+from accounts.forms import OrderForm
+from accounts.models import Organiser, Customer, Order
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
+from django.contrib.auth.models import User
 # Create your views here.
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
-	buyables = event.buyables.all()
+	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
+	OrderFormSet = inlineformset_factory(User, Order, fields=('amount',), extra=3)
+	customer = User.objects.get(username=request.user.username)
+	order_formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
 	if request.method == 'POST':
-		print(request.POST)
-		sum = request.POST.get('field-3')
-		count = request.POST.get('field-3')
-		for buyable in buyables:
-			sum = int(sum) * int(buyable.price)
-		print(sum)
-		organiser = Organiser.objects.get(username = request.user.username)
-		context = {
-			'buyables' : buyables,
-			'sum': sum,
-			'organiser': organiser,
-			'event': event,
-			'count': count,
-		}
-		return render(request, "event/event_donate.html", context)
-	else:
-		pass
+		order_formset = OrderFormSet(request.POST, instance=customer)
+		if order_formset.is_valid():
+			i=0
+			for order_form in order_formset:
+				order = order_form.save(commit=False)
+				if order.amount:
+					order.article = buyables[i]
+					order.price = buyables[i].price * order.amount
+					#print(order.price)
+					#print(order.article)
+					#if customer.customer_set.first():
+					#	print("Gibts schon")
+					#	Order.objects.get(article=customer.customer_set.first().article).amount = Order.objects.get(article=customer.customer_set.first().article).amount + order.amount
+					#	customer.customer_set.first().price += order.price
+					#	print(customer.customer_set.first().price + order.price)
+					#	Order.objects.get(article=customer.customer_set.first().article).save()
+					#	print(customer.customer_set.first().amount)
+					#else:
+					order.save()
+				i += 1
+
+			return redirect('events:checkout', event.id)
 
 	context = {
-		"event": event,
-		"buyables": buyables,
+		'event': event,
+		'buyables': buyables,
 		'location': location,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
+		'order_formset': order_formset,
 	}
 	return render(request, "event/event_detail.html", context)
+
+def checkout_view(request, id):
+	customer = User.objects.get(username=request.user.username)
+	orders = customer.customer_set.all()
+	sum = 0
+	for order in orders:
+		sum += order.price
+	organiser = Event.objects.get(id=id).creator
+	context = {
+		'sum': sum,
+		'organiser': organiser,
+		'orders': orders,
+	}
+	return render(request, "event/event_donate.html", context)
 
 # def event_list_view(request):
 # 	queryset = Event.objects.all()
@@ -55,11 +79,10 @@ def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	print(organiser)
-	# print(user.organisation_name)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_form = BuyableForm(request.POST)
+		buyable_formset = BuyableFormSet(request.POST)
 		print(event_form)
 		if event_form.is_valid() and location_form.is_valid():
 			event = event_form.save(commit=False)
@@ -69,24 +92,31 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
-			if buyable_form.is_valid():
+			for buyable_form in buyable_formset:
+				print(buyable_form)
+				buyable_form.is_valid()
 				data = buyable_form.cleaned_data
-				print(data)
-				if not data['buyable_name'] == '':
-					buyable = buyable_form.save(commit=False)
-					buyable.creator = organiser
-					buyable.save()
-					event.buyables.add(buyable)
-		return redirect('events:event_organiser_list', organiser=organiser)
+				try:
+					valid = (data['buyable_name'] != '') and (data['price'] != 0)
+					if valid:
+						print('In If')
+						print(buyable_form.cleaned_data)
+						buyable = buyable_form.save(commit=False)
+						buyable.creator = organiser
+						buyable.belonging_event = event
+						buyable.save()
+				except KeyError:
+					pass
+			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_form = BuyableForm()
+		buyable_formset = BuyableFormSet()
 
 	context = {
 		'event_form': event_form,
 		'location_form': location_form,
-		'buyable_form': buyable_form,
+		'buyable_formset': buyable_formset,
 		'organiser': organiser,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,

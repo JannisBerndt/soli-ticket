@@ -20,8 +20,8 @@ class EventlocationForm(forms.ModelForm):
 		]
 
 class BuyableForm(forms.ModelForm):
-	buyable_name = forms.CharField(label='Produktname', required=False, widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Bezeichnung-3', 'placeholder': "Bezeichnung (z.B. &quot;Solidaritätsticket Kat. A&quot;)"}))
-	price = forms.DecimalField(label='Preis', required=False,widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3', 'placeholder': "0,00"}), min_value=0)
+	buyable_name = forms.CharField(label='Produktname',  widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Bezeichnung-3', 'placeholder': "Bezeichnung (z.B. &quot;Solidaritätsticket Kat. A&quot;)"}))
+	price = forms.DecimalField(label='Preis', widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3', 'placeholder': "0,00"}), min_value=0)
 	class Meta:
 		model = Buyable
 		fields = [
@@ -29,11 +29,9 @@ class BuyableForm(forms.ModelForm):
 			'price',
 		]
 
-BuyableFormSet = formset_factory(BuyableForm, extra=1)
+BuyableFormSet = formset_factory(BuyableForm, extra=5)
 
 class EventForm(forms.ModelForm):
-	# address = AddressForm()
-	# buyables = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple, queryset = Buyable.objects.all().values_list('name'))
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
 	description = forms.CharField(label='Beschreibung', widget=forms.Textarea(attrs={'class': 'textarea text-field-2 w-input', 'id': 'field-4', 'placeholder': 'Erzählen Sie mehr!'}))
 	date = forms.DateTimeField(label='Veranstaltungsdatum', widget=forms.DateTimeInput(attrs={'class': 'text-field-2 w-input', 'id': 'DateTime', 'placeholder': "Format: DD.MM.YYYY HH:MM:SS (Uhrzeit optional)"}))
@@ -43,6 +41,4 @@ class EventForm(forms.ModelForm):
 			'name',
 			'description',
 			'date',
-			# 'address',
-			# 'buyables',
 		]

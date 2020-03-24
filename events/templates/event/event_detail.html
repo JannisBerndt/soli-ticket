@@ -47,9 +47,10 @@
         <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST"> {% csrf_token %}
           <div class="w-row">
 			<div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
+				{{ order_formset.management_form }}
 				{% for buyable in buyables %}
-			  <p>{{ buyable.buyable_name }}</p>
-			  {% endfor %}
+				<p>{{ buyable.buyable_name }}</p>
+				{% endfor %}
             </div>
             <div class="w-col w-col-2"><label>PREIS (€)</label>
 				{% for buyable in buyables %}
@@ -58,7 +59,10 @@
             </div>
             <div class="w-col w-col-2">
 				<label>Anzahl</label>
-				<input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required="">
+				{% for order_form in order_formset %}
+				<p>{{ order_form.amount }}</p>
+				{% endfor %}
+				<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required=""> -->
 			</div>
           </div>
           <div class="divider"></div>
