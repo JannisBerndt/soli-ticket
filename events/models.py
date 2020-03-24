@@ -13,7 +13,7 @@ class Eventlocation(models.Model):
 	city = models.CharField(max_length=120, null=True, blank=True)
 	street = models.CharField(max_length=120, null=True, blank=True)
 	house_number = models.CharField(max_length=120, null=True, blank=True)
-	post_code = models.DecimalField(max_digits=5, decimal_places=0, null=True, blank=True)
+	post_code = models.CharField(null=True, blank=True)
 
 	def __str__(self):
 		return self.location_name
