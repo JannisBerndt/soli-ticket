@@ -1,23 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
-from accounts import urls, forms
-from . import urls
-from accounts.forms import OrderForm
 from accounts.models import Organiser, Customer, Order
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
-from django.contrib.auth.models import User
-# Create your views here.
+
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
-	OrderFormSet = inlineformset_factory(User, Order, fields=('amount',), extra=3)
-	customer = User.objects.get(username=request.user.username)
-	order_formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
+	OrderFormSet = inlineformset_factory(Customer, Order, fields=('amount',), extra=buyables.count())
+	order_formset = OrderFormSet(queryset=Order.objects.none())
 	if request.method == 'POST':
+		customer = Customer.objects.get(username='default')
+		Order.objects.all().delete()
 		order_formset = OrderFormSet(request.POST, instance=customer)
 		if order_formset.is_valid():
 			i=0
@@ -52,16 +49,18 @@ def event_detail_view(request, id):
 	return render(request, "event/event_detail.html", context)
 
 def checkout_view(request, id):
-	customer = User.objects.get(username=request.user.username)
+	event = Event.objects.get(id=id)
+	organiser = event.creator
+	customer = Customer.objects.get(username='default')
 	orders = customer.customer_set.all()
 	sum = 0
 	for order in orders:
 		sum += order.price
-	organiser = Event.objects.get(id=id).creator
 	context = {
 		'sum': sum,
 		'organiser': organiser,
 		'orders': orders,
+		'event': event,
 		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_donate.html", context)

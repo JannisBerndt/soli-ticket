@@ -52,10 +52,14 @@ class Customer(User):
     def __str__(self):
         return self.username
 
+    class Meta:
+        verbose_name='Customer'
+        verbose_name_plural='Customers'
+
 
 class Order(models.Model):
     article = models.ForeignKey('events.Buyable', null=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='customer_set')
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE, related_name='customer_set')
     amount = models.PositiveIntegerField(null=True)
     price = models.DecimalField(null=True, max_digits=1000, decimal_places=2)
     createdDateTime = models.DateTimeField(auto_now_add=True)
