@@ -9,31 +9,20 @@
 {% block content %}
 <div class="section-17">
     <h1 class="heading-jumbo">Spende</h1>
-    <div class="w-row">
-      <div class="w-col w-col-2"></div>
-      <div class="w-col w-col-4">
-        <h6>Tickets</h6>
-        {% for order in orders %}
-			<p>{{ order.article }}</p>
+    <div class="w-container">
+      <div class="w-layout-grid grid">
+        <h6 class="spende">Tickets</h6>
+        <h6 class="spende">Anzahl</h6>
+		<h6 class="spende">Preis (€)</h6>
+		{% for order in orders %}
+        <p>{{ order.article.buyable_name }}</p>
+        <p>{{ order.amount }}</p>
+		<p>{{ order.price }}</p>
 		{% endfor %}
-      </div>
-      <div class="w-col w-col-1">
-        <h6>Anzahl</h6>
-        {% for order in orders %}
-    		<p>{{ order.amount }}</p>
-    	{% endfor %}
-        <div class="divider"></div>
+        <div></div>
         <p>Gesamt</p>
-      </div>
-      <div class="w-col w-col-1">
-        <h6>Preis (€)</h6>
-        {% for order in orders %}
-    		<p>{{ order.price }}</p>
-    	{% endfor %}
-        <div class="divider"></div>
         <p>{{ sum }}</p>
       </div>
-      <div class="w-col w-col-4"></div>
     </div>
   </div>
   <div class="divider"></div>
@@ -43,14 +32,38 @@
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-4">
         <div>Kontoinhaber: </div>
-        <div>IBAN: </div>
-        <div>BIC:</div>
-        <div>Verwendungszweck:</div>
       </div>
       <div class="w-col w-col-4">
         <div>{{ organiser.bank_account_owner }}</div>
+      </div>
+      <div class="w-col w-col-2"></div>
+    </div>
+    <div class="w-row">
+      <div class="w-col w-col-2"></div>
+      <div class="w-col w-col-4">
+        <div>IBAN: </div>
+      </div>
+      <div class="w-col w-col-4">
         <div>{{ organiser.iban }}</div>
+      </div>
+      <div class="w-col w-col-2"></div>
+    </div>
+    <div class="w-row">
+      <div class="w-col w-col-2"></div>
+      <div class="w-col w-col-4">
+        <div>BIC:</div>
+      </div>
+      <div class="w-col w-col-4">
         <div>{{ organiser.bic }}</div>
+      </div>
+      <div class="w-col w-col-2"></div>
+    </div>
+    <div class="w-row">
+      <div class="w-col w-col-2"></div>
+      <div class="w-col w-col-4">
+        <div>Verwendungszweck:</div>
+      </div>
+      <div class="w-col w-col-4">
         <div>Spende über Soli-Ticket</div>
       </div>
       <div class="w-col w-col-2"></div>
