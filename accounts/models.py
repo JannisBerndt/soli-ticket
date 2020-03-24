@@ -61,6 +61,6 @@ class Order(models.Model):
     article = models.ForeignKey('events.Buyable', null=True, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE, related_name='customer_set')
     amount = models.PositiveIntegerField(null=True)
-    price = models.PositiveIntegerField(null=True)
+    price = models.DecimalField(null=True, max_digits=1000, decimal_places=2)
     createdDateTime = models.DateTimeField(auto_now_add=True)
     changedDateTime = models.DateTimeField(auto_now=True)
