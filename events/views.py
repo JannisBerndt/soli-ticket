@@ -173,7 +173,7 @@ def event_delete_view(request, id):
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == "POST":
 		event.delete()
-		return redirect('../../')
+		return redirect('events:event_organiser_list', organiser.organisation_name)
 	context = {
 		"event": event,
 		'organiser': organiser,
