@@ -1,18 +1,16 @@
-# -*- coding: cp1252 -*-
-from .models import UserAddress, Organiser
-from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Organiser
+from .models import UserAddress, Organiser
 
 
 def login_page(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        username = request.user
+        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
             username = request.POST.get('username')

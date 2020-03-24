@@ -1,4 +1,4 @@
-    {%  extends 'base.html' %}
+{%  extends 'base.html' %}
 
 {% block content %}
 
@@ -30,7 +30,7 @@
               <label for="Art-2">Art der Organisation:<br> Momentan nur für gemeinnützige Organisationen! <a href="{% url 'blog' %}">Weitere Informationen</a></label>
               <font size="3" color="red" disabled = "True">{{ error3 }}</font>
 
-              <select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option><option value="nocht gemeinnützig">nicht gemeinnützig</option></select>
+              <select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option></select>
               <label for="Art-3">Adresse</label>
               <div class="w-row">
                 <font size="3" color="red" disabled = "True">{{ error4 }}</font>

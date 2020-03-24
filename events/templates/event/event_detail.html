@@ -21,7 +21,8 @@
       </div>
       <div class="w-row">
         <div class="w-col w-col-9">
-          <p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
+		  <p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
+		  <p class="paragraph-bigger cc-bigger-white-light">Link zum teilen dieser Veranstaltung: http://soli-ticket.de{{event.get_absolute_url}}</p>
         </div>
         <div class="w-col w-col-3"></div>
       </div>
@@ -45,32 +46,31 @@
     <div class="w-container">
       <div class="w-form">
         <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST"> {% csrf_token %}
+		  <div class="w-row">
+            <div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label></div>
+            <div class="w-col w-col-2"><label>PREIS (€)</label></div>
+            <div class="w-col w-col-2"><label>Anzahl</label></div>
+          </div>
           <div class="w-row">
-			<div class="w-col w-col-8"><label for="name"><strong>TICKETS</strong></label>
+            <div class="w-col w-col-8">
+				{{ order_formset.management_form }}
 				{% for buyable in buyables %}
-			  <p>{{ buyable.buyable_name }}</p>
-			  {% endfor %}
+				<p>{{ buyable.buyable_name }}</p>
+				{% endfor %}
             </div>
-            <div class="w-col w-col-2"><label>PREIS (€)</label>
+            <div class="w-col w-col-2">
 				{% for buyable in buyables %}
 				<p>{{ buyable.price }}</p>
 				{% endfor %}
             </div>
             <div class="w-col w-col-2">
-				<label>Anzahl</label>
-				<input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required="">
+				{% for order_form in order_formset %}
+				<p>{{ order_form.amount }}</p>
+				{% endfor %}
+				<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0" id="field-3" required=""> -->
 			</div>
           </div>
           <div class="divider"></div>
-          <!-- <div class="columns-2 w-row">
-            <div class="w-col w-col-8"></div>
-            <div class="w-col w-col-2">
-              <p class="paragraph-4">Gesamt:</p>
-            </div>
-            <div class="w-col w-col-2">
-              <p class="paragraph-3">0,00</p>
-            </div>
-          </div> -->
           <div class="w-row">
             <div class="w-col w-col-9"></div>
             <div class="column-5 w-col w-col-3">

@@ -2,21 +2,9 @@ from django.db import models
 from django.urls import reverse
 from accounts.models import Organiser
 
-class Buyable(models.Model):
-	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
-								related_name = "buyable_contact_set+",
-								related_query_name="buyable"  )
-	createdDateTime = models.DateTimeField(auto_now_add=True)
-	changedDateTime = models.DateTimeField(auto_now=True)
-	buyable_name = models.CharField(max_length=120)
-	price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
-
-	def __str__(self):
-		return self.buyable_name
-
 class Eventlocation(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
-								related_name = "address_contact_set+",
+								related_name = "address_contact_set",
 								related_query_name="event_location")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
@@ -32,7 +20,7 @@ class Eventlocation(models.Model):
 
 class Event(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
-								related_name = "event_contact_set+",
+								related_name = "event_contact_set",
 								related_query_name="event")
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
@@ -40,7 +28,6 @@ class Event(models.Model):
 	description = models.TextField(null=True, blank=True)
 	date = models.DateTimeField(null=True, blank=True)
 	location = models.ForeignKey(Eventlocation, on_delete=models.SET_NULL, null=True, related_name='+')
-	buyables = models.ManyToManyField(Buyable, blank=True, related_name='+')
 
 	def get_absolute_url(self):
 		return reverse("events:event_detail", kwargs={"id": self.id})
@@ -50,3 +37,16 @@ class Event(models.Model):
 
 	def __str__(self):
 		return self.name
+
+class Buyable(models.Model):
+	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
+								related_name = "buyable_contact_set",
+								related_query_name="buyable")
+	createdDateTime = models.DateTimeField(auto_now_add=True)
+	changedDateTime = models.DateTimeField(auto_now=True)
+	buyable_name = models.CharField(max_length=120)
+	price = models.DecimalField(max_digits=1000, decimal_places=2)
+	belonging_event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_buyable', related_query_name='buyables_set')
+
+	def __str__(self):
+		return self.buyable_name
