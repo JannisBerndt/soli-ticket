@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8mgeu+-e+j^twe+1ov!^=%228u5^j=m#vsg)^!asblbs56!43v'
+with open('solisite/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,7 +78,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'solisite.wsgi.application'
 
-#SESSION_COOKIE_SECURE = "True"
+CSRF_COOKIE_SECURE = "True"
+#SESSION_COOKIE_SECURE = "True" # DOESNT WORK YET
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 

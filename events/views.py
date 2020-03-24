@@ -78,12 +78,10 @@ def checkout_view(request, id):
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
-	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
 		buyable_formset = BuyableFormSet(request.POST)
-		print(event_form)
 		if event_form.is_valid() and location_form.is_valid():
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
@@ -93,14 +91,11 @@ def event_create_view(request):
 			event.creator = organiser
 			event.save()
 			for buyable_form in buyable_formset:
-				print(buyable_form)
 				buyable_form.is_valid()
 				data = buyable_form.cleaned_data
 				try:
 					valid = (data['buyable_name'] != '') and (data['price'] != 0)
 					if valid:
-						print('In If')
-						print(buyable_form.cleaned_data)
 						buyable = buyable_form.save(commit=False)
 						buyable.creator = organiser
 						buyable.belonging_event = event
@@ -228,10 +223,7 @@ def event_organiser_list_view(request, organiser):
 	event_list = Event.objects.filter(creator = o_object)
 	event_list = event_list.order_by('date')
 	user = request.user
-	print(user)
 	logged_in = user.username == o_object.username
-	print(logged_in)
-	print(event_list)
 	context = {
 		'request': request,
 		'organiser': o_object,

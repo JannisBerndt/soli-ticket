@@ -82,12 +82,20 @@
     <div class="w-col w-col-2"></div>
   </div>
 </div>
+<div class="w-row">
+  <div class="w-col w-col-2"></div>
+  <div class="w-col w-col-8">
+    <div><strong>Achtung</strong>: {Veranstalter} kann Ihnen über unsere Plattform keine Spendenquittung ausstellen. Wir bzw. {Veranstalter} bitten Sie, dies bei Ihrer Spende zu berücksichtigen.<br></div>
+  </div>
+  <div class="w-col w-col-2"></div>
+</div>
+</div>
 <div class="section-6">
   <div class="w-row">
     <div class="w-col w-col-2"></div>
     <div class="w-col w-col-8">
       {% if organiser.kontosite != '' %}
-		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
+		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='https://{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
 		{% endif %}
     </div>
     <div class="w-col w-col-2"></div>
