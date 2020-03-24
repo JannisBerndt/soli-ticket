@@ -8,7 +8,7 @@ class EventlocationForm(forms.ModelForm):
 	city = forms.CharField(label='Stadt', required=False, widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Ort', 'placeholder': "Ort (Optional)"}))
 	street = forms.CharField(label='Straße', required=False, widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'Stra-e', 'placeholder': "Straße (Optional)"}))
 	house_number = forms.CharField(label='Hausnummer', required=False, widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'HN', 'placeholder': "HausNr (Optional)"}))
-	post_code = forms.DecimalField(label='Postleitzahl', required=False, widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'PLZ', 'placeholder': "Postleitzahl (Optional)"}))
+	post_code = forms.CharField(label='Postleitzahl', required=False, widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'PLZ', 'placeholder': "Postleitzahl (Optional)"}))
 	class Meta:
 		model = Eventlocation
 		fields = [

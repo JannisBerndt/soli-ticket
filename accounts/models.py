@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class UserAddress(models.Model):
     strasse = models.CharField(max_length=120, null=True)
     hnummer = models.CharField(max_length=120, null=True)
-    plz= models.PositiveIntegerField(null=True)
+    plz= models.CharField(max_length = 40, null=True)
     ort = models.CharField(max_length=120, null=True)
     state = models.CharField(max_length= 40, null = True , default = None)
     country = models.CharField(max_length= 40, null = True , default = "Deutschland")
