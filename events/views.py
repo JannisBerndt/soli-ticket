@@ -13,11 +13,16 @@ def event_detail_view(request, id):
 	OrderFormSet = inlineformset_factory(Customer, Order, fields=('amount',), extra=buyables.count())
 	order_formset = OrderFormSet(queryset=Order.objects.none())
 	if request.method == 'POST':
-		customer = Customer.objects.get(username='default')
-		Order.objects.all().delete()
+		try:
+			customer = Customer.objects.get(username=request.user.username)
+		except:
+			customer = None
+		# Order.objects.all().delete()	dont delete every single order
 		order_formset = OrderFormSet(request.POST, instance=customer)
 		if order_formset.is_valid():
 			i=0
+			sum = 0
+			orders = []
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
 				if order.amount:
@@ -33,10 +38,22 @@ def event_detail_view(request, id):
 					#	Order.objects.get(article=customer.customer_set.first().article).save()
 					#	print(customer.customer_set.first().amount)
 					#else:
+					order.customer = customer
 					order.save()
+					sum += order.price
+					orders.append(order)
 				i += 1
+			print(orders)
+			context = {
+				'sum': sum,
+				'organiser': event.creator,
+				'orders': orders,
+				'event': event,
+				'authenticated': request.user.is_authenticated,
+			}
 
-			return redirect('events:checkout', event.id)
+			return render(request, "event/event_donate.html", context)
+			# return redirect('events:checkout', event.id)
 
 	context = {
 		'event': event,
