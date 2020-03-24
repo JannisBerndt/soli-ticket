@@ -34,7 +34,7 @@ BuyableFormSet = formset_factory(BuyableForm, extra=5)
 class EventForm(forms.ModelForm):
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
 	description = forms.CharField(label='Beschreibung', widget=forms.Textarea(attrs={'class': 'textarea text-field-2 w-input', 'id': 'field-4', 'placeholder': 'Erzählen Sie mehr!'}))
-	date = forms.DateTimeField(label='Veranstaltungsdatum', widget=forms.DateTimeInput(attrs={'class': 'text-field-2 w-input', 'id': 'DateTime', 'placeholder': "Format: DD.MM.YYYY HH:MM:SS (Uhrzeit optional)"}))
+	date = forms.DateField(label='Veranstaltungsdatum', widget=forms.DateInput(attrs={'class': 'text-field-2 w-input', 'id': 'DateTime', 'placeholder': "Format: DD.MM.YYYY"}))
 	class Meta:
 		model = Event
 		fields = [
