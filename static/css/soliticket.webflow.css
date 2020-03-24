@@ -1295,7 +1295,7 @@ figcaption {
 .text-field-2 {
   margin-left: 0px;
   border-radius: 8px;
-  text-align: right;
+  text-align: left;
   -o-object-fit: fill;
   object-fit: fill;
 }
