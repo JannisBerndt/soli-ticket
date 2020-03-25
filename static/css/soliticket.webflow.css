@@ -1380,6 +1380,12 @@ figcaption {
   object-fit: fill;
 }
 
+.submit-button.buttonerfolgreich {
+  position: static;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .container-2 {
   height: 1080px;
 }
@@ -2022,6 +2028,10 @@ figcaption {
 .grid-4 {
   -ms-grid-columns: 0.25fr 1fr 0.25fr;
   grid-template-columns: 0.25fr 1fr 0.25fr;
+}
+
+.columns-5 {
+  margin-left: 0px;
 }
 
 @media screen and (max-width: 991px) {
