@@ -531,8 +531,8 @@ figcaption {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 80px;
+  padding-bottom: 60px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -599,7 +599,7 @@ figcaption {
   display: flex;
   height: auto;
   margin-top: 52px;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1373,9 +1373,9 @@ figcaption {
 }
 
 .submit-button.hero-button {
-  width: 40%;
-  margin-right: 30%;
-  margin-left: 30%;
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .container-2 {
@@ -1857,8 +1857,10 @@ figcaption {
 }
 
 .button-4 {
+  position: static;
   margin-top: 4px;
   margin-bottom: 4px;
+  clear: none;
   border-radius: 8px;
   background-color: #ccc;
 }
@@ -1924,13 +1926,13 @@ figcaption {
 }
 
 .button-6 {
-  position: relative;
+  position: static;
   left: auto;
   top: auto;
   right: auto;
   bottom: auto;
   overflow: visible;
-  width: 25%;
+  width: 100%;
   margin-right: auto;
   margin-left: auto;
   float: none;
@@ -1948,6 +1950,37 @@ figcaption {
 
 .columns-3 {
   margin-top: 30px;
+}
+
+.paragraph-13 {
+  color: #000;
+}
+
+.heading-20 {
+  color: #000;
+  text-align: center;
+}
+
+.paragraph-14 {
+  color: #000;
+  text-align: center;
+}
+
+.field-label-6 {
+  margin-top: 10px;
+}
+
+.button-7 {
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 8px;
+  background-color: #8fcdff;
+  text-align: center;
+}
+
+.link-block {
+  text-decoration: none;
 }
 
 @media screen and (max-width: 991px) {
@@ -2336,6 +2369,10 @@ figcaption {
   }
   .div-block-7 {
     margin-top: 0px;
+  }
+  .section-18 {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
 
