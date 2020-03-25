@@ -1373,9 +1373,9 @@ figcaption {
 }
 
 .submit-button.hero-button {
+  position: relative;
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 5px auto;
   -o-object-fit: fill;
   object-fit: fill;
 }
