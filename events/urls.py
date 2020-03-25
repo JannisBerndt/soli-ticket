@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from .views import event_detail_view, event_create_view, event_update_view, event_delete_view, buyable_create_view, buyable_update_view,buyable_delete_view, event_organiser_list_view, checkout_view
+from .views import event_detail_view, event_create_view, event_update_view, event_delete_view, buyable_create_view, buyable_update_view,buyable_delete_view, event_organiser_list_view
 
 app_name = "events"
 urlpatterns = [
