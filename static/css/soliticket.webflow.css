@@ -1373,9 +1373,11 @@ figcaption {
 }
 
 .submit-button.hero-button {
-  width: auto;
+  width: 100%;
   margin-right: auto;
   margin-left: auto;
+  -o-object-fit: fill;
+  object-fit: fill;
 }
 
 .container-2 {
