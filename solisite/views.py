@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from accounts.models import Organiser
 
 def landingpage_view(request):
     try:
         organiser_user = Organiser.objects.get(username = request.user.username)
     except:
         organiser_user = None
+    print(organiser_user)
     context = {
         'authenticated': request.user.is_authenticated,
         'organiser_user': organiser_user,
