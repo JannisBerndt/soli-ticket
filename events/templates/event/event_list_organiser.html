@@ -7,6 +7,22 @@
 {% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+	function myFunction() {
+		/* Get the text field */
+		var copyText = document.getElementById("link");
+
+		/* Select the text field */
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+		/* Copy the text inside the text field */
+		document.execCommand("copy");
+
+		/* Alert the copied text */
+		// alert("Copied the text: " + copyText.value);
+	}
+</script>
 	<div class="section cc-store-home-wrap">
 	  <div class="form-header">
 		<div class="intro-content cc-homepage">
@@ -14,7 +30,11 @@
 			<h1 class="heading-2">Alle Events von {{ organiser }}</h1>
 			<div class="div-block"></div>
 			{% if logged_in %}
-			<div class="paragraph-bigger cc-bigger-white-light">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen: http://soli-ticket.de{{ request.get_full_path }}<br></div>
+				<div class="paragraph-bigger cc-bigger-white-light">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen:</div>
+				<div style="display: table; width: 100%;">
+					<input style="display: table-cell;" type="text" class="text-field-2 w-input" id="link" value="http://soli-ticket.de{{ request.get_full_path }}"></input>
+					<input style="display: table-cell;" type="button" class="button-5 w-button" id="copyToClip" value="Ko" onclick="myFunction();"></input>
+				</div>
 			{% endif %}
 		  </div>
 		</div>
