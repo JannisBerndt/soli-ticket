@@ -56,6 +56,19 @@ def error(request):
     print("Error at registration")
     return render(request, 'register/error.html')
 
+def organiser_list_view(request):
+	organisers = Organiser.objects.all()
+	try:
+		organiser_user = Organiser.objects.get(username = request.user.username)
+	except:
+		organiser_user = None
+	cities = UserAddress.objects.values('ort').distinct().order_by('ort')
+	context = {
+		'organisers': organisers,
+		'organiser_user': organiser_user,
+		'cities': cities,
+	}
+	return render(request, 'accounts/organiser_list.html', context)
 
 class accounts(View):
     template_name = ['register/register_start.html',
