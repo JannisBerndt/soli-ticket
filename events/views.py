@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from accounts.models import Organiser, Customer, Order
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
 from accounts.forms import OrderForm
@@ -44,13 +46,29 @@ def event_detail_view(request, id):
 					orders.append(order)
 				i += 1
 			print(orders)
+			organiser = event.creator
 			context = {
 				'sum': sum,
-				'organiser': event.creator,
+				'organiser': organiser,
 				'orders': orders,
 				'event': event,
 				'authenticated': request.user.is_authenticated,
 			}
+
+			subject = 'Ihre Spende auf www.Soli-Ticket.de'
+			message = 'Hallo! \n\
+			Vielen Dank, dass Sie Ihre Spende in Höhe von ' + str(sum) + '€ zugesagt haben. ' + organiser.organisation_name + ' bedankt sich vielmals dafür! \
+			Sie leisten mit Ihrer Spende einen wichtigen Beitrag dazu, kritische Einnahmeausfälle abzumildern und unsere Kulturlandschaft zu erhalten. Vielen, vielen Dank! \n\
+			Hier nochmal Ihre Spendedaten zur Übersicht. Bitte überweisen Sie (falls noch nicht geschehen) noch heute - damit ' + organiser.organisation_name + ' \
+			direkt von Ihrer Spende profitiert: \
+			Gesamtbetrag: ' + str(sum) + '€ \n Kontoinhaber: ' + organiser.bank_account_owner + ' \nIBAN: ' + organiser.iban +  '\nBIC: ' + organiser.bic + ' \n\
+			Verwendungszweck: Spende über Soli-Ticket \n\n\
+			Viele Grüße und vielen, vielen Dank von ' + organiser.organisation_name + ' und dem Team von www.soli-ticket.de ! \n\
+			P.S. Sie wollen kostenfrei noch mehr beitragen? Teilen Sie www.soli-ticket.de und alle interessanten Veranstaltungen mit Ihren Kontakten!'
+
+			print(message)
+			
+			#send_mail(subject, message, settings.EMAIL_HOST_USER, ['nils.koenig01@hotmail.de'])
 
 			return render(request, "event/event_donate.html", context)
 			# return redirect('events:checkout', event.id)
