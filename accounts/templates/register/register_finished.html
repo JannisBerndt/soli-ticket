@@ -1,18 +1,22 @@
 {%  extends 'base.html' %}
 
 {% block content %}
-
   <div class="section cc-store-home-wrap">
     <div class="form-header">
       <div class="intro-content cc-homepage">
         <div class="intro-text">
           <div class="heading-jumbo">Das hat funktioniert!</div>
           <div class="div-block divider"></div>
-          <div class="paragraph-bigger cc-bigger-white-light">Ihr Konto wurde erstellt.<br></div>
-        </div><a href="{% url 'events:event_create' %}" class="submit-button w-button">Hier klicken um Veranstaltungen zu erstellen</a>
+		  <div class="paragraph-bigger cc-bigger-white-light">Ihr Konto wurde erstellt.<br></div>
+		</div>
+        <div class="columns-5 w-row">
+          <div class="w-col w-col-2"></div>
+          <div class="w-col w-col-8"><a href="{% url 'events:event_create' %}" class="submit-button buttonerfolgreich w-button">Hier klicken um Veranstaltungen zu erstellen</a></div>
+          <div class="w-col w-col-2"></div>
+        </div>
+        <div class="container-11 w-container"></div>
       </div>
     </div>
     <div class="container"></div>
   </div>
-
 {% endblock %}

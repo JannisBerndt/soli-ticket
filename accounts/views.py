@@ -21,9 +21,13 @@ def login_page(request):
                 return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
-
+        try:
+            organiser_user = Organiser.objects.get(username = request.user.username)
+        except:
+            organiser_user = None
         context = {
 			'authenticated': request.user.is_authenticated,
+			'organiser_user': organiser_user,
 		}
         return render(request, 'accounts/login.html', context)
 
@@ -33,25 +37,38 @@ def logout_user(request):
     return redirect('accounts:login')
 
 
-@login_required(login_url='login')
-def profile(request):
-    if request.user.is_authenticated:
-        pk = request.user.username
-    try:
-        organiser = Organiser.objects.get(username=pk)
-    except:
-        return redirect('home')
-    context = {
-		'organiser': organiser,
-		'authenticated': request.user.is_authenticated,
-	}
-    return render(request, 'accounts/profile.html', context)
+# @login_required(login_url='login')
+# def profile(request):
+#     if request.user.is_authenticated:
+#         pk = request.user.username
+#     try:
+#         organiser = Organiser.objects.get(username=pk)
+#     except:
+#         return redirect('home')
+#     context = {
+# 		'organiser': organiser,
+# 		'authenticated': request.user.is_authenticated,
+# 	}
+#     return render(request, 'accounts/profile.html', context)
 
 
 def error(request):
     print("Error at registration")
     return render(request, 'register/error.html')
 
+def organiser_list_view(request):
+	organisers = Organiser.objects.all()
+	try:
+		organiser_user = Organiser.objects.get(username = request.user.username)
+	except:
+		organiser_user = None
+	cities = UserAddress.objects.values('ort').distinct().order_by('ort')
+	context = {
+		'organisers': organisers,
+		'organiser_user': organiser_user,
+		'cities': cities,
+	}
+	return render(request, 'accounts/organiser_list.html', context)
 
 class accounts(View):
     template_name = ['register/register_start.html',
@@ -64,7 +81,8 @@ class accounts(View):
                "error4" : "",
                "error5" : "",
                "error6" : "",
-			   'authenticated': False,}
+			   'authenticated': False,
+			   'organiser_user': None,}
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl"]
 

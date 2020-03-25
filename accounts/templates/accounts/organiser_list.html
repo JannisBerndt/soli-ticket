@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Liste aller Veranstalter</title>
+{% endblock %}
+
+{% block content %}
+<div class="section-19">
+    <div class="w-container">
+      <h3 class="heading-21">Hier finden Sie alle Veranstalter, für die Sie bei uns spenden können!</h3>
+      <div class="divider"></div>
+    </div>
+  </div>
+  {% for city in cities %}
+  <div class="ort w-container">
+	<h4 class="veranstaltungsort">{{ city.ort }}</h4>
+	{% for organiser in organisers %}
+		{% if organiser.user_address.ort == city.ort %}
+			<a href="{% url 'events:event_organiser_list' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
+		{% endif %}
+	{% endfor %}
+    <div class="platz"></div>
+    <div class="divider"></div>
+  </div>
+  {% endfor %}
+{% endblock %}
