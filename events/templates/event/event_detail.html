@@ -13,9 +13,15 @@
         <div class="heading-jumbo">{{ event.name }}</div>
         <div class="divider"></div>
 		<p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
-		<p class="paragraph-bigger cc-bigger-white-light">Link zum Teilen dieser Veranstaltung: http://soli-ticket.de{{event.get_absolute_url}}</p>
-		<a href="#Tickets" class="button-6 w-button">Zu den Tickets</a></div>
-      <p class="paragraph-2">{{ event.description }}<br></p>
+		<div class="w-row">
+			<div class="w-col w-col-4"></div>
+			<div class="w-col w-col-4"><a href="#Tickets" class="button-6 w-button">Zu den Tickets</a></div>
+			<div class="w-col w-col-4"></div>
+		</div>
+	  </div>
+	  <p class="paragraph-2">{{ event.description }}<br></p>
+	  <h6 class="heading-20">Link zum Teilen dieser Veranstaltung:</h6>
+	  <p class="paragraph-14">http://soli-ticket.de{{event.get_absolute_url}}</p>
       <div class="divider"></div>
       <div class="columns-3 w-row">
         <div class="w-col w-col-4"><img src="{% static 'images/sentiment_satisfied_alt-black-48dp.svg' %}" alt="" class="image-4">
@@ -45,9 +51,10 @@
           </div>
           <div class="divider"></div>
           <div class="w-row">
-            <div class="w-col w-col-9"></div>
-            <div class="column-5 w-col w-col-3"><input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button"></div>
-          </div>
+            <div class="w-col w-col-5"><label for="name" class="field-label-6"><strong>Email-Adresse</strong></label><input type="email" class="w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
+			<div class="column-5 w-col w-col-7"></div>
+		  </div>
+            <input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
         </form>
         <div class="w-form-done">
           <div>Thank you! Your submission has been received!</div>

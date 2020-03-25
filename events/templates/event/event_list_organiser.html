@@ -32,7 +32,7 @@
 			{% if logged_in %}
 				<div class="paragraph-bigger cc-bigger-white-light">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen:</div>
 				<div style="display: table; width: 100%;">
-					<input style="display: table-cell;" type="text" class="text-field-2 w-input" id="link" value="http://soli-ticket.de{{ request.get_full_path }}"></input>
+					<input style="display: table-cell;" type="text" class="text-field-2 w-input" readonly id="link" value="http://soli-ticket.de{{ request.get_full_path }}"></input>
 					<input style="display: table-cell;" type="button" class="button-5 w-button" id="copyToClip" value="Ko" onclick="myFunction();"></input>
 				</div>
 			{% endif %}
