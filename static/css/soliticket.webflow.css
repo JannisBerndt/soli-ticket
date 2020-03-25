@@ -324,7 +324,7 @@ figcaption {
 }
 
 .heading-jumbo {
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 15px;
   color: #000;
@@ -531,8 +531,8 @@ figcaption {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 80px;
+  padding-bottom: 60px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -599,7 +599,7 @@ figcaption {
   display: flex;
   height: auto;
   margin-top: 52px;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1325,6 +1325,11 @@ figcaption {
 }
 
 .submit-button {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1368,9 +1373,17 @@ figcaption {
 }
 
 .submit-button.hero-button {
-  width: 40%;
-  margin-right: 30%;
-  margin-left: 30%;
+  position: relative;
+  width: 100%;
+  margin: 5px auto;
+  -o-object-fit: fill;
+  object-fit: fill;
+}
+
+.submit-button.buttonerfolgreich {
+  position: static;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .container-2 {
@@ -1532,8 +1545,7 @@ figcaption {
   display: flex;
   width: 48px;
   height: 48px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px auto;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1542,6 +1554,7 @@ figcaption {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  text-align: center;
 }
 
 .column-4 {
@@ -1852,8 +1865,10 @@ figcaption {
 }
 
 .button-4 {
+  position: static;
   margin-top: 4px;
   margin-bottom: 4px;
+  clear: none;
   border-radius: 8px;
   background-color: #ccc;
 }
@@ -1907,6 +1922,116 @@ figcaption {
   grid-template-columns: 1fr 0.25fr 0.25fr;
   -ms-grid-rows: auto auto auto auto;
   grid-template-rows: auto auto auto auto;
+}
+
+.button-5 {
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.div-block-8 {
+  margin-top: 50px;
+}
+
+.button-6 {
+  position: static;
+  left: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  overflow: visible;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  float: none;
+  clear: none;
+  border-radius: 8px;
+  background-color: #8fcdff;
+  text-align: center;
+  -o-object-fit: fill;
+  object-fit: fill;
+}
+
+.section-18 {
+  margin-top: 50px;
+}
+
+.columns-3 {
+  margin-top: 30px;
+}
+
+.paragraph-13 {
+  color: #000;
+}
+
+.heading-20 {
+  color: #000;
+  text-align: center;
+}
+
+.paragraph-14 {
+  color: #000;
+  text-align: center;
+}
+
+.field-label-6 {
+  margin-top: 10px;
+}
+
+.button-7 {
+  width: 25%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 8px;
+  background-color: #8fcdff;
+  text-align: center;
+}
+
+.link-block {
+  text-decoration: none;
+}
+
+.heading-21 {
+  text-align: center;
+}
+
+.ort {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.veranstalter {
+  margin-right: 15px;
+  margin-left: 30px;
+}
+
+.section-19 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.platz {
+  margin-bottom: 20px;
+  -o-object-fit: fill;
+  object-fit: fill;
+}
+
+.button-8 {
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.columns-4 {
+  color: #000;
+}
+
+.grid-4 {
+  -ms-grid-columns: 0.25fr 1fr 0.25fr;
+  grid-template-columns: 0.25fr 1fr 0.25fr;
+}
+
+.columns-5 {
+  margin-left: 0px;
 }
 
 @media screen and (max-width: 991px) {
@@ -2296,6 +2421,10 @@ figcaption {
   .div-block-7 {
     margin-top: 0px;
   }
+  .section-18 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -2304,8 +2433,10 @@ figcaption {
     line-height: 52px;
   }
   .paragraph-bigger.cc-bigger-white-light {
-    padding-right: 5px;
-    padding-left: 5px;
+    padding-right: 9px;
+    padding-left: 9px;
+    font-size: 18px;
+    line-height: 22px;
   }
   .rich-text {
     width: 100%;
@@ -2341,6 +2472,9 @@ figcaption {
     padding-right: 15px;
     padding-left: 15px;
   }
+  .intro-content.cc-homepage {
+    margin-bottom: 0px;
+  }
   .status-message.cc-no-data {
     width: 100%;
   }
@@ -2369,10 +2503,16 @@ figcaption {
     max-width: none;
   }
   .submit-button {
+    position: static;
     margin-right: auto;
     margin-left: auto;
     padding-right: 18px;
     padding-left: 18px;
+    text-align: center;
+    -o-object-fit: scale-down;
+    object-fit: scale-down;
+    -o-object-position: 50% 50%;
+    object-position: 50% 50%;
   }
   .submit-button.hero-button {
     width: 80%;
@@ -2436,6 +2576,7 @@ figcaption {
   .paragraph-5 {
     padding-right: 5px;
     padding-left: 5px;
+    line-height: 24px;
   }
   .heroklasse {
     background-image: url('../images/frak-lopez-FI_jpaK_fzQ-unsplash.jpg');
@@ -2553,5 +2694,51 @@ figcaption {
     grid-template-columns: 1fr 1fr 1fr;
     -ms-grid-rows: auto auto auto;
     grid-template-rows: auto auto auto;
+  }
+  .block-quote {
+    font-size: 18px;
+    line-height: 30px;
+  }
+  .container-12 {
+    text-align: center;
+  }
+  .button-5 {
+    border-radius: 8px;
+    background-color: #8fcdff;
+  }
+  .container-13 {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+  .button-6 {
+    width: 100%;
+    text-align: center;
+  }
+  .section-18 {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+  .text-block-4 {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .text-block-5 {
+    line-height: 26px;
+  }
+  .text-block-6 {
+    line-height: 26px;
+  }
+  .ort {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+  .section-19 {
+    margin-top: 30px;
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+  .grid-4 {
+    -ms-grid-columns: 0.25fr 4fr 0.75fr;
+    grid-template-columns: 0.25fr 4fr 0.75fr;
   }
 }

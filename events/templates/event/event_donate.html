@@ -31,7 +31,7 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-4">
-        <div>Kontoinhaber: </div>
+        <div><strong>Kontoinhaber:</strong></div>
       </div>
       <div class="w-col w-col-4">
         <div>{{ organiser.bank_account_owner }}</div>
@@ -41,7 +41,7 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-4">
-        <div>IBAN: </div>
+        <div><strong>IBAN:</strong></div>
       </div>
       <div class="w-col w-col-4">
         <div>{{ organiser.iban }}</div>
@@ -51,7 +51,7 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-4">
-        <div>BIC:</div>
+        <div><strong>BIC:</strong></div>
       </div>
       <div class="w-col w-col-4">
         <div>{{ organiser.bic }}</div>
@@ -61,7 +61,7 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-4">
-        <div>Verwendungszweck:</div>
+        <div><strong>Verwendungszweck:</strong></div>
       </div>
       <div class="w-col w-col-4">
         <div>Spende über Soli-Ticket</div>
@@ -74,14 +74,14 @@
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-8">
-        <div>Wir arbeiten unter Hochdruck daran, voll integrierte Zahlungslösungen anzubieten. Bis dahin bitten wir Sie darum, den Zahlungsbeitrag direkt auf das Spendenkonto von {{ organiser }} zu überweisen. <br></div>
+        <div class="text-block-4">Wir arbeiten unter Hochdruck daran, voll integrierte Zahlungslösungen anzubieten. Bis dahin bitten wir Sie darum, den Zahlungsbeitrag direkt auf das Spendenkonto von {{ organiser }} zu überweisen. <br></div>
       </div>
       <div class="w-col w-col-2"></div>
     </div>
     <div class="w-row">
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-8">
-        <div><strong>Achtung</strong>: {{ organiser }} kann Ihnen über unsere Plattform keine Spendenquittung ausstellen. Wir bzw. {{ organiser }} bitten Sie, dies bei Ihrer Spende zu berücksichtigen.<br></div>
+        <div class="text-block-5"><strong>Achtung</strong>: {{ organiser }} kann Ihnen über unsere Plattform keine Spendenquittung ausstellen. Wir bzw. {{ organiser }} bitten Sie, dies bei Ihrer Spende zu berücksichtigen.<br></div>
       </div>
       <div class="w-col w-col-2"></div>
     </div>
@@ -91,7 +91,7 @@
       <div class="w-col w-col-2"></div>
       <div class="w-col w-col-8">
         {% if organiser.kontosite %}
-		<div>Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
+		<div class="text-block-6">Hier finden Sie einen Link zu den Kontodaten auf der offiziellen Webseite von {{ organiser }}.<br><a href='{{ organiser.kontosite }}'>{{ organiser.kontosite }}</a></div>
 		{% endif %}
 	  </div>
       <div class="w-col w-col-2"></div>

@@ -6,12 +6,20 @@
 <div class="heroklasse">
     <div class="container-5 w-container">
       <h2 class="heading-4">Auch Solidarität ist ansteckend</h2>
-      <p class="paragraph-7">Hier können Sie kostenfrei Soli-Tickets für abgesagte Veranstaltungen verkaufen, um die Folgen der Corona-Krise zu mildern. Geben Sie Ihren Fans &amp; Besucher*innen die Möglichkeit, Sie auch in Krisenzeiten unkompliziert online zu unterstützen!</p><a href="#registrieren" class="submit-button hero-button w-button">Verein/Unternehmen anmelden</a></div>
+	  <p class="paragraph-7">Hier können Sie kostenfrei Soli-Tickets für abgesagte Veranstaltungen verkaufen, um die Folgen der Corona-Krise zu mildern. Geben Sie Ihren Fans &amp; Besucher*innen die Möglichkeit, Sie auch in Krisenzeiten unkompliziert online zu unterstützen!</p>
+	  <div class="w-row">
+        <div class="w-col w-col-3"></div>
+		<div class="w-col w-col-6">
+			<a href="#registrieren" class="submit-button hero-button w-button">Verein/Unternehmen anmelden</a>
+			<a href="{% url 'accounts:organiser_list' %}" class="submit-button hero-button w-button">Spenden</a></div>
+        <div class="w-col w-col-3"></div>
+      </div>
+	</div>
   </div>
   <div class="section-10">
     <div class="container-6 w-container">
       <h2 class="heading-6">Wie Soli-Tickets für Veranstalter funktionieren</h2>
-      <p class="paragraph-8">Soli-Tickets sind Spenden, die sich in ihrer Höhe an Verkaufspreisen von abgesagten Veranstaltungen orientieren</p>
+      <p class="paragraph-8">Soli-Tickets sind Spenden, die sich in ihrer Höhe an Verkaufspreisen von abgesagten Veranstaltungen orientieren.</p>
     </div>
     <div class="w-row">
       <div class="column-6 w-col w-col-3">
@@ -32,7 +40,7 @@
       <div class="column-9 w-col w-col-3">
         <h2 class="heading-9">4.</h2>
         <h4 class="heading-10">Spenden sammeln</h4>
-        <p class="paragraph-9">Schon sind Ihre Soli-Tickets online. Die Spenden fließen driekt an Sie, wir nehmen keine Anteile oder Gebühren.</p>
+        <p class="paragraph-9">Schon sind Ihre Soli-Tickets online. Die Spenden fließen direkt an Sie, wir nehmen keine Anteile oder Gebühren.</p>
       </div>
     </div>
   </div>
@@ -40,7 +48,7 @@
     <div class="w-row">
       <div class="w-col w-col-3"><img src="{% static 'images/iconmonstr-calendar-6.svg' %}" width="100" alt="" class="icons">
         <h5 class="heading-12">Veranstalter</h5>
-        <p class="paragraph-10">Ihre Varanstaltungen müssen abgesagt werden? Verkaufen Sie Ihre virtuellen Tickets und Extras an Ihre Unterstützer und Fans!</p>
+        <p class="paragraph-10">Ihre Veranstaltungen müssen abgesagt werden? Verkaufen Sie Ihre virtuellen Tickets und Extras an Ihre Unterstützer und Fans!</p>
       </div>
       <div class="w-col w-col-3"><img src="{% static 'images/iconmonstr-paintbrush-8.svg' %}" width="100" alt="" class="image-5 icons">
         <h5 class="heading-12">Künstler</h5>
@@ -59,7 +67,7 @@
   <div class="headerline"></div>
   <div class="section-12">
     <div class="w-container">
-      <blockquote>&quot;Mit &#x27;Soli-Tickets&#x27;, die aufgrund des Corona Stillstandes für nicht erbringbare Leistungen zu erwerben sind, können der Kulturbetrieb, aber auch andere Bereiche des gesellschaftlichen Lebens unterstützt werden.<br>Je mehr Veranstalter diese Idee aufgreifen, desto besser!&quot;</blockquote>
+      <blockquote class="block-quote">&quot;Mit &#x27;Soli-Tickets&#x27;, die aufgrund des Corona Stillstandes für nicht erbringbare Leistungen zu erwerben sind, können der Kulturbetrieb, aber auch andere Bereiche des gesellschaftlichen Lebens unterstützt werden.<br>Je mehr Veranstalter diese Idee aufgreifen, desto besser!&quot;</blockquote>
       <h4 class="heading-14"><strong>~</strong> SPD-Bundestagsabgeordnete Nina Scheer</h4>
     </div>
   </div>

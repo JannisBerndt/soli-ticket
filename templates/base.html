@@ -53,17 +53,22 @@
         <div data-collapse="medium" data-animation="default" data-duration="400" class="navigation w-nav">
             <div class="navigation-wrap">
                 <div class="columns w-row">
-                    <div class="w-col w-col-3"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="93" alt="" class="image"></div>
+                    <div class="w-col w-col-3"><a href="https://www.soli-ticket.de" class="w-inline-block"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="63" alt="" class="image"></a></div>
                     <div class="column w-col w-col-9">
-                        <h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
+						<a href="https://www.soli-ticket.de" class="link-block w-inline-block">
+							<h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
+						</a>
                     </div>
                 </div>
                 <div class="menu">
 					<nav role="navigation" class="navigation-items w-nav-menu">
 						<a href="{% url 'home' %}" class="w-nav-link">Home</a>
+						{% if organiser_user %}
+						<a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="w-nav-link">Meine Veranstaltungen</a>
+						{% endif %}
 						<a href="{% url 'blog' %}" class="w-nav-link">News</a>
 						<a href="{% url 'about' %}" class="w-nav-link">Über Uns</a>
-						{% if authenticated %}
+						{% if organiser_user %}
 						<a href="{% url 'accounts:logout' %}" class="w-nav-link">Abmelden</a>
 						{% else %}
 						<a href="{% url 'accounts:login' %}" class="w-nav-link">Anmelden</a>
@@ -80,6 +85,12 @@
 	{% endblock %}
 	<div class="section">
 		<div class="container">
+			<div class="footer-wrap">
+				<div class="w-row">
+				  <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6"><a href="https://www.facebook.com/soliticket.de/" class="w-inline-block"><img src="{% static 'images/icons8-facebook-26.png' %}" alt=""></a></div>
+				  <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6"><a href="https://www.instagram.com/soli_ticket.de/" class="w-inline-block"><img src="{% static 'images/icons8-instagram-26.png' %}" alt=""></a></div>
+				</div>
+			  </div>
 		  <div class="footer-wrap"><a href="{% url 'imprint' %}" class="link">Impressum</a><a href="{% url 'privacy_policy' %}" class="link">Datenschutz</a></div>
 		</div>
 	  </div>
