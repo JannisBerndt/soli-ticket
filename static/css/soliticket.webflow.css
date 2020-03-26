@@ -1496,6 +1496,7 @@ figcaption {
 
 .image-2 {
   display: block;
+  float: none;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -2034,6 +2035,23 @@ figcaption {
   margin-left: 0px;
 }
 
+.image-9 {
+  position: relative;
+  left: 49px;
+  right: 0px;
+  float: right;
+  clear: none;
+}
+
+.grid-5 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  -ms-grid-columns: 1.25fr 5fr 0.25fr 0.25fr;
+  grid-template-columns: 1.25fr 5fr 0.25fr 0.25fr;
+  -ms-grid-rows: auto auto auto;
+  grid-template-rows: auto auto auto;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -2548,6 +2566,13 @@ figcaption {
     -o-object-fit: fill;
     object-fit: fill;
   }
+  .text-block-2 {
+    line-height: 24px;
+  }
+  .text-block-3 {
+    font-size: 14px;
+    line-height: 24px;
+  }
   .column-2 {
     display: -webkit-box;
     display: -webkit-flex;
@@ -2703,8 +2728,12 @@ figcaption {
     text-align: center;
   }
   .button-5 {
+    width: 100%;
     border-radius: 8px;
     background-color: #8fcdff;
+    text-align: center;
+    -o-object-fit: fill;
+    object-fit: fill;
   }
   .container-13 {
     padding-right: 8px;
@@ -2740,5 +2769,10 @@ figcaption {
   .grid-4 {
     -ms-grid-columns: 0.25fr 4fr 0.75fr;
     grid-template-columns: 0.25fr 4fr 0.75fr;
+  }
+  .grid-5 {
+    grid-column-gap: 16px;
+    -ms-grid-columns: 1.25fr 4fr 0.5fr 0.5fr;
+    grid-template-columns: 1.25fr 4fr 0.5fr 0.5fr;
   }
 }

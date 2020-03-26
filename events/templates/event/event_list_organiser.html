@@ -43,25 +43,20 @@
         </div>
 	  </div>
 	  <div>
-		  {% for event in event_list %}
 		<div class="w-container">
-		  <div class="w-row">
-			<div class="w-col w-col-2">
-				
+			<div class="w-layout-grid grid-5">
+			  {% for event in event_list %}
 			  <div class="text-block-2">{{ event.date }}</div>
-			</div>
-			<div class="w-col w-col-9">
 			  <div class="text-block-3"><a href='{{event.get_absolute_url}}'>{{ event.name }}</a></div>
-			</div>
-			{% if logged_in %}
-			<div class="w-col w-col-1"><a href="{{event.get_absolute_url}}delete/" class="w-inline-block"><img src="{% static 'images/delete-24px.svg' %}" alt="Löschen" class="image-2"></a></div>
-			{% endif %}
+			  {% if logged_in %}
+			  <a href="{{event.get_absolute_url}}edit/"><img src="{% static 'images/icons8-edit-24.png' %}" alt=""></a>
+			  <a href="{{event.get_absolute_url}}delete/"><img src="{% static 'images/delete-24px.svg' %}" alt=""></a>
+			  {% endif %}
+			  {% endfor %}
 		  </div>
 		</div>
-		{% endfor %}
+		{% if logged_in %}
+		<div class="w-container"><a href="../create" class="button-5 w-button">Neue Veranstaltung erstellen</a></div>
+		{% endif %}
 	  </div>
-	</div>
-	{% if logged_in %}
-	<div class="container-12 w-container"><a href="../create" class="button-5 w-button">Neue Veranstaltung erstellen</a></div>
-	{% endif %}
 {% endblock %}
