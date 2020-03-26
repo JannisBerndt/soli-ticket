@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
 from accounts.models import Organiser, Customer, Order
 from .models import Event, Eventlocation, Buyable
@@ -90,15 +90,6 @@ def event_detail_view(request, id):
 # 	}
 # 	return render(request, "event/event_donate.html", context)
 
-# def event_list_view(request):
-# 	queryset = Event.objects.all()
-# 	context = {
-# 		"event_list": queryset,
-# 		'user': request.user,
-# 		'authenticated': request.user.is_authenticated,
-# 	}
-# 	return render(request, "event/event_list.html", context)
-
 @login_required(login_url='accounts:login')
 def event_create_view(request):
 	user = request.user
@@ -149,28 +140,61 @@ def event_create_view(request):
 	}
 	return render(request, "event/event_create.html", context)
 
+@login_required(login_url='accounts:login')
 def event_update_view(request, id):
+	user = request.user
+	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
-	if not event.location == None:
-		location = get_object_or_404(Eventlocation, id=event.location.id)
-	else:
-		location = None
-	event_form = EventForm(request.POST or None, instance = event)
-	location_form = EventlocationForm(request.POST or None, instance = location)
-	if event_form.is_valid():
-		event = event_form.save(commit=False)
-		if location_form.is_valid():
+	location = event.location
+	try:
+		buyables = Buyable.objects.filter(belonging_event = event)
+	except:
+		buyables = None
+	BuyableInlineFormSet = modelformset_factory(Buyable, form=BuyableForm, extra=5-buyables.count(), fields=['buyable_name', 'price'])
+	print(organiser)
+	if request.method == 'POST':
+		event_form = EventForm(request.POST, instance = event)
+		location_form = EventlocationForm(request.POST, instance = location)
+		buyable_formset = BuyableInlineFormSet(request.POST, queryset=buyables)
+		print('BUYABLE FORMSET')
+		if event_form.is_valid() and location_form.is_valid():
+			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
-			location.creator = Organiser.objects.get(username='gfbds')
+			location.creator = organiser
 			location.save()
 			event.location = location
-		event.creator = Organiser.objects.get(username='gfbds')
-		event.save()
-		return redirect('../')
+			event.creator = organiser
+			event.save()
+			if buyable_formset.is_valid():
+				for buyable_form in buyable_formset:
+					print(buyable_form)
+					buyable_form.is_valid()
+					data = buyable_form.cleaned_data
+					try:
+						valid = (data['buyable_name'] != '') and (data['price'] != 0)
+						if valid:
+							print('In If')
+							print(buyable_form.cleaned_data)
+							buyable = buyable_form.save(commit=False)
+							buyable.creator = organiser
+							buyable.belonging_event = event
+							buyable.save()
+					except KeyError:
+						pass
+			else:
+				print('NICHT VALID')
+			return redirect('events:event_organiser_list', organiser=organiser)
+	else:
+		event_form = EventForm(instance = event)
+		location_form = EventlocationForm(instance = location)
+		buyable_formset = BuyableInlineFormSet(queryset= buyables)
 
 	context = {
 		'event_form': event_form,
 		'location_form': location_form,
+		'buyable_formset': buyable_formset,
+		'organiser': organiser,
+		'organiser_user': organiser,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
 	}

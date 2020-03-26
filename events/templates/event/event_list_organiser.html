@@ -51,6 +51,9 @@
 			  {% if logged_in %}
 			  <a href="{{event.get_absolute_url}}edit/"><img src="{% static 'images/icons8-edit-24.png' %}" alt=""></a>
 			  <a href="{{event.get_absolute_url}}delete/"><img src="{% static 'images/delete-24px.svg' %}" alt=""></a>
+			  {% else %}
+			  <div></div>
+			  <div></div>
 			  {% endif %}
 			  {% endfor %}
 		  </div>
