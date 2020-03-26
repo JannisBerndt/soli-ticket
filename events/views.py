@@ -150,12 +150,12 @@ def event_update_view(request, id):
 		buyables = Buyable.objects.filter(belonging_event = event)
 	except:
 		buyables = None
-	BuyableInlineFormSet = modelformset_factory(Buyable, form=BuyableForm, extra=5-buyables.count(), fields=['buyable_name', 'price'])
+	BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5-buyables.count(), fields=['buyable_name', 'price'])
 	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST, instance = event)
 		location_form = EventlocationForm(request.POST, instance = location)
-		buyable_formset = BuyableInlineFormSet(request.POST, queryset=buyables)
+		buyable_formset = BuyableInlineFormSet(request.POST, instance = event)
 		print('BUYABLE FORMSET')
 		if event_form.is_valid() and location_form.is_valid():
 			event = event_form.save(commit=False)
@@ -187,7 +187,7 @@ def event_update_view(request, id):
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
-		buyable_formset = BuyableInlineFormSet(queryset= buyables)
+		buyable_formset = BuyableInlineFormSet(instance=event)
 
 	context = {
 		'event_form': event_form,
