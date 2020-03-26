@@ -195,7 +195,7 @@ class accounts(View):
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],
                                   plz= request.session["plz"],
-                                  ort = request.session["ort"],)
+                                  ort = request.session["ort"].capitalize(),)
             objetct_useraddress.save()
             organiser = Organiser(user_address = objetct_useraddress,
                                   username = request.session["username"],
