@@ -10,6 +10,10 @@ from accounts.forms import OrderForm
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
+	try:
+		organiser_user = Organiser.objects.get(username = request.user.username)
+	except:
+		organiser_user = None
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
@@ -53,6 +57,7 @@ def event_detail_view(request, id):
 				'orders': orders,
 				'event': event,
 				'authenticated': request.user.is_authenticated,
+				'organiser_user': organiser_user,
 			}
 
 			subject = 'Ihre Spende auf www.Soli-Ticket.de'
@@ -82,25 +87,26 @@ def event_detail_view(request, id):
 		'authenticated': request.user.is_authenticated,
 		'order_formset': order_formset,
 		'formset': formset,
+		'organiser_user': organiser_user,
 	}
 	return render(request, "event/event_detail.html", context)
 
-def checkout_view(request, id):
-	event = Event.objects.get(id=id)
-	organiser = event.creator
-	customer = Customer.objects.get(username='default')
-	orders = customer.customer_set.all()
-	sum = 0
-	for order in orders:
-		sum += order.price
-	context = {
-		'sum': sum,
-		'organiser': organiser,
-		'orders': orders,
-		'event': event,
-		'authenticated': request.user.is_authenticated,
-	}
-	return render(request, "event/event_donate.html", context)
+# def checkout_view(request, id):
+# 	event = Event.objects.get(id=id)
+# 	organiser = event.creator
+# 	customer = Customer.objects.get(username='default')
+# 	orders = customer.customer_set.all()
+# 	sum = 0
+# 	for order in orders:
+# 		sum += order.price
+# 	context = {
+# 		'sum': sum,
+# 		'organiser': organiser,
+# 		'orders': orders,
+# 		'event': event,
+# 		'authenticated': request.user.is_authenticated,
+# 	}
+# 	return render(request, "event/event_donate.html", context)
 
 # def event_list_view(request):
 # 	queryset = Event.objects.all()
@@ -155,6 +161,7 @@ def event_create_view(request):
 		'location_form': location_form,
 		'buyable_formset': buyable_formset,
 		'organiser': organiser,
+		'organiser_user': organiser,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
 	}
@@ -199,6 +206,7 @@ def event_delete_view(request, id):
 		'organiser': organiser,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
+		'organiser_user': organiser,
 	}
 	return render(request, "event/event_delete.html", context)
 
@@ -265,6 +273,10 @@ def event_organiser_list_view(request, organiser):
 	event_list = Event.objects.filter(creator = o_object)
 	event_list = event_list.order_by('date')
 	user = request.user
+	try:
+		organiser_user = Organiser.objects.get(username = request.user.username)
+	except:
+		organiser_user = None
 	print(user)
 	logged_in = user.username == o_object.username
 	context = {
@@ -274,6 +286,7 @@ def event_organiser_list_view(request, organiser):
 		'logged_in': logged_in,
 		'user': request.user,
 		'authenticated': request.user.is_authenticated,
+		'organiser_user': organiser_user,
 	}
 
 	return render(request, "event/event_list_organiser.html", context)

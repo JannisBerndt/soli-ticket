@@ -7,17 +7,40 @@
 {% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+	function myFunction() {
+		/* Get the text field */
+		var copyText = document.getElementById("link");
+
+		/* Select the text field */
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+		/* Copy the text inside the text field */
+		document.execCommand("copy");
+
+		/* Alert the copied text */
+		// alert("Copied the text: " + copyText.value);
+	}
+</script>
 	<div class="section cc-store-home-wrap">
 	  <div class="form-header">
 		<div class="intro-content cc-homepage">
 		  <div class="intro-text">
 			<h1 class="heading-2">Alle Events von {{ organiser }}</h1>
 			<div class="div-block"></div>
-			{% if logged_in %}
-			<div class="paragraph-bigger cc-bigger-white-light">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen: http://soli-ticket.de{{ request.get_full_path }}<br></div>
-			{% endif %}
 		  </div>
-		</div>
+		  {% if logged_in %}
+		  <h6 class="heading-20">Teilen Sie diesen Link, um Ihre Unterstützer zum Spenden aufzurufen:</h6>
+		  <div class="w-form">
+			<div class="w-layout-grid grid-4">
+				<div></div>
+				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="http://soli-ticket.de{{ request.get_full_path }}">
+				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="myFunction();" id="copyToClip">
+			</div>
+		  </div>
+		  {% endif %}
+        </div>
 	  </div>
 	  <div>
 		  {% for event in event_list %}
