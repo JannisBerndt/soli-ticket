@@ -163,44 +163,43 @@ def event_update_view(request, id):
 		buyables = Buyable.objects.filter(belonging_event = event)
 	except:
 		buyables = None
-	BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5-buyables.count(), fields=['buyable_name', 'price'])
+	# BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5-buyables.count(), fields=['buyable_name', 'price'])
 	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST, instance = event)
 		location_form = EventlocationForm(request.POST, instance = location)
-		buyable_formset = BuyableInlineFormSet(request.POST, instance = event)
+		# buyable_formset = BuyableInlineFormSet(request.POST, instance = event, initial=[{'creator': organiser}, {'creator': organiser}, {'creator': organiser}, {'creator': organiser}, {'creator': organiser}])
+		buyable_formset = BuyableFormSet(request.POST)
+		zips = zip(buyables, buyable_formset)
+		for buyable, form in zips:
+			form.instance = buyable
 		print('BUYABLE FORMSET')
 		if event_form.is_valid() and location_form.is_valid():
-			event = event_form.save(commit=False)
-			location = location_form.save(commit=False)
-			location.creator = organiser
 			location.save()
-			event.location = location
-			event.creator = organiser
 			event.save()
-			if buyable_formset.is_valid():
-				for buyable_form in buyable_formset:
-					print(buyable_form)
-					buyable_form.is_valid()
-					data = buyable_form.cleaned_data
-					try:
-						valid = (data['buyable_name'] != '') and (data['price'] != 0)
-						if valid:
-							print('In If')
-							print(buyable_form.cleaned_data)
-							buyable = buyable_form.save(commit=False)
-							buyable.creator = organiser
-							buyable.belonging_event = event
-							buyable.save()
-					except KeyError:
-						pass
-			else:
-				print('NICHT VALID')
+			for buyable_form in buyable_formset:
+				print(buyable_form)
+				buyable_form.is_valid()
+				data = buyable_form.cleaned_data
+				try:
+					valid = (data['buyable_name'] != '') and (data['price'] != 0)
+					if valid:
+						print('In If')
+						print(buyable_form.cleaned_data)
+						buyable = buyable_form.save(commit=False)
+						buyable.creator = organiser
+						buyable.belonging_event = event
+						buyable.save()
+						print('VALID')
+				except KeyError:
+					pass
+					print('NICHT VALID')
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
-		buyable_formset = BuyableInlineFormSet(instance=event)
+		# buyable_formset = BuyableInlineFormSet(instance=event, initial=[{'creator': organiser}, {'creator': organiser}, {'creator': organiser}, {'creator': organiser}, {'creator': organiser}])
+		buyable_formset = BuyableFormSet(initial=buyables.values())
 
 	context = {
 		'event_form': event_form,

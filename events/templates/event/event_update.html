@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<title>Neue Veranstaltung erstellen</title>
+<title>Veranstaltung bearbeiten</title>
 {% endblock %}
 
 {% block content %}
@@ -11,9 +11,9 @@
         <div class="form-header">
             <div class="intro-content cc-homepage">
                 <div class="intro-text">
-                    <div class="heading-jumbo">Erzählen Sie uns etwas über Ihre Veranstaltung</div>
+                    <div class="heading-jumbo">Was möchten Sie gerne ändern?</div>
                     <div class="div-block"></div>
-                    <div class="paragraph-bigger cc-bigger-white-light">Veranstaltung erstellen<br></div>
+                    <div class="paragraph-bigger cc-bigger-white-light">Veranstaltung bearbeiten<br></div>
                 </div>
             </div>
         </div>
@@ -89,8 +89,8 @@
 							</div>
 							{% endfor %}
 							<div class="w-row">
-								<div class="w-col w-col-3"><input type="submit" value="Fertig!" data-wait="Bitte warten..." class="submit-button w-button"></div>
-								<div class="w-col w-col-9"><a href="../{{organiser}}" class="button-4 w-button">Abbrechen</a></div>
+								<div class="w-col w-col-3"><input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button"></div>
+								<div class="w-col w-col-9"><a href="{% url 'events:event_organiser_list' organiser %}" class="button-4 w-button">Abbrechen</a></div>
 							</div>
 						</div>
                         <div class="w-col w-col-3 w-col-tiny-tiny-stack"></div>
