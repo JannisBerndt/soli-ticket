@@ -180,7 +180,6 @@ def event_update_view(request, id):
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
 		buyable_formset = BuyableInlineFormSet(instance=event)
-		print(buyable_formset)
 
 	context = {
 		'event_form': event_form,
