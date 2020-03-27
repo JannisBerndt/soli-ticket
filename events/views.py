@@ -165,7 +165,6 @@ def event_update_view(request, id):
 		event_form = EventForm(request.POST, instance = event)
 		location_form = EventlocationForm(request.POST, instance = location)
 		buyable_formset = BuyableInlineFormSet(request.POST, instance = event)
-		print('BUYABLE FORMSET')
 		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			location.save()
 			event.save()
