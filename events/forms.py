@@ -28,7 +28,6 @@ class BuyableForm(forms.ModelForm):
 			'buyable_name',
 			'price',
 		]
-
 BuyableFormSet = formset_factory(BuyableForm, extra=5, max_num=5)
 
 class EventForm(forms.ModelForm):

@@ -76,6 +76,7 @@
 							{{ buyable_formset.management_form }}
 							{% for buyable_form in buyable_formset %}
 							<div class="w-row">
+								{{buyable_form.id}}
                                 <div class="w-col w-col-10">
 									{{ buyable_form.buyable_name.errors }}
 									{{ buyable_form.buyable_name }}
@@ -86,6 +87,8 @@
 									{{ buyable_form.price }}
 									<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0,00" id="field-3" required=""> -->
 								</div>
+								{{ buyable_form.DELETE.label }}
+								{{ buyable_form.DELETE}}
 							</div>
 							{% endfor %}
 							<div class="w-row">
