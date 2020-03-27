@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 
 from .models import Event, Eventlocation, Buyable
 
@@ -28,8 +28,8 @@ class BuyableForm(forms.ModelForm):
 			'buyable_name',
 			'price',
 		]
-
-BuyableFormSet = formset_factory(BuyableForm, extra=5)
+BuyableFormSet = formset_factory(BuyableForm, extra=5, max_num=5)
+BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5, max_num = 5)
 
 class EventForm(forms.ModelForm):
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
