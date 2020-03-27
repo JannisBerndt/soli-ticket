@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django import forms
 from .models import Event, Eventlocation, Buyable
-from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet
+from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet
 from accounts.forms import OrderForm
 
 def event_detail_view(request, id):
@@ -160,7 +160,6 @@ def event_update_view(request, id):
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
 	location = event.location
-	BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5, max_num = 5)
 	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST, instance = event)
