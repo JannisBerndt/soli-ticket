@@ -52,3 +52,8 @@ class UserAddressForm(forms.ModelForm):
 			'plz',
 			'ort',
 		]
+	
+	def clean_ort(self):
+		data = self.cleaned_data["ort"]
+		data = data.capitalize()
+		return data

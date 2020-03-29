@@ -19,6 +19,11 @@ class EventlocationForm(forms.ModelForm):
 			'post_code',
 		]
 
+	def clean_city(self):
+		data = self.cleaned_data["ort"]
+		data = data.capitalize()
+		return data
+
 class BuyableForm(forms.ModelForm):
 	buyable_name = forms.CharField(label='Produktname',  widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Bezeichnung-3', 'placeholder': 'Bezeichnung des Tickets/Getränks/der Speise'}))
 	price = forms.DecimalField(label='Preis', widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3', 'placeholder': "0,00"}), min_value=0)
