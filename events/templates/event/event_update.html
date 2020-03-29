@@ -93,7 +93,7 @@
 							{% endfor %}
 							<div class="w-row">
 								<div class="w-col w-col-3"><input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button"></div>
-								<div class="w-col w-col-9"><a href="{% url 'events:event_organiser_list' organiser_user %}" class="button-4 w-button">Abbrechen</a></div>
+								<div class="w-col w-col-9"><a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="button-4 w-button">Abbrechen</a></div>
 							</div>
 						</div>
                         <div class="w-col w-col-3 w-col-tiny-tiny-stack"></div>
