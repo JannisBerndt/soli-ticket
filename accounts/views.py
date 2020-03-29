@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import UserAddress, Organiser
+from .forms import UserAddressForm, OrganiserForm
 
 
 def login_page(request):
@@ -69,6 +70,29 @@ def organiser_list_view(request):
 		'cities': cities,
 	}
 	return render(request, 'accounts/organiser_list.html', context)
+
+@login_required(login_url='accounts:login')
+def profile_update_view(request):
+	user = request.user
+	organiser = Organiser.objects.get(username=user.username)
+	address = organiser.user_address
+	if request.method == 'POST':
+		organiser_form = OrganiserForm(request.POST, instance = organiser)
+		address_form = UserAddressForm(request.POST, instance = address)
+		if organiser_form.is_valid() and address_form.is_valid():
+			organiser_form.save()
+			address.save()
+		return redirect('events:event_organiser_list', organiser=organiser)
+
+	organiser_form = OrganiserForm(instance = organiser)
+	address_form = UserAddressForm(instance = address)
+
+	context = {
+		'organiser_form': organiser_form,
+		'address_form': address_form,
+		'organiser_user': organiser,
+	}
+	return render(request, 'accounts/profile_update.html', context)
 
 class accounts(View):
     template_name = ['register/register_start.html',
