@@ -5,7 +5,7 @@ from events.models import Buyable
 
 class OrderForm(forms.ModelForm):
 	# article = forms.CharField(disabled=True)
-	amount = forms.IntegerField(label='Anzahl', min_value=0, initial=0, widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3'}))
+	amount = forms.IntegerField(label='Anzahl', min_value=0, initial=0, widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input amount-field', 'id': 'field-3', 'oninput': 'calcSum()'}))
 	class Meta:
 		model = Order
 		fields = [
