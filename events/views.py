@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django import forms
 from .models import Event, Eventlocation, Buyable
-from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet
+from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet
 from accounts.forms import OrderForm
 
 def event_detail_view(request, id):
@@ -112,9 +112,8 @@ def event_create_view(request):
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_formset = BuyableFormSet(request.POST)
-		print(event_form)
-		if event_form.is_valid() and location_form.is_valid():
+		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none())
+		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
 			location.creator = organiser
@@ -122,26 +121,16 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
-			for buyable_form in buyable_formset:
-				print(buyable_form)
-				buyable_form.is_valid()
-				data = buyable_form.cleaned_data
-				try:
-					valid = (data['buyable_name'] != '') and (data['price'] != 0)
-					if valid:
-						print('In If')
-						print(buyable_form.cleaned_data)
-						buyable = buyable_form.save(commit=False)
-						buyable.creator = organiser
-						buyable.belonging_event = event
-						buyable.save()
-				except KeyError:
-					pass
+			buyables = buyable_formset.save(commit=False)
+			for buyable in buyables:
+				buyable.creator = organiser
+				buyable.belonging_event = event
+				buyable.save()
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_formset = BuyableFormSet()
+		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none())
 
 	context = {
 		'event_form': event_form,

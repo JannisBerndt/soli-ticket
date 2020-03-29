@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import formset_factory, inlineformset_factory
+from django.forms import formset_factory, inlineformset_factory, modelformset_factory
 
 from .models import Event, Eventlocation, Buyable
 
@@ -20,7 +20,7 @@ class EventlocationForm(forms.ModelForm):
 		]
 
 	def clean_city(self):
-		data = self.cleaned_data["ort"]
+		data = self.cleaned_data["city"]
 		data = data.capitalize()
 		return data
 
@@ -35,6 +35,7 @@ class BuyableForm(forms.ModelForm):
 		]
 BuyableFormSet = formset_factory(BuyableForm, extra=5, max_num=5)
 BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5, max_num = 5)
+BuyableModelFormSet = modelformset_factory(Buyable, form=BuyableForm, extra=5, max_num = 5)
 
 class EventForm(forms.ModelForm):
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
