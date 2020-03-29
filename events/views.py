@@ -136,10 +136,7 @@ def event_create_view(request):
 		'event_form': event_form,
 		'location_form': location_form,
 		'buyable_formset': buyable_formset,
-		'organiser': organiser,
 		'organiser_user': organiser,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_create.html", context)
 
@@ -174,10 +171,7 @@ def event_update_view(request, id):
 		'event_form': event_form,
 		'location_form': location_form,
 		'buyable_formset': buyable_formset,
-		'organiser': organiser,
 		'organiser_user': organiser,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
 	}
 	return render(request, "event/event_update.html", context)
 
@@ -190,9 +184,6 @@ def event_delete_view(request, id):
 		return redirect('events:event_organiser_list', organiser.organisation_name)
 	context = {
 		"event": event,
-		'organiser': organiser,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
 		'organiser_user': organiser,
 	}
 	return render(request, "event/event_delete.html", context)
