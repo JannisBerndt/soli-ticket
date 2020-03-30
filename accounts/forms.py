@@ -24,6 +24,7 @@ class OrganiserForm(forms.ModelForm):
 	bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
 	bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))
 	kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
+	description = forms.TextField(required=False, label='Informationen über Sie', widget=forms.Textarea(attrs={'class': 'textarea-2 w-input', 'id': 'field', 'placeholder': '(optional)'}))
 	class Meta:
 		model = Organiser
 		fields = [
@@ -37,6 +38,7 @@ class OrganiserForm(forms.ModelForm):
 			'bic',
 			'bank_account_owner',
 			'kontosite',
+			'description',
 		]
 
 class UserAddressForm(forms.ModelForm):
