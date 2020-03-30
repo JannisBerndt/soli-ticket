@@ -55,16 +55,6 @@
   <div class="w-container">
     <h3>Über {{ organiser.organisation_name }}</h3>
     <div class="w-row">
-      <div class="column-25 w-col w-col-6">
-        <p class="paragraph-15">Ansprechpartner</p>
-        <p>{{ organiser.contact_first_name }} {{ organiser.contact_last_name }}</p>
-      </div>
-      <div class="column-26 w-col w-col-6">
-        <p class="paragraph-15">Email-Adresse</p>
-        <p class="paragraph-16">{{ organiser.email }}</p>
-      </div>
-    </div>
-    <div class="w-row">
       <div class="column-27 w-col w-col-6">
         <p class="paragraph-15">Name der Organisation</p>
         <p>{{ organiser.organisation_name }}</p>
@@ -78,12 +68,6 @@
       <div class="column-29 w-col w-col-6">
         <p class="paragraph-15">Adresse</p>
         <p>{{ organiser.user_address.strasse }} {{ organiser.user_address.hnummer }}<br>{{ organiser.user_address.plz }}, {{ organiser.user_address.ort }}</p>
-      </div>
-      <div class="column-30 w-col w-col-6">
-		  {% if organiser.contact_phone %}
-        	<p class="paragraph-15">Telefonnummer</p>
-			<p>{{ organiser.contact_phone }}</p>
-		  {% endif %}
       </div>
     </div>
     <h5 class="heading-22">SPENDENKONTO</h5>
