@@ -26,12 +26,17 @@
               </div>
               <label for="Name-der-Organisation">Name der Organisation</label>
               <font size="3" color="red" disabled = "True">{{ error2 }}</font>
-              <input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required>
-              <label for="Art-2">Art der Organisation:<br> Momentan nur für gemeinnützige Organisationen! <a href="{% url 'blog' %}">Weitere Informationen</a></label>
+			  <input type="text" class="text-field-2 w-input" maxlength="256" name="oname" data-name="Name der Organisation" id="Name-der-Organisation" required>
+			  <label for="Art-3">Erzählen sie ihren Spendern etwas über sich und ihre aktuelle situation</label>
+			  <textarea placeholder="(optional)" maxlength="5000" id="field" name="description" class="textarea-2 w-input"></textarea>
+              <label for="Art-2">Art der Organisation</label>
               <font size="3" color="red" disabled = "True">{{ error3 }}</font>
+			  <select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select">
+				  <option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option>
+			  </select>
+			  <p class="paragraph-6">Sollte Ihre Organisation nicht gemeinnützig sein, können Sie sich leider im Moment NOCH nicht registrieren. <a href="{% url 'blog' %}" target="_blank">Weitere Informationen.</a></p>
 
-              <select id="Art-2" name="art" data-name="Art" required="" class="select-field w-select"><option value="">Bitte wählen</option><option value="gemeinnützig">gemeinnützig</option></select>
-              <label for="Art-3">Adresse</label>
+			  <label for="Art-3">Adresse</label>
               <div class="w-row">
                 <font size="3" color="red" disabled = "True">{{ error4 }}</font>
                 <div class="w-col w-col-9"><input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="strasse" data-name="Straße" placeholder="Straße" id="Stra-e" required=""></div>
