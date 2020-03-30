@@ -80,8 +80,10 @@
         <p>{{ organiser.user_address.strasse }} {{ organiser.user_address.hnummer }}<br>{{ organiser.user_address.plz }}, {{ organiser.user_address.ort }}</p>
       </div>
       <div class="column-30 w-col w-col-6">
-        <p class="paragraph-15">Telefonnummer</p>
-        <p>{{ organiser.contact_phone }}</p>
+		  {% if organiser.contact_phone %}
+        	<p class="paragraph-15">Telefonnummer</p>
+			<p>{{ organiser.contact_phone }}</p>
+		  {% endif %}
       </div>
     </div>
     <h5 class="heading-22">SPENDENKONTO</h5>
@@ -96,9 +98,11 @@
         <p class="paragraph-15">BIC</p>
         <p>{{ organiser.bic }}</p>
       </div>
-    </div>
-    <p class="paragraph-15">LINk zur offiziellen Seite</p>
-    <p>{{ organiser.kontosite }}</p>
+	</div>
+	{% if organiser.kontosite %}
+    	<p class="paragraph-15">Link zur offiziellen Seite</p>
+		<p>{{ organiser.kontosite }}</p>
+	{% endif %}
 </div>
 
 {% endblock %}
