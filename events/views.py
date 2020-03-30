@@ -174,7 +174,7 @@ def event_update_view(request, id):
 				buyable.save()
 			for obj in buyable_formset.deleted_objects:
 				obj.delete()
-				
+
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm(instance = event)
@@ -218,6 +218,7 @@ def event_organiser_list_view(request, organiser):
 	except:
 		organiser_user = None
 	print(user)
+	#print(o_object.user_adress_contact_set)
 	logged_in = user.username == o_object.username
 	context = {
 		'request': request,
@@ -229,5 +230,7 @@ def event_organiser_list_view(request, organiser):
 		'organiser_user': organiser_user,
 	}
 
-	return render(request, "event/event_list_organiser.html", context)
-	
+	if(logged_in):
+		return render(request, "event/profile_organiser.html", context)
+	else:
+		return render(request, "event/profile_customer.html", context)
