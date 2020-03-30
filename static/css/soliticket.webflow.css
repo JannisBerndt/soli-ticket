@@ -599,7 +599,7 @@ figcaption {
   display: flex;
   height: auto;
   margin-top: 52px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -1306,11 +1306,18 @@ figcaption {
 }
 
 .text-field-2 {
+  overflow: visible;
   margin-left: 0px;
   border-radius: 8px;
   text-align: left;
   -o-object-fit: fill;
   object-fit: fill;
+}
+
+.text-field-2.textarea {
+  float: none;
+  clear: none;
+  text-transform: none;
 }
 
 .field-label {
@@ -1483,6 +1490,7 @@ figcaption {
 
 .heading-2 {
   color: #000;
+  text-align: center;
 }
 
 .text-block-2 {
@@ -1968,6 +1976,7 @@ figcaption {
 .heading-20 {
   color: #000;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .paragraph-14 {
@@ -2027,6 +2036,7 @@ figcaption {
 }
 
 .grid-4 {
+  margin-bottom: 40px;
   -ms-grid-columns: 0.25fr 1fr 0.25fr;
   grid-template-columns: 0.25fr 1fr 0.25fr;
 }
@@ -2065,7 +2075,7 @@ figcaption {
 
 .container-14 {
   margin-top: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .section-20 {
@@ -2116,6 +2126,44 @@ figcaption {
 .div-block-9 {
   margin-top: 30px;
   margin-bottom: 50px;
+}
+
+.heading-24 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.paragraph-18 {
+  margin-top: 20px;
+  margin-bottom: 60px;
+  color: #000;
+  text-align: justify;
+}
+
+.textarea-2 {
+  border-radius: 8px;
+}
+
+.container-16 {
+  margin-top: 20px;
+}
+
+.frage {
+  margin-bottom: 0px;
+}
+
+.antwort {
+  margin-bottom: 30px;
+}
+
+.kategorie {
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+.heading-25 {
+  margin-bottom: 0px;
 }
 
 @media screen and (max-width: 991px) {
@@ -2502,10 +2550,18 @@ figcaption {
     margin-right: 18px;
     margin-left: 18px;
   }
+  .section-14 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
   .div-block-7 {
     margin-top: 0px;
   }
   .section-18 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-22 {
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -2942,5 +2998,9 @@ figcaption {
   .column-32 {
     padding-right: 0px;
     padding-left: 0px;
+  }
+  .section-22 {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }
