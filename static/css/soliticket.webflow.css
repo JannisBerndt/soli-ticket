@@ -1325,7 +1325,7 @@ figcaption {
 }
 
 .submit-button {
-  position: absolute;
+  position: relative;
   left: auto;
   top: auto;
   right: auto;
@@ -2046,10 +2046,76 @@ figcaption {
 .grid-5 {
   margin-top: 30px;
   margin-bottom: 30px;
-  -ms-grid-columns: 1.25fr 5fr 0.25fr 0.25fr;
-  grid-template-columns: 1.25fr 5fr 0.25fr 0.25fr;
+  -ms-grid-columns: 1.25fr 5fr;
+  grid-template-columns: 1.25fr 5fr;
   -ms-grid-rows: auto auto auto;
   grid-template-rows: auto auto auto;
+}
+
+.team {
+  text-align: center;
+}
+
+.grid-6 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  -ms-grid-columns: 1.25fr 5fr 0.25fr 0.25fr;
+  grid-template-columns: 1.25fr 5fr 0.25fr 0.25fr;
+}
+
+.container-14 {
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+.section-20 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.paragraph-15 {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  text-transform: uppercase;
+}
+
+.button-9 {
+  border-radius: 8px;
+  background-color: #8fcdff;
+  text-align: center;
+}
+
+.paragraph-16 {
+  margin-bottom: 20px;
+}
+
+.section-21 {
+  margin-top: 50px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.container-15 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.paragraph-17 {
+  margin-bottom: 0px;
+  text-transform: uppercase;
+}
+
+.heading-22 {
+  margin-top: 40px;
+}
+
+.heading-23 {
+  text-align: center;
+}
+
+.div-block-9 {
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 @media screen and (max-width: 991px) {
@@ -2520,6 +2586,10 @@ figcaption {
     width: 100%;
     max-width: none;
   }
+  .text-field-2 {
+    -o-object-fit: fill;
+    object-fit: fill;
+  }
   .submit-button {
     position: static;
     margin-right: auto;
@@ -2772,7 +2842,105 @@ figcaption {
   }
   .grid-5 {
     grid-column-gap: 16px;
-    -ms-grid-columns: 1.25fr 4fr 0.5fr 0.5fr;
-    grid-template-columns: 1.25fr 4fr 0.5fr 0.5fr;
+    -ms-grid-columns: 1fr 3fr;
+    grid-template-columns: 1fr 3fr;
+  }
+  .grid-6 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    -ms-grid-columns: 0.5fr 3fr 0.5fr 0.5fr;
+    grid-template-columns: 0.5fr 3fr 0.5fr 0.5fr;
+  }
+  .section-20 {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+  .column-11 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-12 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-13 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-14 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-15 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-16 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-17 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-18 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-19 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-20 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-21 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-22 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-23 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-24 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-25 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-26 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-27 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-28 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-29 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-30 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-31 {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .column-32 {
+    padding-right: 0px;
+    padding-left: 0px;
   }
 }

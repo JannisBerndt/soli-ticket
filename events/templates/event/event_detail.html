@@ -22,6 +22,24 @@
 		/* Alert the copied text */
 		// alert("Copied the text: " + copyText.value);
 	}
+
+	function calcSum() {
+		var amounts = document.getElementsByClassName('amount-field');
+		var prices = document.getElementsByClassName('price');
+		var sum = 0.00;
+		for (var i = 0; i < amounts.length; i++) {
+			var price = parseFloat(prices[i].innerHTML.replace(',', "."));
+			var amount = parseInt(amounts[i].value);
+			if(Number.isNaN(amount)) {
+				amount = 0;
+			}
+			console.log(i);
+			console.log(amount + ' mal ' + price);
+			sum += amount * price;
+		}
+		console.log(sum.toFixed(2));
+		document.getElementById('sum').innerHTML = sum.toFixed(2).replace('.', ",");
+	}
 </script>
 <div class="section-18">
     <div class="w-container">
@@ -67,14 +85,16 @@
             {{ order_formset.management_form }}
 			{% for buyable, order_form in formset %}
 				<p>{{ buyable.buyable_name }}</p>
-				<p>{{ buyable.price }}</p>
+				<p class="price">{{ buyable.price }}</p>
 				{{ order_form.amount }}
 			{% endfor %}
+			<p class="paragraph-4">Gesamt:</p>
+            <p class="paragraph-3" id="sum">0,00</p>
           </div>
           <div class="divider"></div>
            <div class="w-row">
             <div class="w-col w-col-5"><label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
-							<input type="email" class="w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
+				<input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
 			<div class="column-5 w-col w-col-7"></div>
 		  </div>
             <input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
