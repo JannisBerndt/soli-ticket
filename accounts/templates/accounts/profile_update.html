@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Mein Profil bearbeiten</title>
+{% endblock %}
+
+{% block content %}
+<div class="section-20">
+    <div class="w-container">
+      <div class="div-block-9">
+        <h1 class="heading-23">Profil bearbeiten</h1>
+        <div class="divider"></div>
+      </div>
+      <div class="w-form">
+        <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST'> {% csrf_token %}
+			<label for="name" class="field-label">EMAIL-Adresse</label>
+			{{ organiser_form.email.errors }}
+			{{ organiser_form.email }}
+			<!-- <input type="email" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" id="email" required=""> -->
+			<!-- <label for="email">Passwort</label> -->
+			<!-- <input type="password" class="text-field-2 w-input" maxlength="256" name="email" data-name="Email" id="email" required=""> -->
+			<label for="name" class="field-label">Ansprechpartner</label>
+          <div class="w-row">
+            <div class="column-11 w-col w-col-6">
+				{{ organiser_form.contact_first_name.errors }}
+				{{ organiser_form.contact_first_name }}
+				<!-- <input type="text" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" placeholder="Vorname" id="vorname" required=""> -->
+			</div>
+            <div class="column-12 w-col w-col-6">
+				{{ organiser_form.contact_last_name.errors }}
+				{{ organiser_form.contact_last_name }}
+				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="name" data-name="Name" placeholder="Nachname" id="nachname" required=""> -->
+			</div>
+		  </div>
+		  <label for="Name-der-Organisation">Name der Organisation</label>
+		  {{ organiser_form.organisation_name.errors }}
+		  {{ organiser_form.organisation_name }}
+		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Name-der-Organisation" data-name="Name Der Organisation" id="Name-der-Organisation" required=""> -->
+		  <label for="Art">Art der Organisation</label>
+		  {{ organiser_form.organisation_type.errors }}
+		  {{ organiser_form.organisation_type }}
+		  <!-- <select id="Art" name="Art" data-name="Art" required="" class="select-field w-select">
+			  <option value="Another Choice">Bitte wählen</option><option value="">gemeinnützig</option><option value="Third">nicht gemeinnützig</option>
+			</select> -->
+			<label for="Art">Adresse</label>
+          <div class="w-row">
+            <div class="column-13 w-col w-col-9">
+				{{ address_form.strasse.errors }}
+				{{ address_form.strasse }}
+				<!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Stra E" placeholder="Straße" id="Stra-e" required=""> -->
+			</div>
+            <div class="column-14 w-col w-col-3">
+				{{ address_form.hnummer.errors }}
+				{{ address_form.hnummer }}
+				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr" id="HN" required=""> -->
+			</div>
+          </div>
+          <div class="w-row">
+            <div class="column-15 w-col w-col-4">
+				{{ address_form.plz.errors }}
+				{{ address_form.plz }}
+				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl" id="PLZ" required=""> -->
+			</div>
+            <div class="column-16 w-col w-col-8">
+				{{ address_form.ort.errors }}
+				{{ address_form.ort }}
+				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort" id="Ort" required=""> -->
+			</div>
+		  </div><label for="Art">Telefonnummer</label>
+		  {{ organiser_form.contact_phone.errors }}
+		  {{ organiser_form.contact_phone }}
+		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Telenummer" data-name="Telenummer" placeholder="(optional)" id="Telenummer"> -->
+		  <label for="Kontoinhaber">Kontodaten des Spendenkontos Ihrer Organisation</label>
+		  {{ organiser_form.bank_account_owner.errors }}
+		  {{ organiser_form.bank_account_owner }}
+		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Kontoinhaber" data-name="Kontoinhaber" placeholder="Kontoinhaber" id="Kontoinhaber" required=""> -->
+          <div class="w-row">
+            <div class="column-17 w-col w-col-8">
+				{{ organiser_form.iban.errors }}
+				{{ organiser_form.iban }}
+				<!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="IBAN" data-name="IBAN" placeholder="IBAN" id="IBAN" required=""> -->
+			</div>
+            <div class="column-18 w-col w-col-4">
+				{{ organiser_form.bic.errors }}
+				{{ organiser_form.bic }}
+				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="BIC" data-name="BIC" placeholder="BIC" id="BIC" required=""> -->
+			</div>
+		  </div>
+		  <label for="KontoVerifikationsLink">Sie haben Ihre Kontodaten auch auf Ihrer offiziellen Webseite veröffentlicht? Bitte geben Sie hier den Link dorthin an, damit ihre Spender die Echtheit der bei uns angezeigten Informationen überprüfen können:</label>
+		  {{ organiser_form.kontosite.errors }}
+		  {{ organiser_form.kontosite }}
+		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="KontoVerifikationsLink" data-name="Konto Verifikations Link" placeholder="(optional)" id="KontoVerifikationsLink"> -->
+		  <input type="submit" value="Änderungen speichern" data-wait="Please wait..." class="submit-button w-button">
+		  <a href="{% url 'events:event_organiser_list' organiser_user %}" class="button-4 w-button">Abbrechen</a>
+		</form>
+        <div class="w-form-done">
+          <div>Thank you! Your submission has been received!</div>
+        </div>
+        <div class="w-form-fail">
+          <div>Oops! Ihre Angaben sind fehlerhaft. Versuchen Sie es erneut.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
