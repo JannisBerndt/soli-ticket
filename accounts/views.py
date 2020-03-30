@@ -108,7 +108,7 @@ class accounts(View):
 			   'authenticated': False,
 			   'organiser_user': None,}
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
-            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl"]
+            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
 
 
     def get(self, request, *args, **kwargs):
@@ -173,10 +173,10 @@ class accounts(View):
             error_found = False
             #checkt ob überall Daten gefunden wurden:
             for tag,error in zip(["vname","nname","oname","art","strasse",
-                         "hnummer","plz","ort","telnr"], ["error1","error1","error2",
+                         "hnummer","plz","ort","telnr", "description"], ["error1","error1","error2",
                          "error3","error4","error4","error5","error5","error6"]):
 
-                if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]):
+                if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]) and (tag not in ["description"]):
                     error_found = True
                     self.context[error] = "Bitte geben Sie auch diese Daten an:"
 
@@ -188,7 +188,7 @@ class accounts(View):
                 return render(request, self.template_name[1], self.context)
 
             for tag in ["vname","nname","oname","art","strasse",
-                         "hnummer","plz","ort","telnr"]:
+                         "hnummer","plz","ort","telnr", "description"]:
                 request.session[tag] = req.get(tag)
 
 
@@ -232,7 +232,8 @@ class accounts(View):
                                   bic = request.session["bic"],
                                   bank_account_owner = request.session["kontoinhaber"],
                                   kontosite = request.session["kontourl"],
-                                  email =request.session["email"],)
+                                  email =request.session["email"],
+								  description = request.session["description"],)
 
             organiser.set_password(request.session["pw"])
             organiser.save()
