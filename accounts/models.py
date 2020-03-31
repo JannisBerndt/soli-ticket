@@ -38,6 +38,7 @@ class Organiser(User):
     bank_account_owner = models.CharField(max_length=120, null=True)
     kontosite = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    isActivated = models.BooleanField(default = True)
 
 
     def __str__(self):
