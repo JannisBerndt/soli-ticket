@@ -2166,6 +2166,24 @@ figcaption {
   margin-bottom: 0px;
 }
 
+.paragraph-19 {
+  text-align: center;
+}
+
+.heading-26 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.section-23 {
+  margin-top: 50px;
+  margin-bottom: 200px;
+}
+
+.heading-27 {
+  text-align: center;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -3000,6 +3018,10 @@ figcaption {
     padding-left: 0px;
   }
   .section-22 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-23 {
     margin-right: 10px;
     margin-left: 10px;
   }

@@ -20,12 +20,19 @@ def login_page(request):
         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
+            
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
+            
             if user is not None:
-                login(request, user)
-                return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
+                o_organiser = Organiser.objects.get(username = user.username)
+                if o_organiser is not None:
+                    if o_organiser.isActivated == False:
+                        return render(request, 'register/confirm_Email.html')
+                    else: 
+                        login(request, user)
+                        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
         try:
@@ -42,6 +49,8 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('accounts:login')
+
+
 
 
 # @login_required(login_url='login')
@@ -257,8 +266,8 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-            # TODO: Umleitung auf ""Bitte checken sie ihr E-Mail-Postfach......
-            return render(request, self.template_name[3], self.context)
+
+            return render(request, 'register/confirm_Email.html', self.context)
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
@@ -273,11 +282,11 @@ def confirm(request):
     myid = request.GET['id']
     
     # In der URL ist die User-ID eingebaut. Theoretisch sollte man also immer User aus der DB kriegen zu dem die ID gehört
-    organiser_user = Organiser.objects.get(user_ptr_id = myid)
+    organiser_user = Organiser.objects.get(id = myid)
     
     if organiser_user is None:
         return error
-    # Check ob der in der URL vorhandene confirmationcode mit dem in der Datenbank übereinstimmt.
+    # Check ob der in der URL vorhandene confirmationCode mit dem in der Datenbank übereinstimmt.
     if(confirmation_Code != organiser_user.confirmationCode):
         return error
 
@@ -297,20 +306,18 @@ def buildAndSendEmail(o_organiser):
         confirmLink = 'https://www.soli-ticket.de/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
 
 
-    subject = 'E-Mail Bestätigung für die Registrierung auf Soli-Ticket'
-    content =   'Vielen Dank für die Registrierung auf solit-ticket.de \n'\
-                'Bitte klicken sie auf folgenden Link, um ihren Account freizuschalten \n'\
+    subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
+    content =   'Vielen Dank für die Registrierung auf soli-ticket.de \n'\
+                'Bitte klicken Sie auf den folgenden Link, um Ihren Account freizuschalten \n'\
                 '{confirmLink} \n\n'\
                 'Mit freundlichen Grüßen,\n\n'\
-                'ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
+                'Ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
 
     if DEBUG:
         # Hier eure email eintragen, wenn ihr was testen wollt. 
         send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
     else:
         send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
-
-    
 
 def confirmationCode_generator(size = 40, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))

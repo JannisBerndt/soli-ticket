@@ -10,5 +10,5 @@ urlpatterns = [
     path('register/', views.accounts.as_view(), name='register'),
     path('error/', views.error, name='register_error'),
     path('organizer/', views.organiser_list_view, name='organiser_list'),
-    path('confirm/', views.confirm)
+    path('confirm/', views.confirm),
 ]
