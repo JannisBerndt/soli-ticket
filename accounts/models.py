@@ -39,6 +39,7 @@ class Organiser(User):
     kontosite = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     isActivated = models.BooleanField(default = True)
+    confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten', blank = False)
 
 
     def __str__(self):

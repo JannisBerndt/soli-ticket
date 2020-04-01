@@ -9,16 +9,10 @@ from .forms import UserAddressForm, OrganiserForm
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
+from solisite.settings import DEBUG
+import string
+import random
 
-
-def confirm(request):
-    myusername = request.GET['organiser_name']
-    myid = request.GET['id']
-    organiser_user = Organiser.objects.get(organisation_name = myusername, user_ptr_id = myid)
-    organiser_user.isActivated = True
-    organiser_user.save()
-    login(request, organiser_user)
-    return render(request, 'register/register_finished.html')
 
 def login_page(request):
     if request.user.is_authenticated:
@@ -249,29 +243,21 @@ class accounts(View):
                                   isActivated = False)
             
             organiser.set_password(request.session["pw"])
+            organiser.confirmationCode = confirmationCode_generator()
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
-            o_name = organiser_user.organisation_name
-            id = organiser_user.id
-
-            send_mail('E-Mail Bestätigung für ihren Account', 'Hallöle, sie haben sich gerade angemeldet. Bestätigen sie die E-Mail mit einem Klick auf folgenden Link:'+
-            'http://127.0.0.1:8000/accounts/confirm/?organiser_name={organiser_name}&id={myid}'.format(organiser_name = o_name, myid = id), settings.EMAIL_HOST_USER, ['roessler.paul@web.de', organiser_user.email])
-			# user direkt einloggen
-
-            # user = authenticate(request, username=organiser.username, password=organiser.password)
-            # if user is not None:
-            login(request, organiser_user)
-                # return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
-
-            #To Do: Umleitung auf Registrierung erfolgreich
+            
+            buildAndSendEmail(organiser_user)
+        
+            
             # Löschen der Sessions IDs:
             for tag in self.tags:
                 try:
                     del request.session[tag]
                 except KeyError:
                     pass
-            
+            # TODO: Umleitung auf ""Bitte checken sie ihr E-Mail-Postfach......
             return render(request, self.template_name[3], self.context)
 
         #To DO:
@@ -281,3 +267,52 @@ class accounts(View):
                 del request.session[tag]
             response = redirect('error/')
             return response
+
+def confirm(request):
+    confirmation_Code = request.GET['confirmationCode']
+    myid = request.GET['id']
+    
+    # In der URL ist die User-ID eingebaut. Theoretisch sollte man also immer User aus der DB kriegen zu dem die ID gehört
+    # Eventuell trotzdem Abfrage einfügen, ob return-wert nicht null ist... Kein Plan wie man das in Python macht.
+    organiser_user = Organiser.objects.get(user_ptr_id = myid)
+    
+    if organiser_user is None:
+        return error
+    # Check ob der in der URL vorhandene confirmationcode mit dem in der Datenbank übereinstimmt.
+    if(confirmation_Code != organiser_user.confirmationCode):
+        return error
+
+    organiser_user.isActivated = True
+    organiser_user.save()
+    login(request, organiser_user)
+    return render(request, 'register/register_finished.html')
+  
+def buildAndSendEmail(o_organiser):
+    email = o_organiser.email
+    id = o_organiser.id
+    o_code = o_organiser.confirmationCode
+    
+    if DEBUG:
+        confirmLink = 'http://127.0.0.1:8000/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
+    else:
+        confirmLink = 'https://www.soli-ticket.de/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
+
+
+    subject = 'E-Mail Bestätigung für die Registrierung auf Soli-Ticket'
+    content =   'Vielen Dank für die Registrierung auf solit-ticket.de \n'\
+                'Bitte klicken sie auf folgenden Link, um ihren Account freizuschalten \n'\
+                '{confirmLink} \n\n'\
+                'Mit freundlichen Grüßen,\n\n'\
+                'ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
+
+    if DEBUG:
+        # Hier eure email eintragen, wenn ihr was testen wollt. 
+        send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
+    else:
+        send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
+
+    
+
+def confirmationCode_generator(size = 40, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
