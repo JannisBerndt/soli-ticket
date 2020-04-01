@@ -76,6 +76,7 @@ P.S. Sie wollen kostenfrei noch mehr beitragen? Teilen Sie www.soli-ticket.de un
 
 				request.session["order_id"] = orders[0].id
 				request.session["sum"] = sum
+				request.session["paypal_email"] = settings.PAYPAL_RECEIVER_EMAIL
 				return redirect(reverse('payment:process'))
 
 				return render(request, "event/event_donate.html", context)
