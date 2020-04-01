@@ -19,7 +19,7 @@ def payment_process(request):
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
 		'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
-		'return_url': 'http://{}{}'.format(host, reverse('payment:done')),
+		'return_url': 'http://127.0.0.1:8000/'.format(host, reverse('payment:done')),
 		'cancel_return': 'http://{}{}'.format(host, reverse('payment:canceled')),
 	}
 
