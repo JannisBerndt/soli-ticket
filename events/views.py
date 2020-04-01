@@ -3,8 +3,10 @@ from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
 from accounts.models import Organiser, Customer, Order
 from django.core.mail import send_mail
+from django.urls import reverse
 from django.conf import settings
 from django import forms
+from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet
 from accounts.forms import OrderForm
@@ -42,7 +44,7 @@ def event_detail_view(request, id):
 					sum += order.price
 					orders.append(order)
 				i += 1
-
+			sum = float(sum)
 			if orders:
 				organiser = event.creator
 				context = {
@@ -71,6 +73,12 @@ P.S. Sie wollen kostenfrei noch mehr beitragen? Teilen Sie www.soli-ticket.de un
 				#print(message)
 
 				send_mail(subject, message, settings.EMAIL_HOST_USER, [request.POST.get('field-4')])
+
+				request.session["order_id"] = orders[0].id
+				request.session["context"] = {
+					'sum': sum,
+				}
+				return redirect(reverse('payment:process'))
 
 				return render(request, "event/event_donate.html", context)
 
