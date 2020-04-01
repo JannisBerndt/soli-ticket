@@ -9,12 +9,12 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 def payment_process(request):
 	order_id = request.session["order_id"]
-	context = request.session["context"]
+	sum = request.session["sum"]
 	host = request.get_host
 
 	paypal_dict = {
 		'business': settings.PAYPAL_RECEIVER_EMAIL,
-		'amount': '%.2f' % context["sum"],
+		'amount': '%.2f' % sum,
 		'item_name': 'Spende über Soli-Ticket.de',
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
