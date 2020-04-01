@@ -273,7 +273,6 @@ def confirm(request):
     myid = request.GET['id']
     
     # In der URL ist die User-ID eingebaut. Theoretisch sollte man also immer User aus der DB kriegen zu dem die ID gehört
-    # Eventuell trotzdem Abfrage einfügen, ob return-wert nicht null ist... Kein Plan wie man das in Python macht.
     organiser_user = Organiser.objects.get(user_ptr_id = myid)
     
     if organiser_user is None:
