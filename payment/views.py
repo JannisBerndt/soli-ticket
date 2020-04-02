@@ -14,13 +14,13 @@ def payment_process(request):
 	host = request.get_host
 
 	paypal_dict = {
-		'business': paypal_email,
+		'business': settings.PAYPAL_RECEIVER_EMAIL,
 		'amount': '%.2f' % sum,
 		'item_name': 'Spende über Soli-Ticket.de',
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
-		'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
-		'return_url': 'http://{}{}'.format(host, reverse('payment:done')),
+		'notify_url': 'http://solitest.pythonanywhere.com/payment/notify/',
+		'return_url': 'http://127.0.0.1:8000/'.format(host, reverse('payment:done')),
 		'cancel_return': 'http://{}{}'.format(host, reverse('payment:canceled')),
 	}
 
