@@ -14,7 +14,7 @@ def payment_process(request):
 	host = request.get_host
 
 	paypal_dict = {
-		'business': paypal_email,
+		'business': settings.PAYPAL_RECEIVER_EMAIL,
 		'amount': '%.2f' % sum,
 		'item_name': 'Spende über Soli-Ticket.de',
 		'invoice': str(order_id),
