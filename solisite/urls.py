@@ -25,7 +25,6 @@ urlpatterns = [
 	path('about/', about_view, name='about'),
     path('accounts/', include('accounts.urls')),
     path('event/', include('events.urls')),
-	path('paypal/', include('paypal.standard.ipn.urls')),
 	path('payment/', include('payment.urls')),
     path('blog/', blog_view, name='blog'),
 	path('faq/', faq_view, name='faq'),
