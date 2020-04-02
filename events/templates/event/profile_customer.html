@@ -70,23 +70,6 @@
       </div>
       <p class="paragraph-15">Adresse</p>
       <p>{{ organiser.user_address.strasse }} {{ organiser.user_address.hnummer }}<br>{{ organiser.user_address.plz }}, {{ organiser.user_address.ort }}</p>
-      <h5 class="heading-22">SPENDENKONTO</h5>
-      <p class="paragraph-15">Kontoinhaber</p>
-      <p>{{ organiser.bank_account_owner }}</p>
-      <div class="w-row">
-        <div class="column-19 w-col w-col-6">
-          <p class="paragraph-15">IBAN</p>
-          <p>{{ organiser.iban }}</p>
-        </div>
-        <div class="column-20 w-col w-col-6">
-          <p class="paragraph-15">BIC</p>
-          <p>{{ organiser.bic }}</p>
-        </div>
-      </div>
-      {% if organiser.kontosite %}
-    	<p class="paragraph-15">Link zur offiziellen Seite</p>
-		<p><a href="{{ organiser.kontosite }}" target="_blank">{{ organiser.kontosite }}</a></p>
-	  {% endif %}
     </div>
     <div class="divider"></div>
 </div>

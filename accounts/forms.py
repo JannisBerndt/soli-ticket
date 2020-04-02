@@ -71,15 +71,16 @@ class Register3(forms.ModelForm):
 
 class OrganiserForm(forms.ModelForm):
 	organisation_name = forms.CharField(label='Name der Organisation', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-der-Organisation'}))
-	organisation_type = forms.ChoiceField(required=False, label='Art der Organisation', widget=forms.Select(attrs={'class': 'select-field w-select', 'id': 'Art'}), choices = [('gemeinnützig', 'gemeinnützig')])
+	organisation_type = forms.ChoiceField(required=False, label='Art der Organisation', widget=forms.Select(attrs={'class': 'select-field w-select', 'id': 'Art'}), choices = [('gemeinnützig', 'gemeinnützig'), ('nicht gemeinnützig', 'nicht gemeinnützig')])
 	contact_first_name = forms.CharField(label='Vorname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'vorname', 'placeholder': 'Vorname'}))
 	contact_last_name = forms.CharField(label='Nachname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'nachname', 'placeholder': 'Nachname'}))
 	contact_phone = forms.CharField(required=False, label='Telefonnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer', 'placeholder': '(optional)'}))
-	email = forms.EmailField(label='Telefonnummer', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer'}))
-	iban = forms.CharField(label='IBAN', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'IBAN', 'placeholder': 'IBAN'}))
-	bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
-	bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))
-	kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
+	email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email'}))
+	paypal_email = forms.EmailField(label='Paypal Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'paypal_email'}))
+	# iban = forms.CharField(label='IBAN', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'IBAN', 'placeholder': 'IBAN'}))
+	# bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
+	# bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))
+	# kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
 	description = forms.CharField(required=False, label='Informationen über Sie', widget=forms.Textarea(attrs={'rows': 2,'class': 'textarea-2 w-input', 'id': 'field', 'placeholder': '(optional)'}))
 	class Meta:
 		model = Organiser
@@ -90,10 +91,11 @@ class OrganiserForm(forms.ModelForm):
 			'contact_last_name',
 			'contact_phone',
 			'email',
-			'iban',
-			'bic',
-			'bank_account_owner',
-			'kontosite',
+			'paypal_email',
+			# 'iban',
+			# 'bic',
+			# 'bank_account_owner',
+			# 'kontosite',
 			'description',
 		]
 

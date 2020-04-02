@@ -82,10 +82,8 @@ def event_detail_view(request, id):
 
 				request.session["order_id"] = orders[0].id
 				request.session["sum"] = sum
-				request.session["paypal_email"] = settings.PAYPAL_RECEIVER_EMAIL
+				request.session["paypal_email"] = organiser.paypal_email
 				return redirect(reverse('payment:process'))
-
-				return render(request, "event/event_donate.html", context)
 
 	formset = zip(buyables, order_formset)
 	context = {

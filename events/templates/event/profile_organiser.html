@@ -92,23 +92,13 @@
 			{% endif %}
 		</div>
 	  </div>
-	  <h5 class="heading-22">SPENDENKONTO</h5>
-	  <p class="paragraph-15">Kontoinhaber</p>
-	  <p>{{ organiser.bank_account_owner }}</p>
 	  <div class="w-row">
-		<div class="column-31 w-col w-col-6">
-		  <p class="paragraph-15">IBAN</p>
-		  <p>{{ organiser.iban }}</p>
-		</div>
-		<div class="column-32 w-col w-col-6">
-		  <p class="paragraph-15">BIC</p>
-		  <p>{{ organiser.bic }}</p>
-		</div>
-	  </div>
-	  {% if organiser.kontosite %}
-		  <p class="paragraph-15">Link zur offiziellen Seite</p>
-		  <p><a href="{{ organiser.kontosite }}" target="_blank">{{ organiser.kontosite }}</a></p>
-	  {% endif %}
+        <div class="column-29 w-col w-col-6">
+          <p class="paragraph-15">Ihr Paypal-Geschäftskonto</p>
+          <p>{{ organiser.paypal_email }}</p>
+        </div>
+        <div class="column-30 w-col w-col-6"></div>
+      </div>
 	  <a href="{% url 'accounts:profile_update' %}" class="button-9 w-button">Profil bearbeiten</a>
 	</div>
   </div>
