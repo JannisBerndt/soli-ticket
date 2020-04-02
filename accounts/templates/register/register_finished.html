@@ -1,10 +1,22 @@
 {%  extends 'base.html' %}
 
 {% block content %}
-  <div class="section-23">
-    <div class="w-container">
-      <h1 class="heading-26">Vielen Dank!</h1>
-      <h3 class="heading-27">Um die Registrierung abzuschließen, schauen Sie bitte in Ihre Emails und klicken auf den dort angegebenen Link.</h3>
+<div class="section cc-store-home-wrap">
+    <div class="form-header">
+      <div class="intro-content cc-homepage">
+        <div class="intro-text">
+          <div class="heading-jumbo">Das hat funktioniert!</div>
+          <div class="div-block divider"></div>
+          <div class="paragraph-bigger cc-bigger-white-light">Ihr Konto wurde erstellt.<br></div>
+        </div>
+        <div class="columns-5 w-row">
+          <div class="w-col w-col-2"></div>
+          <div class="w-col w-col-8"><a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="submit-button buttonerfolgreich w-button">Zur Profilseite</a></div>
+          <div class="w-col w-col-2"></div>
+        </div>
+        <div class="container-11 w-container"></div>
+      </div>
     </div>
+    <div class="container"></div>
   </div>
 {% endblock %}

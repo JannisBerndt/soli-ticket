@@ -113,6 +113,7 @@ class accounts(View):
     template_name = ['register/register_start.html',
                      'register/register_start2.html',
                      'register/register_start3.html',
+					 'register/check_your_emails.html',
                      'register/register_finished.html']
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
@@ -264,7 +265,10 @@ def confirm(request):
     organiser_user.isActivated = True
     organiser_user.save()
     login(request, organiser_user)
-    return render(request, 'register/register_finished.html')
+    context = {
+		'organiser_user': organiser_user,
+    }
+    return render(request, 'register/register_finished.html', context)
   
 def buildAndSendEmail(o_organiser):
     email = o_organiser.email
