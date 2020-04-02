@@ -286,7 +286,7 @@ def buildAndSendEmail(o_organiser):
 
     if DEBUG:
         # Hier eure email eintragen, wenn ihr was testen wollt. 
-        send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
+        send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email])
     else:
         send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
 
