@@ -21,7 +21,7 @@ def payment_process(request):
 		'currency_code': 'EUR',
 		'notify_url': '{host_base_url}payment/notify/'.format(host_base_url = host),
 		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
-		'cancel_return': '{host_base_url}{}payment/canceled/'.format(host_base_url = host),
+		'cancel_return': '{host_base_url}payment/canceled/'.format(host_base_url = host),
 	}
 
 	form = PayPalPaymentsForm(initial=paypal_dict)
