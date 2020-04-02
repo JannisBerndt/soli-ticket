@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include
 
 from .views import payment_canceled, payment_done, payment_process
 
