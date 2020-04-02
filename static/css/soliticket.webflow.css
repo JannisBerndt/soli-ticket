@@ -210,6 +210,7 @@ figcaption {
   opacity: 0.6;
   color: #000;
   font-size: 24px;
+  text-align: center;
 }
 
 .button {
@@ -1975,6 +1976,7 @@ figcaption {
 
 .columns-3 {
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .paragraph-13 {
@@ -2255,6 +2257,9 @@ figcaption {
     padding-left: 0px;
   }
   .styleguide-block {
+    text-align: center;
+  }
+  .paragraph-bigger.cc-bigger-white-light {
     text-align: center;
   }
   .button {
