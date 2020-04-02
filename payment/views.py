@@ -11,7 +11,7 @@ def payment_process(request):
 	order_id = request.session["order_id"]
 	sum = request.session["sum"]
 	paypal_email = request.session["paypal_email"]
-	host = request.get_host
+	host = settings.HOST_URL_BASE
 
 	paypal_dict = {
 		'business': paypal_email,
@@ -19,9 +19,9 @@ def payment_process(request):
 		'item_name': 'Spende über Soli-Ticket.de',
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
-		'notify_url': 'http://{}/payment/notify/'.format(host),
-		'return_url': 'http://{}{}'.format(host, reverse('payment:done')),
-		'cancel_return': 'http://{}{}'.format(host, reverse('payment:canceled')),
+		'notify_url': '{host_base_url}payment/notify/'.format(host_base_url = host),
+		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
+		'cancel_return': '{host_base_url}{}payment/canceled/'.format(host_base_url = host),
 	}
 
 	form = PayPalPaymentsForm(initial=paypal_dict)

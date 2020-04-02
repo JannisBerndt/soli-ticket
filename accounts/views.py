@@ -278,7 +278,7 @@ def buildAndSendEmail(o_organiser):
     if DEBUG:
         confirmLink = 'http://127.0.0.1:8000/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
     else:
-        confirmLink = 'https://www.soli-ticket.de/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
+        confirmLink = 'https://{host}/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(host = settings.HOST_URL,organiser_code = o_code, myid = id)
 
 
     subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
