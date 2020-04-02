@@ -19,17 +19,26 @@
         <div class="w-col w-col-3"></div>
         <div class="w-col w-col-6">
           <label for="name" class="field-label">EMAIL-Adresse</label>
-          <font size="3" color="red" disabled = "True">{{ error1 }}</font>
-          <input type="email" class="text-field-2 w-input" autofocus="true" maxlength="256" name="email" data-name="Name" id="email" required="">
-          <label for="name" class="field-label">Benutzername</label
-          <font size="3" color="red" disabled = "True">{{ error2 }}</font>
-			    <input type="username" class="text-field-2 w-input" autofocus="true" maxlength="256" name="username" data-name="Name" id="username" required="">
-          <label for="email">Passwort</label>
-			    <font size="3" color="red" disabled = "True">{{ error3 }}</font>
-			    <input type="password" class="text-field-2 w-input" maxlength="256" name="pw1" data-name="Email" id="passwort" required="">
-		      <label for="name">Passwort wiederholen</label>
-			    <input type="password" class="text-field-2 w-input" maxlength="256" name="pw2" data-name="Email" id="passwort2" required="">
-			    <input type="submit" value="Registrieren" formmethod="post" data-wait="Please wait..." class="submit-button w-button">
+          {% for error in register1.email.errors %}
+            <font size="3" color="red" disabled = "True"> {{ error }} </font>
+          {% endfor %}
+			    {{ register1.email }}
+          <label for="username" class="field-label">Benutzername</label>
+          {% for error in register1.user.errors %}
+            <font size="3" color="red" disabled = "True"> {{ error }} </font>
+          {% endfor %}
+			    {{ register1.user }}
+          <label for="pw1">Passwort</label>
+          {% for error in register1.pw1.errors %}
+            <font size="3" color="red" disabled = "True"> {{ error }} </font>
+          {% endfor %}
+			    {{ register1.pw1 }}
+		      <label for="pw2">Passwort wiederholen</label>
+			    {% for error in register1.pw2.errors %}
+            <font size="3" color="red" disabled = "True"> {{ error }} </font>
+          {% endfor %}
+			    {{ register1.pw2 }}
+			    <input type="submit" value="Weiter" formmethod="post" data-wait="Please wait..." class="submit-button w-button">
         </div>
         <div class="w-col w-col-3"></div>
       </div>
