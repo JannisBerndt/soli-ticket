@@ -10,12 +10,15 @@ from paypal.standard.forms import PayPalPaymentsForm
 def payment_process(request):
 	order_id = request.session["order_id"]
 	sum = request.session["sum"]
+
 	paypal_email = request.session["paypal_email"]
 	host = settings.HOST_URL_BASE
 
+
 	paypal_dict = {
 		'business': paypal_email,
-		'amount': '%.2f' % sum,
+		'amount': '%.2f' % sum*0.84034,
+		'tax': sum*0.84034*0.19,
 		'item_name': 'Zahlung über Soli-Ticket.de',
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
