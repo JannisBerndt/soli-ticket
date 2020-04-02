@@ -116,7 +116,6 @@ class accounts(View):
 
         
         req = request.POST
-        print(req)
 
         # Wir waren auf page 1:
         if "pw1" in req:
