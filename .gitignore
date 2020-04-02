@@ -10,8 +10,4 @@ migrations
 !__init__.py
 solisite/secret_key.txt
 solisite/settings.py
-<<<<<<< HEAD
 soli-ticket.code-workspace
-=======
-soli-ticket.code-workspace
->>>>>>> develop
