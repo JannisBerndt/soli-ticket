@@ -57,7 +57,7 @@ def event_detail_view(request, id):
 				}
 
 				subject = 'Ihre Spende auf www.Soli-Ticket.de'
-				message = 'Hallo! \n\n\
+				message = 'Hallo! \n\n\'\
 Vielen Dank, dass Sie Ihre Spende in Höhe von ' + str(sum) + '€ zugesagt haben. ' + organiser.organisation_name + ' bedankt sich vielmals dafür! \n\
 Sie leisten mit Ihrer Spende einen wichtigen Beitrag dazu, kritische Einnahmeausfälle abzumildern und unsere Kulturlandschaft zu erhalten. Vielen, vielen Dank! \n\
 Hier nochmal Ihre Spendedaten zur Übersicht. Bitte überweisen Sie (falls noch nicht geschehen) noch heute - damit ' + organiser.organisation_name + ' \
