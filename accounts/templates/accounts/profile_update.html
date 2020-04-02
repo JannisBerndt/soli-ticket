@@ -76,26 +76,10 @@
 		  {{ organiser_form.contact_phone.errors }}
 		  {{ organiser_form.contact_phone }}
 		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Telenummer" data-name="Telenummer" placeholder="(optional)" id="Telenummer"> -->
-		  <label for="Kontoinhaber">Kontodaten des Spendenkontos Ihrer Organisation</label>
-		  {{ organiser_form.bank_account_owner.errors }}
-		  {{ organiser_form.bank_account_owner }}
-		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Kontoinhaber" data-name="Kontoinhaber" placeholder="Kontoinhaber" id="Kontoinhaber" required=""> -->
-          <div class="w-row">
-            <div class="column-17 w-col w-col-8">
-				{{ organiser_form.iban.errors }}
-				{{ organiser_form.iban }}
-				<!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="IBAN" data-name="IBAN" placeholder="IBAN" id="IBAN" required=""> -->
-			</div>
-            <div class="column-18 w-col w-col-4">
-				{{ organiser_form.bic.errors }}
-				{{ organiser_form.bic }}
-				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="BIC" data-name="BIC" placeholder="BIC" id="BIC" required=""> -->
-			</div>
-		  </div>
-		  <label for="KontoVerifikationsLink">Sie haben Ihre Kontodaten auch auf Ihrer offiziellen Webseite veröffentlicht? Bitte geben Sie hier den Link dorthin an, damit ihre Spender die Echtheit der bei uns angezeigten Informationen überprüfen können:</label>
-		  {{ organiser_form.kontosite.errors }}
-		  {{ organiser_form.kontosite }}
-		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="KontoVerifikationsLink" data-name="Konto Verifikations Link" placeholder="(optional)" id="KontoVerifikationsLink"> -->
+		  <label for="Kontoinhaber">Ihr Paypal-geschäftskonto</label>
+		  {{ organiser_form.paypal_email.errors }}
+		  {{ organiser_form.paypal_email }}
+		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Kontoinhaber" data-name="Kontoinhaber" placeholder="Email-Adresse" id="Kontoinhaber" required=""> -->
 		  <input type="submit" value="Änderungen speichern" data-wait="Please wait..." class="submit-button w-button">
 		  <a href="{% url 'events:event_organiser_list' organiser_user %}" class="button-4 w-button">Abbrechen</a>
 		</form>

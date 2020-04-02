@@ -70,10 +70,6 @@
       </div>
       <p class="paragraph-15">Adresse</p>
       <p>{{ organiser.user_address.strasse }} {{ organiser.user_address.hnummer }}<br>{{ organiser.user_address.plz }}, {{ organiser.user_address.ort }}</p>
-      {% if organiser.kontosite %}
-    	<p class="paragraph-15">Link zur offiziellen Seite von {{ organiser.organisation_name }}</p>
-		<p><a href="{{ organiser.kontosite }}" target="_blank">{{ organiser.kontosite }}</a></p>
-	  {% endif %}
     </div>
     <div class="divider"></div>
 </div>

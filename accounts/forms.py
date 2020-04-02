@@ -80,7 +80,7 @@ class OrganiserForm(forms.ModelForm):
 	# iban = forms.CharField(label='IBAN', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'IBAN', 'placeholder': 'IBAN'}))
 	# bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
 	# bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))
-	kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
+	# kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
 	description = forms.CharField(required=False, label='Informationen über Sie', widget=forms.Textarea(attrs={'rows': 2,'class': 'textarea-2 w-input', 'id': 'field', 'placeholder': '(optional)'}))
 	class Meta:
 		model = Organiser
@@ -95,7 +95,7 @@ class OrganiserForm(forms.ModelForm):
 			# 'iban',
 			# 'bic',
 			# 'bank_account_owner',
-			'kontosite',
+			# 'kontosite',
 			'description',
 		]
 
