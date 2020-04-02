@@ -8,7 +8,7 @@ app_name = "payment"
 urlpatterns = [
 	path('done/', payment_done, name='done'),
 	path('canceled/', payment_canceled, name='canceled'),
-	path('process', payment_process, name='process'),
+	path('process/', payment_process, name='process'),
 
 	path('notify/', include('paypal.standard.ipn.urls'))
 ]
