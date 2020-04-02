@@ -29,7 +29,7 @@ def login_page(request):
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        return render(request, 'register/confirm_Email.html')
+                        return render(request, 'register/check_your_emails.html')
                     else: 
                         login(request, user)
                         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)

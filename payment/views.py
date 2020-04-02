@@ -16,7 +16,7 @@ def payment_process(request):
 	paypal_dict = {
 		'business': paypal_email,
 		'amount': '%.2f' % sum,
-		'item_name': 'Spende über Soli-Ticket.de',
+		'item_name': 'Zahlung über Soli-Ticket.de',
 		'invoice': str(order_id),
 		'currency_code': 'EUR',
 		'notify_url': '{host_base_url}payment/notify/'.format(host_base_url = host),
