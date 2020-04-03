@@ -10,6 +10,9 @@ from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet
 from accounts.forms import OrderForm
+import uuid 
+import random
+import string
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
@@ -35,6 +38,14 @@ def event_detail_view(request, id):
 			i=0
 			sum = 0
 			orders = []
+			
+			o_uid = invoiceUID_generator()
+			order = Order.objects.filter(invoiceUID = o_uid)
+			
+			#while(order is not None):
+			#	o_uid = invoiceUID_generator()
+			#	order = Order.objects.filter(invoiceUID = o_uid)
+			
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
 				if order.amount:
@@ -42,11 +53,13 @@ def event_detail_view(request, id):
 					order.price = buyables[i].price * order.amount
 					order.customer = customer
 					order.customer_mail = request.POST.get('field-4')
+					order.invoiceUID = o_uid
 					order.save()
 					sum += order.price
 					orders.append(order)
 				i += 1
 			sum = float(sum)
+<<<<<<< HEAD
 			if sum <= 250:
 				if orders:
 					organiser = event.creator
@@ -87,6 +100,47 @@ def event_detail_view(request, id):
 					request.session["sum"] = sum
 					request.session["paypal_email"] = organiser.paypal_email
 					return redirect(reverse('payment:process'))
+=======
+			if orders:
+				organiser = event.creator
+				context = {
+					'sum': sum,
+					'organiser': organiser,
+					'orders': orders,
+					'event': event,
+					'authenticated': request.user.is_authenticated,
+					'organiser_user': organiser_user,
+				}
+
+				subject = 'Ihre Spende auf www.Soli-Ticket.de'
+				"""
+				message = 'Hallo! \n\n'\
+'Vielen Dank, dass Sie Ihre Spende in Höhe von ' + str(sum) + '€ zugesagt haben. ' + organiser.organisation_name + ' bedankt sich vielmals dafür! \n'\
+'Sie leisten mit Ihrer Spende einen wichtigen Beitrag dazu, kritische Einnahmeausfälle abzumildern und unsere Kulturlandschaft zu erhalten. Vielen, vielen Dank! \n'\
+'Hier nochmal Ihre Spendedaten zur Übersicht. Bitte überweisen Sie (falls noch nicht geschehen) noch heute - damit ' + organiser.organisation_name + ' '\
+'direkt von Ihrer Spende profitiert: \n\n'\
+'Gesamtbetrag: ' + str(sum) + '€ \n'\
+'Kontoinhaber: ' + organiser.bank_account_owner + ' \n'\
+'IBAN: ' + organiser.iban +  '\n'\
+'BIC: ' + organiser.bic + ' \n'\
+'Verwendungszweck: Spende über Soli-Ticket \n\n'\
+'Viele Grüße und vielen, vielen Dank von ' + organiser.organisation_name + ' und dem Team von www.soli-ticket.de ! \n\n'\
+'P.S. Sie wollen kostenfrei noch mehr beitragen? Teilen Sie www.soli-ticket.de und alle interessanten Veranstaltungen mit Ihren Kontakten!'
+
+"""
+				message = 'Das ist eine Test - message'
+
+
+
+				#print(message)
+
+				send_mail(subject, message, settings.EMAIL_HOST_USER, [request.POST.get('field-4')])
+
+				request.session["invoiceUID"] = o_uid
+				request.session["sum"] = sum
+				request.session["paypal_email"] = organiser.paypal_email
+				return redirect(reverse('payment:process'))
+>>>>>>> 44b5335e4eb0d4027afb00cf54cd00669546ed3f
 
 	formset = zip(buyables, order_formset)
 	context = {
@@ -229,3 +283,7 @@ def event_organiser_list_view(request, organiser):
 		return render(request, "event/profile_organiser.html", context)
 	else:
 		return render(request, "event/profile_customer.html", context)
+
+
+def invoiceUID_generator(size = 7, chars= string.digits):
+    return 'ST'+''.join(random.choice(chars) for _ in range(size))

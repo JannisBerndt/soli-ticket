@@ -69,3 +69,4 @@ class Order(models.Model):
     price = models.DecimalField(null=True, max_digits=1000, decimal_places=2)
     createdDateTime = models.DateTimeField(auto_now_add=True)
     changedDateTime = models.DateTimeField(auto_now=True)
+    invoiceUID = models.CharField(max_length = 64, null = False, default = 'nicht_migrierte_orders')

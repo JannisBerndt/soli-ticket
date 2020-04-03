@@ -48,6 +48,7 @@ class Buyable(models.Model):
 	buyable_name = models.CharField(max_length=120)
 	price = models.DecimalField(max_digits=1000, decimal_places=2)
 	belonging_event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_buyable', related_query_name='buyables_set')
+	tax_rate = models.DecimalField(decimal_places = 2, default = 0.19, max_digits = 3)
 
 	def __str__(self):
 		return self.buyable_name
