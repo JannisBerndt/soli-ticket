@@ -10,6 +10,9 @@ from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet
 from accounts.forms import OrderForm
+import uuid 
+import random
+import string
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
@@ -33,6 +36,14 @@ def event_detail_view(request, id):
 			i=0
 			sum = 0
 			orders = []
+			
+			o_uid = invoiceUID_generator()
+			order = Order.objects.filter(invoiceUID = o_uid)
+			
+			#while(order is not None):
+			#	o_uid = invoiceUID_generator()
+			#	order = Order.objects.filter(invoiceUID = o_uid)
+			
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
 				if order.amount:
@@ -40,6 +51,7 @@ def event_detail_view(request, id):
 					order.price = buyables[i].price * order.amount
 					order.customer = customer
 					order.customer_mail = request.POST.get('field-4')
+					order.invoiceUID = o_uid
 					order.save()
 					sum += order.price
 					orders.append(order)
@@ -80,7 +92,7 @@ def event_detail_view(request, id):
 
 				send_mail(subject, message, settings.EMAIL_HOST_USER, [request.POST.get('field-4')])
 
-				request.session["order_id"] = orders[0].id
+				request.session["invoiceUID"] = o_uid
 				request.session["sum"] = sum
 				request.session["paypal_email"] = organiser.paypal_email
 				return redirect(reverse('payment:process'))
@@ -225,3 +237,7 @@ def event_organiser_list_view(request, organiser):
 		return render(request, "event/profile_organiser.html", context)
 	else:
 		return render(request, "event/profile_customer.html", context)
+
+
+def invoiceUID_generator(size = 7, chars= string.digits):
+    return 'ST'+''.join(random.choice(chars) for _ in range(size))
