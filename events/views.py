@@ -13,6 +13,8 @@ from accounts.forms import OrderForm
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
+	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
+	print(organiser)
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
@@ -95,6 +97,7 @@ def event_detail_view(request, id):
 		'order_formset': order_formset,
 		'formset': formset,
 		'organiser_user': organiser_user,
+		'organiser': organiser,
 	}
 	return render(request, "event/event_detail.html", context)
 

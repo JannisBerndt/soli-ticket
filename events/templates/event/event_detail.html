@@ -84,7 +84,11 @@
           <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€)</label><label>Anzahl</label>
             {{ order_formset.management_form }}
 			{% for buyable, order_form in formset %}
-				<p>{{ buyable.buyable_name }}</p>
+				{% if organiser.organisation_type == 'gemeinnützig' %}
+					<p>Spende "{{ buyable.buyable_name }}"</p>
+				{% else %}
+					<p>{{ buyable.buyable_name }}</p>
+				{% endif %}
 				<p class="price">{{ buyable.price }}</p>
 				{{ order_form.amount }}
 			{% endfor %}
