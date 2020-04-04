@@ -40,7 +40,7 @@ def event_detail_view(request, id):
 			orders = []
 			
 			o_uid = invoiceUID_generator()
-			order = Order.objects.filter(invoiceUID = o_uid)
+			
 			
 			#while(order is not None):
 			#	o_uid = invoiceUID_generator()

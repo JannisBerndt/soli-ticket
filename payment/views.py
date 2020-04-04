@@ -228,6 +228,6 @@ def sendDankesEmail(ipn_obj):
 
 	if settings.PAYPAL_TEST:
 		send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
-	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
+	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'])
 	send_mail(subject, content, settings.EMAIL_HOST_USER, [Order.customer_mail])
 #endregion
