@@ -227,14 +227,7 @@ def sendDankesEmail(ipn_obj):
 				'Vielen, vielen Dank.\n\n'\
 				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'.format(Veranstalter = Organisation.organisation_name)
 	"""
-	print(content)
-	print('\n')
-	print(subject)
-	print('\n')
-	print(Organisation)
-	print('\n')
-	print(Order)
-	print('\n')
+
 	subject = "Hallo"
 	content = "Test123"
 	if settings.PAYPAL_TEST:
