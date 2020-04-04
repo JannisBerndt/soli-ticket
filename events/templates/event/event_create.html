@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load custom_tags %}
+
 {% block title %}
 <title>Neue Veranstaltung erstellen</title>
 {% endblock %}
@@ -81,7 +83,7 @@
                                     </div>
                                     <div>
                                         {{ buyable_form.tax_rate.errors }}
-                                        {{ buyable_form.tax_rate }}
+                                        {{ buyable_form.tax_rate|setHTMLAttributes:"{'class': 'text-field-2 w-select'}" }}
                                     </div>
                                 {% endfor %}
                             </div>
