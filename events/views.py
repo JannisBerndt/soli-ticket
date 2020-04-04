@@ -8,7 +8,7 @@ from django.conf import settings
 from django import forms
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
-from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet
+from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
 from accounts.forms import OrderForm
 import uuid 
 import random
@@ -134,12 +134,23 @@ def event_detail_view(request, id):
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
-	print(organiser)
+	if organiser.organisation_type == 'gemeinnützig':
+		initial_data = [{'tax_rate': 0.00},
+						{'tax_rate': 0.00},
+						{'tax_rate': 0.00},
+						{'tax_rate': 0.00},
+						{'tax_rate': 0.00},]
+	else:
+		initial_data = [{'tax_rate': 0.19},
+						{'tax_rate': 0.19},
+						{'tax_rate': 0.19},
+						{'tax_rate': 0.19},
+						{'tax_rate': 0.19},]
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none())
-		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
+		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none(), initial = initial_data)
+		if event_form.is_valid() and location_form.is_valid() and validate_with_initial(buyable_formset):
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
 			location.creator = organiser
@@ -147,16 +158,17 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
-			buyables = buyable_formset.save(commit=False)
-			for buyable in buyables:
-				buyable.creator = organiser
-				buyable.belonging_event = event
-				buyable.save()
+			for buyable_form in buyable_formset:
+				if buyable_form.has_changed():
+					buyable = buyable_form.save(commit=False)
+					buyable.creator = organiser
+					buyable.belonging_event = event
+					buyable.save()
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none())
+		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none(), initial = initial_data)
 
 	context = {
 		'event_form': event_form,

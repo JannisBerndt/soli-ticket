@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from accounts.models import Organiser
+from decimal import Decimal
 
 class Eventlocation(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
@@ -40,6 +41,10 @@ class Event(models.Model):
 		return self.name
 
 class Buyable(models.Model):
+	SEVEN = round(Decimal(0.07), 2)
+	NINETEEN = round(Decimal(0.19), 2)
+	ZERO = round(Decimal(0.00), 2)
+	TAX_RATES = [(NINETEEN, '19%'), (SEVEN, '7%'), (ZERO, '0%')]
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
 								related_name = "buyable_contact_set",
 								related_query_name="buyable")
@@ -48,7 +53,7 @@ class Buyable(models.Model):
 	buyable_name = models.CharField(max_length=120)
 	price = models.DecimalField(max_digits=1000, decimal_places=2)
 	belonging_event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_buyable', related_query_name='buyables_set')
-	tax_rate = models.DecimalField(decimal_places = 2, default = 0.19, max_digits = 3)
+	tax_rate = models.DecimalField(decimal_places = 2, default = 0.19, max_digits = 3, choices=TAX_RATES)
 
 	def __str__(self):
 		return self.buyable_name
