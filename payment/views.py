@@ -7,14 +7,10 @@ from paypal.standard.forms import PayPalPaymentsForm
 from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
+from accounts.models import Order
 
-
-
-
-
-
-
-# Nur um zu testen....
+#region Imports, die aus der paypal.standarf.ipn.views kommen. 
+# Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
 from django.core.mail import send_mail
 import logging
 from django.http import HttpResponse, QueryDict
@@ -25,7 +21,11 @@ from paypal.standard.ipn.models import PayPalIPN
 from paypal.standard.models import DEFAULT_ENCODING
 from paypal.utils import warn_untested
 
-# Create your views here.
+CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
+                      "application/x-www-form-urlencoded. If using django's "
+                      "test Client, set `content_type` explicitly")
+logger = logging.getLogger(__name__)
+#endregion
 
 def payment_process(request):
 	invoiceUID = request.session["invoiceUID"]
@@ -123,13 +123,7 @@ def payment_canceled(request):
 	return render(request, 'payment/canceled.html')
 
 
-
-CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
-                      "application/x-www-form-urlencoded. If using django's "
-                      "test Client, set `content_type` explicitly")
-logger = logging.getLogger(__name__)
-
-
+#region IPN-Handling
 @require_POST
 @csrf_exempt
 def payment_ipn(request):
@@ -151,8 +145,6 @@ def payment_ipn(request):
     if not request.META.get('CONTENT_TYPE', '').startswith(
             'application/x-www-form-urlencoded'):
         raise AssertionError(CONTENT_TYPE_ERROR)
-
-
 
     # Clean up the data as PayPal sends some weird values such as "N/A"
     # Also, need to cope with custom encoding, which is stored in the body (!).
@@ -211,9 +203,9 @@ def payment_ipn(request):
             ipn_obj.verify()
 
 
-    subject='Bestätigung'
-    content='Jo, Zahlung mit folgender invoice-URL erhalten {invoiceUID}'.format(invoiceUID = ipn_obj.invoice)
-    send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
+    if ipn_obj.payment_status == 'completed':
+		sendDankesEmail(ipn_obj)
+
     ipn_obj.save()
     ipn_obj.send_signals()
 
@@ -223,3 +215,19 @@ def payment_ipn(request):
 
     return HttpResponse("OKAY")
 
+def sendDankesEmail(ipn_obj):
+	
+	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
+	Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
+	Organisation = Organisation.objects.get(paypal_email = ipn_obj.receiver_email)
+
+	subject = 'Vielen vielen Dank für Ihre Unterstützung!'
+	content = 	'Ihre Unterstützung ist bei {Veranstalter} angekommen!\n'\
+				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. {Veranstalter} und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'\
+				'Wir, das Team von Soli-Ticket, betreiben diese kostenfreie Plattform als Projekt neben unserem Studium. Falls Sie auch uns eine Kaffee ausgeben möchten oder uns helfen möchten unsere Kosten zu decken, können Sie dies auf der folgenden Seite tun: Link zu unserer Veranstaltung.\n'\
+				'Genau so würde es uns und den vielen Veranstaltern und Kulturstätten helfen, wenn Sie unsere Plattform weiterempfehlen. An Ihre Bekannten, Freunde, Kollegen, aber natürlich auch an andere Kulturstätten, die Ihnen am Herzen liegen.\n'\
+				'Vielen, vielen Dank.\n\n'\
+				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'.format(Veranstalter = Organisation.organisation_name)
+
+	send_mail(subject, content, settings.EMAIL_HOST_USER, [Order.customer_mail])
+#endregion
