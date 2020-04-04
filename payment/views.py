@@ -31,8 +31,6 @@ def payment_process(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 	
-	if settings.PAYPAL_TEST:
-		paypal_email = settings.PAYPAL_RECEIVER_EMAIL
 	
 	host = settings.HOST_URL_BASE
 
