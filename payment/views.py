@@ -122,7 +122,6 @@ def payment_done(request):
 def payment_canceled(request):
 	return render(request, 'payment/canceled.html')
 
-
 #region IPN-Handling
 @require_POST
 @csrf_exempt
@@ -204,7 +203,7 @@ def payment_ipn(request):
 
 
     if ipn_obj.payment_status == 'completed':
-		sendDankesEmail(ipn_obj)
+	    sendDankesEmail(ipn_obj)
 
     ipn_obj.save()
     ipn_obj.send_signals()
