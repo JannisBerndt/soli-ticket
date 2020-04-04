@@ -214,22 +214,18 @@ def payment_ipn(request):
 def sendDankesEmail(ipn_obj):
 	
 	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
-	"""
+	
 	Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
 	Organisation = Organisation.objects.get(paypal_email = ipn_obj.receiver_email)
 
 	subject = 'Vielen vielen Dank für Ihre Unterstützung!'
-	content = 	'Ihre Unterstützung ist bei {Veranstalter} angekommen!'.format(Veranstalter = Organisation.organisation_name)
-	
-				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. {Veranstalter} und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'\
+	content = 	'Ihre Unterstützung ist bei {Veranstalter} angekommen!'.format(Veranstalter = Organisation.organisation_name) +	\
+				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. {Veranstalter} und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'.format(Veranstalter = Organisation.organisation_name) +\
 				'Wir, das Team von Soli-Ticket, betreiben diese kostenfreie Plattform als Projekt neben unserem Studium. Falls Sie auch uns eine Kaffee ausgeben möchten oder uns helfen möchten unsere Kosten zu decken, können Sie dies auf der folgenden Seite tun: Link zu unserer Veranstaltung.\n'\
 				'Genau so würde es uns und den vielen Veranstaltern und Kulturstätten helfen, wenn Sie unsere Plattform weiterempfehlen. An Ihre Bekannten, Freunde, Kollegen, aber natürlich auch an andere Kulturstätten, die Ihnen am Herzen liegen.\n'\
 				'Vielen, vielen Dank.\n\n'\
-				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'.format(Veranstalter = Organisation.organisation_name)
-	"""
+				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'
 
-	subject = "Hallo"
-	content = "Test123"
 	if settings.PAYPAL_TEST:
 		send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
 	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
