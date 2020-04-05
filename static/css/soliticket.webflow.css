@@ -1402,6 +1402,14 @@ figcaption {
   margin-left: auto;
 }
 
+.submit-button.edit {
+  background-color: #8fcdff;
+}
+
+.submit-button.edit.abbrechen {
+  background-color: #ccc;
+}
+
 .container-2 {
   height: 1080px;
 }
@@ -2296,6 +2304,11 @@ figcaption {
   font-style: italic;
 }
 
+.button-11 {
+  border-radius: 8px;
+  background-color: #ccc;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -2695,6 +2708,10 @@ figcaption {
     margin-left: 10px;
   }
   .section-19 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-20 {
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -3162,5 +3179,11 @@ figcaption {
   .grid-7 {
     -ms-grid-columns: 2fr 0.5fr 0.5fr;
     grid-template-columns: 2fr 0.5fr 0.5fr;
+  }
+  .button-11 {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
   }
 }
