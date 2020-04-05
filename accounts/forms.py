@@ -60,7 +60,7 @@ class Register2(forms.ModelForm):
 		]
 
 class Register3(forms.ModelForm):
-	paypal_email =	forms.EmailField(widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
+	paypal_email =	forms.EmailField(required=False,widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
 
 	class Meta:
 		model = Organiser
@@ -76,7 +76,7 @@ class OrganiserForm(forms.ModelForm):
 	contact_last_name = forms.CharField(label='Nachname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'nachname', 'placeholder': 'Nachname'}))
 	contact_phone = forms.CharField(required=False, label='Telefonnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer', 'placeholder': '(optional)'}))
 	email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email'}))
-	paypal_email = forms.EmailField(label='Paypal Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'paypal_email'}))
+	paypal_email = forms.EmailField(required=False,label='Paypal Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'paypal_email'}))
 	# iban = forms.CharField(label='IBAN', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'IBAN', 'placeholder': 'IBAN'}))
 	# bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
 	# bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))

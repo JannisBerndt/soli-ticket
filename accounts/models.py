@@ -38,7 +38,7 @@ class Organiser(User):
     bank_account_owner = models.CharField(max_length=120, null=True)
     kontosite = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    paypal_email = models.EmailField(null=True,max_length=254)
+    paypal_email = models.EmailField(null=True, blank=True, max_length=254)
     isActivated = models.BooleanField(default = True)
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten', blank = False)
 

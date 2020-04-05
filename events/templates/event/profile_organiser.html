@@ -94,8 +94,10 @@
 	  </div>
 	  <div class="w-row">
         <div class="column-29 w-col w-col-6">
-          <p class="paragraph-15">Ihr Paypal-Geschäftskonto</p>
-          <p>{{ organiser.paypal_email }}</p>
+		  {% if organiser.paypal_email %}
+          	<p class="paragraph-15">Ihr Paypal-Geschäftskonto</p>
+		  	<p>{{ organiser.paypal_email }}</p>
+		  {% endif %}
         </div>
         <div class="column-30 w-col w-col-6"></div>
       </div>
