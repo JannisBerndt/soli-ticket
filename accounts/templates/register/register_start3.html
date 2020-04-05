@@ -14,7 +14,7 @@
         <form id="email-form" name="email-form" data-name="Email Form" class="form"> {% csrf_token %}
           <div class="w-row">
             <div class="w-col w-col-3"></div>
-            <div class="w-col w-col-6"><label for="paypal-mail">ihr Paypal-geschäftskonto</label>
+            <div class="w-col w-col-6"><label for="paypal-mail">Ihr Paypal-Geschäftskonto</label>
             {% for error in register3.paypal_email.errors %}
                   <font size="3" color="red" disabled = "True"> {{ error }} </font>
               {% endfor %}
