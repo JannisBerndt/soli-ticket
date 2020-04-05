@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator
 from accounts.models import Organiser
 from decimal import Decimal
 
@@ -51,7 +52,7 @@ class Buyable(models.Model):
 	createdDateTime = models.DateTimeField(auto_now_add=True)
 	changedDateTime = models.DateTimeField(auto_now=True)
 	buyable_name = models.CharField(max_length=120)
-	price = models.DecimalField(max_digits=1000, decimal_places=2)
+	price = models.DecimalField(max_digits=1000, decimal_places=2, validators=[MinValueValidator(0)])
 	belonging_event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_buyable', related_query_name='buyables_set')
 	tax_rate = models.DecimalField(decimal_places = 2, default = 0.19, max_digits = 3, choices=TAX_RATES)
 

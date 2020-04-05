@@ -135,17 +135,17 @@ def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if organiser.organisation_type == 'gemeinnützig':
-		initial_data = [{'tax_rate': 0.00},
-						{'tax_rate': 0.00},
-						{'tax_rate': 0.00},
-						{'tax_rate': 0.00},
-						{'tax_rate': 0.00},]
+		initial_data = [{'tax_rate': Buyable.ZERO},
+						{'tax_rate': Buyable.ZERO},
+						{'tax_rate': Buyable.ZERO},
+						{'tax_rate': Buyable.ZERO},
+						{'tax_rate': Buyable.ZERO},]
 	else:
-		initial_data = [{'tax_rate': 0.19},
-						{'tax_rate': 0.19},
-						{'tax_rate': 0.19},
-						{'tax_rate': 0.19},
-						{'tax_rate': 0.19},]
+		initial_data = [{'tax_rate': Buyable.NINETEEN},
+						{'tax_rate': Buyable.NINETEEN},
+						{'tax_rate': Buyable.NINETEEN},
+						{'tax_rate': Buyable.NINETEEN},
+						{'tax_rate': Buyable.NINETEEN},]
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)

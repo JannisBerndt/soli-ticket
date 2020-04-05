@@ -79,7 +79,7 @@
                                     </div>
                                     <div>
                                         {{ buyable_form.price.errors }}
-                                        {{ buyable_form.price }}
+                                        {{ buyable_form.price|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': '0,00', 'min': '0'}" }}
                                     </div>
                                     <div>
                                         {{ buyable_form.tax_rate.errors }}
