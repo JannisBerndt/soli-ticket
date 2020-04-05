@@ -11,7 +11,7 @@ def landingpage_view(request):
         'authenticated': request.user.is_authenticated,
         'organiser_user': organiser_user,
     }
-    return render(request, 'solisite/landingpage.html', context)
+    return render(request, 'solisite/maintenance.html', context)
 
 def about_view(request):
     try:
