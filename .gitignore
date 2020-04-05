@@ -11,3 +11,6 @@ migrations
 solisite/secret_key.txt
 solisite/settings.py
 soli-ticket.code-workspace
+
+db_backups/
+db_backup.py
