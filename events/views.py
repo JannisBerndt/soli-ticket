@@ -40,7 +40,7 @@ def event_detail_view(request, id):
 			orders = []
 			
 			o_uid = invoiceUID_generator()
-			order = Order.objects.filter(invoiceUID = o_uid)
+			
 			
 			#while(order is not None):
 			#	o_uid = invoiceUID_generator()
@@ -69,30 +69,6 @@ def event_detail_view(request, id):
 					'authenticated': request.user.is_authenticated,
 					'organiser_user': organiser_user,
 				}
-
-				subject = 'Ihre Spende auf www.Soli-Ticket.de'
-				"""
-				message = 'Hallo! \n\n'\
-'Vielen Dank, dass Sie Ihre Spende in Höhe von ' + str(sum) + '€ zugesagt haben. ' + organiser.organisation_name + ' bedankt sich vielmals dafür! \n'\
-'Sie leisten mit Ihrer Spende einen wichtigen Beitrag dazu, kritische Einnahmeausfälle abzumildern und unsere Kulturlandschaft zu erhalten. Vielen, vielen Dank! \n'\
-'Hier nochmal Ihre Spendedaten zur Übersicht. Bitte überweisen Sie (falls noch nicht geschehen) noch heute - damit ' + organiser.organisation_name + ' '\
-'direkt von Ihrer Spende profitiert: \n\n'\
-'Gesamtbetrag: ' + str(sum) + '€ \n'\
-'Kontoinhaber: ' + organiser.bank_account_owner + ' \n'\
-'IBAN: ' + organiser.iban +  '\n'\
-'BIC: ' + organiser.bic + ' \n'\
-'Verwendungszweck: Spende über Soli-Ticket \n\n'\
-'Viele Grüße und vielen, vielen Dank von ' + organiser.organisation_name + ' und dem Team von www.soli-ticket.de ! \n\n'\
-'P.S. Sie wollen kostenfrei noch mehr beitragen? Teilen Sie www.soli-ticket.de und alle interessanten Veranstaltungen mit Ihren Kontakten!'
-
-"""
-				message = 'Das ist eine Test - message'
-
-
-
-				#print(message)
-
-				send_mail(subject, message, settings.EMAIL_HOST_USER, [request.POST.get('field-4')])
 
 				request.session["invoiceUID"] = o_uid
 				request.session["sum"] = sum

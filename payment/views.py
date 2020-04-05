@@ -7,15 +7,30 @@ from paypal.standard.forms import PayPalPaymentsForm
 from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
+from accounts.models import Order, Organiser
 
-# Create your views here.
+#region Imports, die aus der paypal.standarf.ipn.views kommen. 
+# Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
+from django.core.mail import send_mail
+import logging
+from django.http import HttpResponse, QueryDict
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from paypal.standard.ipn.forms import PayPalIPNForm
+from paypal.standard.ipn.models import PayPalIPN
+from paypal.standard.models import DEFAULT_ENCODING
+from paypal.utils import warn_untested
+
+CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
+                      "application/x-www-form-urlencoded. If using django's "
+                      "test Client, set `content_type` explicitly")
+logger = logging.getLogger(__name__)
+#endregion
 
 def payment_process(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 	
-	if settings.PAYPAL_TEST:
-		paypal_email = settings.PAYPAL_RECEIVER_EMAIL
 	
 	host = settings.HOST_URL_BASE
 
@@ -105,3 +120,113 @@ def payment_done(request):
 def payment_canceled(request):
 	return render(request, 'payment/canceled.html')
 
+#region IPN-Handling
+@require_POST
+@csrf_exempt
+def payment_ipn(request):
+    """
+    PayPal IPN endpoint (notify_url).
+    Used by both PayPal Payments Pro and Payments Standard to confirm transactions.
+    http://tinyurl.com/d9vu9d
+
+    PayPal IPN Simulator:
+    https://developer.paypal.com/cgi-bin/devscr?cmd=_ipn-link-session
+    """
+    # TODO: Clean up code so that we don't need to set None here and have a lot
+    #       of if checks just to determine if flag is set.
+    flag = None
+    ipn_obj = None
+
+    # Avoid the RawPostDataException. See original issue for details:
+    # https://github.com/spookylukey/django-paypal/issues/79
+    if not request.META.get('CONTENT_TYPE', '').startswith(
+            'application/x-www-form-urlencoded'):
+        raise AssertionError(CONTENT_TYPE_ERROR)
+
+    # Clean up the data as PayPal sends some weird values such as "N/A"
+    # Also, need to cope with custom encoding, which is stored in the body (!).
+    # Assuming the tolerant parsing of QueryDict and an ASCII-like encoding,
+    # such as windows-1252, latin1 or UTF8, the following will work:
+    encoding = request.POST.get('charset', None)
+
+    encoding_missing = encoding is None
+    if encoding_missing:
+        encoding = DEFAULT_ENCODING
+
+    try:
+        data = QueryDict(request.body, encoding=encoding).copy()
+    except LookupError:
+        warn_untested()
+        data = None
+        flag = "Invalid form - invalid charset"
+
+    if data is not None:
+        if hasattr(PayPalIPN._meta, 'get_fields'):
+            date_fields = [f.attname for f in PayPalIPN._meta.get_fields() if f.__class__.__name__ == 'DateTimeField']
+        else:
+            date_fields = [f.attname for f, m in PayPalIPN._meta.get_fields_with_model()
+                           if f.__class__.__name__ == 'DateTimeField']
+
+        for date_field in date_fields:
+            if data.get(date_field) == 'N/A':
+                del data[date_field]
+
+        form = PayPalIPNForm(data)
+        if form.is_valid():
+            try:
+                # When commit = False, object is returned without saving to DB.
+                ipn_obj = form.save(commit=False)
+            except Exception as e:
+                flag = "Exception while processing. (%s)" % e
+        else:
+            formatted_form_errors = ["{0}: {1}".format(k, ", ".join(v)) for k, v in form.errors.items()]
+            flag = "Invalid form. ({0})".format(", ".join(formatted_form_errors))
+
+    if ipn_obj is None:
+        ipn_obj = PayPalIPN()
+
+    # Set query params and sender's IP address
+    ipn_obj.initialize(request)
+
+    if flag is not None:
+        # We save errors in the flag field
+        ipn_obj.set_flag(flag)
+    else:
+        # Secrets should only be used over SSL.
+        if request.is_secure() and 'secret' in request.GET:
+            warn_untested()
+            ipn_obj.verify_secret(form, request.GET['secret'])
+        else:
+            ipn_obj.verify()
+
+
+    print('not completed\n')
+    sendDankesEmail(ipn_obj)
+    ipn_obj.save()
+    ipn_obj.send_signals()
+
+    if encoding_missing:
+        # Wait until we have an ID to log warning
+        logger.warning("No charset passed with PayPalIPN: %s. Guessing %s", ipn_obj.id, encoding)
+
+    return HttpResponse("OKAY")
+
+def sendDankesEmail(ipn_obj):
+	
+	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
+	o_Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
+	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
+
+	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
+	content = 	'Ihre Unterstützung ist bei {Veranstalter} angekommen!'.format(Veranstalter = o_Organisation.organisation_name)+\
+				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. {Veranstalter} und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'.format(Veranstalter = o_Organisation.organisation_name)+\
+				'Wir, das Team von Soli-Ticket, betreiben diese kostenfreie Plattform als Projekt neben unserem Studium. Falls Sie auch uns eine Kaffee ausgeben möchten oder uns helfen möchten unsere Kosten zu decken, können Sie dies auf der folgenden Seite tun: Link zu unserer Veranstaltung.\n'\
+				'Genau so würde es uns und den vielen Veranstaltern und Kulturstätten helfen, wenn Sie unsere Plattform weiterempfehlen. An Ihre Bekannten, Freunde, Kollegen, aber natürlich auch an andere Kulturstätten, die Ihnen am Herzen liegen.\n'\
+				'Vielen, vielen Dank.\n\n'\
+				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'
+
+	if settings.PAYPAL_TEST:
+		send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
+	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'])
+	send_mail(subject, content, settings.EMAIL_HOST_USER, [o_Order.customer_mail])
+#endregion
