@@ -220,9 +220,9 @@ def payment_ipn(request):
         else:
             ipn_obj.verify()
 
+    if(ipn_obj.payment_status == 'Completed'):
+	    sendDankesEmail(ipn_obj)
 
-    print('not completed\n')
-    sendDankesEmail(ipn_obj)
     ipn_obj.save()
     ipn_obj.send_signals()
 
