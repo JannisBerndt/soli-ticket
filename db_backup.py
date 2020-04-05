@@ -55,9 +55,9 @@ def clean_data(backup_dir):
             if os.path.isfile(backup_file):
                 os.remove(backup_file)
                 print ("Deleting {}...".format(backup_file))
-
+"""
 def get_arguments():
-    """Parse the commandline arguments from the user"""
+    Parse the commandline arguments from the user
 
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument('db_file',
@@ -66,10 +66,10 @@ def get_arguments():
                          help='the directory where the backup'
                               'file should be saved')
     return parser.parse_args()
-
+"""
 if __name__ == "__main__":
-    args = get_arguments()
-    sqlite3_backup(args.db_file, args.backup_dir)
-    clean_data(args.backup_dir)
+    # args = get_arguments()
+    sqlite3_backup('/home/solitest/soli-ticket/db.sqlite3', '/home/solitest/soli-ticket/db_backups')
+    clean_data('/home/solitest/soli-ticket/db_backups')
 
     print ("\nBackup update has been successful.")
