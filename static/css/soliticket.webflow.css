@@ -137,6 +137,10 @@ figcaption {
   background-color: #8fcdff;
 }
 
+.divider.faqdiv {
+  margin-top: 30px;
+}
+
 .styleguide-content-wrap {
   text-align: center;
 }
@@ -1674,7 +1678,7 @@ figcaption {
 }
 
 .section-9 {
-  margin-top: 25px;
+  margin-top: 50px;
   margin-bottom: 130px;
 }
 
@@ -2022,6 +2026,7 @@ figcaption {
 
 .veranstalter {
   margin-right: 15px;
+  margin-bottom: 5px;
   margin-left: 30px;
 }
 
@@ -2249,6 +2254,46 @@ figcaption {
   margin-right: 10px;
   margin-bottom: 100px;
   margin-left: 10px;
+}
+
+.container-17 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.button-10 {
+  border-radius: 8px;
+  background-color: #ccc;
+}
+
+.section-25 {
+  margin: 30px 10px;
+  text-align: justify;
+}
+
+.container-18 {
+  margin-top: 30px;
+  margin-bottom: 75px;
+}
+
+.paragraph-23 {
+  margin-bottom: 30px;
+}
+
+.paragraph-24 {
+  margin-bottom: 30px;
+}
+
+.grid-7 {
+  margin-top: 20px;
+  -ms-grid-columns: 2fr 0.5fr 0.5fr;
+  grid-template-columns: 2fr 0.5fr 0.5fr;
+}
+
+.paragraph-25 {
+  font-size: 13px;
+  line-height: 20px;
+  font-style: italic;
 }
 
 @media screen and (max-width: 991px) {
@@ -2649,6 +2694,10 @@ figcaption {
     margin-right: 10px;
     margin-left: 10px;
   }
+  .section-19 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
   .section-22 {
     margin-right: 10px;
     margin-left: 10px;
@@ -2659,6 +2708,10 @@ figcaption {
   h1 {
     font-size: 36px;
     line-height: 52px;
+  }
+  .section {
+    font-size: 14px;
+    line-height: 16px;
   }
   .paragraph-bigger.cc-bigger-white-light {
     padding-right: 9px;
@@ -2734,6 +2787,11 @@ figcaption {
     -o-object-fit: fill;
     object-fit: fill;
   }
+  .link {
+    margin-right: 3px;
+    margin-left: 3px;
+    font-size: 9px;
+  }
   .submit-button {
     position: static;
     margin-right: auto;
@@ -2757,6 +2815,9 @@ figcaption {
   }
   .submit-button.zweibuttons {
     margin: 10px 4px;
+  }
+  .submit-button.edit {
+    width: 100%;
   }
   .bold-text {
     display: inline;
@@ -2975,10 +3036,13 @@ figcaption {
     padding-right: 8px;
     padding-left: 8px;
   }
+  .veranstalter {
+    margin-bottom: 5px;
+  }
   .section-19 {
     margin-top: 30px;
-    margin-right: 8px;
-    margin-left: 8px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
   .grid-4 {
     -ms-grid-columns: 0.25fr 4fr 0.75fr;
@@ -3094,5 +3158,9 @@ figcaption {
   .section-23 {
     margin-right: 10px;
     margin-left: 10px;
+  }
+  .grid-7 {
+    -ms-grid-columns: 2fr 0.5fr 0.5fr;
+    grid-template-columns: 2fr 0.5fr 0.5fr;
   }
 }
