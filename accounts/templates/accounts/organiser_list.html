@@ -10,7 +10,6 @@
       <h3 class="heading-21">Hier finden Sie alle Veranstalter, für die Sie bei uns spenden können!</h3>
       <div class="divider"></div>
     </div>
-  </div>
   {% for city in cities %}
   <div class="ort w-container">
 	<h4 class="veranstaltungsort">{{ city.ort }}</h4>
@@ -23,4 +22,5 @@
     <div class="divider"></div>
   </div>
   {% endfor %}
+</div>
 {% endblock %}
