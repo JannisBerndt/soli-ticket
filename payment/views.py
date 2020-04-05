@@ -7,7 +7,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
-from accounts.models import Order
+from accounts.models import Order, Organiser
 
 #region Imports, die aus der paypal.standarf.ipn.views kommen. 
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
@@ -216,9 +216,10 @@ def sendDankesEmail(ipn_obj):
 	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
 	
 	#Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
-	#Organisation = Organisation.objects.get(paypal_email = ipn_obj.receiver_email)
 
-	subject = 'Vielen vielen Dank für Ihre Unterstützung!'
+	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
+
+	subject = 'Vielen vielen Dank für Ihre Unterstützung an {orga}'.format(orga = o_Organisation.organisation_name)
 	content = 	'Ihre Unterstützung ist bei Soliticket angekommen!'\
 				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. Soliticket und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'\
 				'Wir, das Team von Soli-Ticket, betreiben diese kostenfreie Plattform als Projekt neben unserem Studium. Falls Sie auch uns eine Kaffee ausgeben möchten oder uns helfen möchten unsere Kosten zu decken, können Sie dies auf der folgenden Seite tun: Link zu unserer Veranstaltung.\n'\
