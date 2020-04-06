@@ -8,7 +8,12 @@ from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
+from .utils import render_to_pdf
 
+from django.http import HttpResponse
+from django.views.generic import View
+
+import pdb;
 #region Imports, die aus der paypal.standarf.ipn.views kommen. 
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
 from django.core.mail import send_mail
@@ -51,7 +56,7 @@ def payment_process(request):
 	ort = o_adresse.ort
 	plz = o_adresse.plz
 	
-	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
+
 	"""
 
 	paypal_dict = {
@@ -66,7 +71,7 @@ def payment_process(request):
 		'submit':'PayPal',
 		'custom':'DAS ist die Info im Custom-Feld'
 	}
-
+	breakpoint() 
 
 	i = 1
 	for order in orders:
@@ -140,6 +145,42 @@ def payment_canceled(request):
 		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/canceled.html', context)
+
+def invoice_pdf(request, invoiceUID):
+	#breakpoint()
+	
+	# Man könnte hier natürlich auch einfach die Organiser-ID nutzen, dann würde das schneller gehen aber ich habe das SQL irgendwann mal geschrieben
+	# und wollte es jetzt nicht wegschmeißen ^^
+	sql = 'SELECT au.id, strasse, hnummer, plz, ort FROM accounts_useraddress AS au INNER JOIN auth_user AS auu ON au.id = auu.id INNER JOIN events_buyable AS eb ON eb.creator_id = auu.id INNER JOIN accounts_order AS ao ON eb.id = ao.article_id WHERE ao.invoiceUID = %s'
+	o_adresse = UserAddress.objects.raw(sql, [invoiceUID])[0]
+
+	hnummer = o_adresse.hnummer
+	strasse = o_adresse.strasse
+	ort = o_adresse.ort
+	plz = o_adresse.plz
+	
+	o_Organisation = Organiser.objects.get(user_ptr_id = o_adresse.id)
+
+	if(o_Organisation.organisation_type == 'gemeinnützig'):
+		steuer = 'Das Unternehmen ist gemeinnützig und deshalb von der Steuerpflicht befreit.'
+
+	context = {
+		'Anschrift': hnummer + strasse + ort + plz,
+		'Ansprechpartner': o_Organisation.contact_first_name + " " + o_Organisation.contact_last_name,
+		'AnsprechpartnerTelefon': o_Organisation.contact_phone,
+		'VeranstalterName':"",
+		'Rechnungsnummer':invoiceUID,
+
+		'KäuferEmail':"",
+		'ZahlungsbestätigungDatum':"",
+		'steuer':steuer,
+		'organisation_typ': o_Organisation.organisation_type,
+	}
+
+	pdf = render_to_pdf('rechnungen/invoice.html', context)
+	return HttpResponse(pdf, content_type='application/pdf')
+
+
 
 #region IPN-Handling
 @require_POST
