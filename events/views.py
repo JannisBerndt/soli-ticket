@@ -61,22 +61,21 @@ def event_detail_view(request, id):
 					orders.append(order)
 				i += 1
 			sum = float(sum)
-			if sum <= 250:
-				if orders:
-					organiser = event.creator
-					context = {
-						'sum': sum,
-						'organiser': organiser,
-						'orders': orders,
-						'event': event,
-						'authenticated': request.user.is_authenticated,
-						'organiser_user': organiser_user,
-					}
+			if orders:
+				organiser = event.creator
+				context = {
+					'sum': sum,
+					'organiser': organiser,
+					'orders': orders,
+					'event': event,
+					'authenticated': request.user.is_authenticated,
+					'organiser_user': organiser_user,
+				}
 
-					request.session["invoiceUID"] = o_uid
-					request.session["sum"] = sum
-					request.session["paypal_email"] = organiser.paypal_email
-					return redirect(reverse('payment:process'))
+				request.session["invoiceUID"] = o_uid
+				request.session["sum"] = sum
+				request.session["paypal_email"] = organiser.paypal_email
+				return redirect(reverse('payment:process'))
 
 	formset = zip(buyables, order_formset)
 	context = {
