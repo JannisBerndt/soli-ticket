@@ -24,6 +24,7 @@
           {% endfor %}
 			    {{ register1.email }}
           <label for="username" class="field-label">Benutzername</label>
+          <p class="paragraph-5">Hinweis: Ihren Benutzernamen brauchen Sie nur für die Anmeldung. Den Namen Ihrer Organisation können Sie gleich auf der nächsten Seite festlegen</p>
           {% for error in register1.user.errors %}
             <font size="3" color="red" disabled = "True"> {{ error }} </font>
           {% endfor %}
