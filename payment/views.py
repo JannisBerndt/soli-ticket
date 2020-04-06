@@ -252,8 +252,5 @@ def sendDankesEmail(ipn_obj):
 				'Vielen, vielen Dank.\n\n'\
 				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'
 
-	if settings.PAYPAL_TEST:
-		send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
-	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'])
 	send_mail(subject, content, settings.EMAIL_HOST_USER, [o_Order.customer_mail])
 #endregion
