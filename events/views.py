@@ -48,7 +48,6 @@ def event_detail_view(request, id):
 				o_uid = invoiceUID_generator()
 				o_orders = Order.objects.filter(invoiceUID = o_uid)
 
-			breakpoint()
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
 				if order.amount:
@@ -62,21 +61,22 @@ def event_detail_view(request, id):
 					orders.append(order)
 				i += 1
 			sum = float(sum)
-			if orders:
-				organiser = event.creator
-				context = {
-					'sum': sum,
-					'organiser': organiser,
-					'orders': orders,
-					'event': event,
-					'authenticated': request.user.is_authenticated,
-					'organiser_user': organiser_user,
-				}
+			if sum <= 250:
+				if orders:
+					organiser = event.creator
+					context = {
+						'sum': sum,
+						'organiser': organiser,
+						'orders': orders,
+						'event': event,
+						'authenticated': request.user.is_authenticated,
+						'organiser_user': organiser_user,
+					}
 
-				request.session["invoiceUID"] = o_uid
-				request.session["sum"] = sum
-				request.session["paypal_email"] = organiser.paypal_email
-				return redirect(reverse('payment:process'))
+					request.session["invoiceUID"] = o_uid
+					request.session["sum"] = sum
+					request.session["paypal_email"] = organiser.paypal_email
+					return redirect(reverse('payment:process'))
 
 	formset = zip(buyables, order_formset)
 	context = {
