@@ -2113,6 +2113,7 @@ figcaption {
 }
 
 .button-9 {
+  margin-top: 10px;
   border-radius: 8px;
   background-color: #8fcdff;
   text-align: center;
@@ -2307,6 +2308,52 @@ figcaption {
 .button-11 {
   border-radius: 8px;
   background-color: #ccc;
+}
+
+.heading-30 {
+  text-align: center;
+}
+
+.paragraph-26 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section-26 {
+  margin-top: 50px;
+  margin-bottom: 75px;
+}
+
+.grid-8 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  grid-row-gap: 16px;
+  -ms-grid-columns: 1fr 0.25fr;
+  grid-template-columns: 1fr 0.25fr;
+}
+
+.button-12 {
+  margin-bottom: 50px;
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.heading-31 {
+  color: #fd0000;
+}
+
+.heading-32 {
+  text-align: center;
+}
+
+.paragraph-27 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.section-27 {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 @media screen and (max-width: 991px) {
@@ -2716,6 +2763,14 @@ figcaption {
     margin-left: 10px;
   }
   .section-22 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-26 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-27 {
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -3185,5 +3240,16 @@ figcaption {
     margin-right: auto;
     margin-left: auto;
     text-align: center;
+  }
+  .section-26 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .heading-32 {
+    overflow: visible;
+  }
+  .section-27 {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }

@@ -48,7 +48,6 @@ def event_detail_view(request, id):
 				o_uid = invoiceUID_generator()
 				o_orders = Order.objects.filter(invoiceUID = o_uid)
 
-			breakpoint()
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
 				if order.amount:
