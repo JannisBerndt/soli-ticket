@@ -2,7 +2,7 @@ from django import forms
 from accounts.models import Organiser, Order, UserAddress
 from django.forms import inlineformset_factory
 from events.models import Buyable, Event
-
+from .helpers.validators import *
 
 class OrderForm(forms.ModelForm):
 	# article = forms.CharField(disabled=True)
@@ -18,7 +18,8 @@ class OrderForm(forms.ModelForm):
 
 class Register1(forms.ModelForm):
 	email =		forms.EmailField(widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email'}))
-	user =      forms.CharField( widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'user'}))
+	user =      forms.CharField(widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'user'}),
+				validators=[val_chars], strip =False, max_length=30)
 	pw1 = 		forms.CharField(max_length=32, widget=forms.PasswordInput(attrs = {'class' :"text-field-2 w-input"}))
 	pw2 = 		forms.CharField(max_length=32, widget=forms.PasswordInput(attrs = {'class' :"text-field-2 w-input"}))
 	class Meta:

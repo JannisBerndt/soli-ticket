@@ -147,9 +147,9 @@ class accounts(View):
                     valid = False
                     form.add_error('user', 'Der Username wird bereits verwendet.')
                 if valid:
-                    request.session["email"] = req.get("email")
-                    request.session["pw"] = req.get("pw1")
-                    request.session["username"] = req.get("user")
+                    request.session["email"] = form.cleaned_data["email"]
+                    request.session["pw"] = form.cleaned_data["pw1"]
+                    request.session["username"] = form.cleaned_data["user"]
                     # "jump" to next page
                     form = Register2()
                     context = {
@@ -176,7 +176,7 @@ class accounts(View):
                 if valid:
                     for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr", "description"]:
-                        request.session[tag] = req.get(tag)
+                        request.session[tag] = form.cleaned_data[tag]
                     form = Register3()
                     context = {
                         'register3' : form,
@@ -202,7 +202,7 @@ class accounts(View):
             
 
             for tag in ["paypal_email"]:
-                request.session[tag] = req.get(tag)
+                request.session[tag] = form.cleaned_data[tag]
 
 
             #To Do: Implementierung der Datenbank
