@@ -44,7 +44,13 @@
         {% endfor %}
 	  </div>
     </div>
-    <div class="container-14 w-container"><a href="{% url 'events:event_create' %}" class="button-5 w-button">Neue Veranstaltung erstellen</a></div>
+    <div class="container-14 w-container">
+		{% if organiser.paypal_email %}
+			<a href="{% url 'events:event_create' %}" class="button-5 w-button">Neue Veranstaltung erstellen</a>
+		{% else %}
+			<p>Sie können erst neue Veranstaltungen erstellen, wenn Sie eine Email-Adresse für Ihr Paypal-Konto in Ihrem Profil hinterlegt haben, da Sie sonst keine Zahlungen empfangen können.</p>
+		{% endif %}
+	</div>
     <div class="w-container">
       <h6 class="heading-20">Teilen Sie diesen Link mit ihren Unterstützern, um sie zum Spenden aufzurufen</h6>
       <div class="w-form">

@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import Organiser, Order, UserAddress
 from django.forms import inlineformset_factory
-from events.models import Buyable
+from events.models import Buyable, Event
 
 
 class OrderForm(forms.ModelForm):
@@ -98,6 +98,18 @@ class OrganiserForm(forms.ModelForm):
 			# 'kontosite',
 			'description',
 		]
+
+	def clean_paypal_email(self, *args, **kwargs):
+		paypal_email = self.cleaned_data["paypal_email"]
+		events = Event.objects.filter(creator = Organiser.objects.get(organisation_name = self.cleaned_data["organisation_name"]))
+		if paypal_email:
+			return paypal_email
+		else:
+			if events:
+				raise forms.ValidationError("Da Sie bereits Events zu Ihrem Account hinzugefügt haben, müssen Sie eine Email Adresse zu Ihrem Paypal-Konto angeben.")
+			else:
+				return paypal_email
+
 
 class UserAddressForm(forms.ModelForm):
 	strasse = forms.CharField(label='Straße', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'Stra-e', 'placeholder': 'Straße'}))
