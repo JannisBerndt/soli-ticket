@@ -68,7 +68,7 @@
           <p class="paragraph">Solidarität macht nicht arm! Helfen Sie mit dem Geld, das Sie sowieso ausgegeben hätten, den Fortbestand unserer Kulturlandschaft zu sichern.</p>
         </div>
         <div class="column-4 w-col w-col-4"><img src="{% static 'images/money_off-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Solidarität bleibt gebührenfrei! Zahlungen gehen direkt an {{ event.creator }}. Soli-Ticket behält keine Gebühr ein. Eventuell bitten wir hier in Zukunft um eine kleine Spende, um unsere Kosten zu decken.</p>
+          <p class="paragraph">Zahlungen gehen direkt an {{ event.creator.orgaisation_name }}. Soli-Ticket behält keine Gebühr ein. Es fällt lediglich die Gebühr des Zahlungsanbieters an.</p>
         </div>
         <div class="w-col w-col-4"><img src="{% static 'images/share-black-48dp.svg' %}" alt="" class="image-4">
           <p class="paragraph">Solidarität ist ansteckend! <br>Jede Verlinkung oder Empfehlung hilft {{ event.creator }} und Soli-Ticket dabei, die Folgen der Krise zu mildern.</p>
@@ -84,20 +84,28 @@
           <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€)</label><label>Anzahl</label>
             {{ order_formset.management_form }}
 			{% for buyable, order_form in formset %}
-				<p>{{ buyable.buyable_name }}</p>
+				{% if organiser.organisation_type == 'gemeinnützig' %}
+					<p>Spende "{{ buyable.buyable_name }}"</p>
+				{% else %}
+					<p>{{ buyable.buyable_name }}</p>
+				{% endif %}
 				<p class="price">{{ buyable.price }}</p>
 				{{ order_form.amount }}
 			{% endfor %}
 			<p class="paragraph-4">Gesamt:</p>
-            <p class="paragraph-3" id="sum">0,00</p>
-          </div>
+			<p class="paragraph-3" id="sum">0,00</p>
+		  </div>
+		  <p class="paragraph-5"></p>
+		  <p class="paragraph-5">Hinweis: Aus rechtlichen Gründen sind nur Bestellungen bis zu einem Gesamtbetrag von 250€ gestattet.</p>
           <div class="divider"></div>
            <div class="w-row">
             <div class="w-col w-col-5"><label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
 				<input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
 			<div class="column-5 w-col w-col-7"></div>
 		  </div>
-            <input type="submit" value="Spende Zusagen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
+		  <p class="paragraph-5">Hinweis: Mit dem Erwerb jeglicher Artikel auf dieser Webseite unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB und die Widerrufsbelehrung:<strong></strong></p>
+		  <a href="{% url 'agb' %}" class="link-3">Link zu den Allgemeinen Nutzungsbedingungen</a>
+          <input type="submit" value="Zahlungspflichtig bestellen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
         </form>
         <div class="w-form-done">
           <div>Thank you! Your submission has been received!</div>

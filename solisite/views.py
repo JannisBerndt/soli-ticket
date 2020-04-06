@@ -67,3 +67,14 @@ def faq_view(request):
         'organiser_user': organiser_user,
     }
     return render(request, 'solisite/faq.html', context)
+
+def agb_view(request):
+    try:
+        organiser_user = Organiser.objects.get(username = request.user.username)
+    except:
+        organiser_user = None
+    context = {
+        'authenticated': request.user.is_authenticated,
+        'organiser_user': organiser_user,
+    }
+    return render(request, 'solisite/agb.html', context)

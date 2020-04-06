@@ -137,6 +137,10 @@ figcaption {
   background-color: #8fcdff;
 }
 
+.divider.faqdiv {
+  margin-top: 30px;
+}
+
 .styleguide-content-wrap {
   text-align: center;
 }
@@ -210,6 +214,7 @@ figcaption {
   opacity: 0.6;
   color: #000;
   font-size: 24px;
+  text-align: center;
 }
 
 .button {
@@ -1387,10 +1392,22 @@ figcaption {
   object-fit: fill;
 }
 
+.submit-button.zweibuttons {
+  text-transform: uppercase;
+}
+
 .submit-button.buttonerfolgreich {
   position: static;
   margin-right: auto;
   margin-left: auto;
+}
+
+.submit-button.edit {
+  background-color: #8fcdff;
+}
+
+.submit-button.edit.abbrechen {
+  background-color: #ccc;
 }
 
 .container-2 {
@@ -1518,6 +1535,7 @@ figcaption {
 .field-label-2 {
   margin-top: 2px;
   font-size: 12px;
+  text-align: justify;
   text-transform: none;
 }
 
@@ -1628,6 +1646,8 @@ figcaption {
 
 .paragraph-5 {
   padding-left: 0px;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .section-5 {
@@ -1666,7 +1686,7 @@ figcaption {
 }
 
 .section-9 {
-  margin-top: 25px;
+  margin-top: 50px;
   margin-bottom: 130px;
 }
 
@@ -1870,7 +1890,8 @@ figcaption {
 
 .field-label-5 {
   margin-top: 54px;
-  text-transform: capitalize;
+  text-align: justify;
+  text-transform: none;
 }
 
 .button-4 {
@@ -1967,6 +1988,7 @@ figcaption {
 
 .columns-3 {
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .paragraph-13 {
@@ -2012,6 +2034,7 @@ figcaption {
 
 .veranstalter {
   margin-right: 15px;
+  margin-bottom: 5px;
   margin-left: 30px;
 }
 
@@ -2150,11 +2173,12 @@ figcaption {
 }
 
 .frage {
+  margin-top: 30px;
   margin-bottom: 0px;
 }
 
 .antwort {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .kategorie {
@@ -2184,12 +2208,116 @@ figcaption {
   text-align: center;
 }
 
+.heading-28 {
+  margin-top: 30px;
+}
+
+.paragraph-20 {
+  margin-bottom: 0px;
+  font-size: 15px;
+  line-height: 26px;
+  text-align: justify;
+}
+
+.checkbox-label {
+  text-transform: none;
+}
+
+.link-3 {
+  font-size: 14px;
+}
+
+.heading-29 {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.paragraph-21 {
+  text-align: center;
+}
+
+.link-4 {
+  text-align: center;
+}
+
+.paragraph-22 {
+  margin-top: 20px;
+  margin-bottom: 70px;
+  text-align: center;
+  text-transform: none;
+}
+
+.section-24 {
+  margin-right: 10px;
+  margin-bottom: 100px;
+  margin-left: 10px;
+}
+
+.div-block-10 {
+  height: 3px;
+  background-color: #8fcdff;
+}
+
+.body {
+  margin-right: 10px;
+  margin-bottom: 100px;
+  margin-left: 10px;
+}
+
+.container-17 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.button-10 {
+  border-radius: 8px;
+  background-color: #ccc;
+}
+
+.section-25 {
+  margin: 30px 10px;
+  text-align: justify;
+}
+
+.container-18 {
+  margin-top: 30px;
+  margin-bottom: 75px;
+}
+
+.paragraph-23 {
+  margin-bottom: 30px;
+}
+
+.paragraph-24 {
+  margin-bottom: 30px;
+}
+
+.grid-7 {
+  margin-top: 20px;
+  -ms-grid-columns: 2fr 0.5fr 0.5fr;
+  grid-template-columns: 2fr 0.5fr 0.5fr;
+}
+
+.paragraph-25 {
+  font-size: 13px;
+  line-height: 20px;
+  font-style: italic;
+}
+
+.button-11 {
+  border-radius: 8px;
+  background-color: #ccc;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
     padding-left: 0px;
   }
   .styleguide-block {
+    text-align: center;
+  }
+  .paragraph-bigger.cc-bigger-white-light {
     text-align: center;
   }
   .button {
@@ -2579,6 +2707,14 @@ figcaption {
     margin-right: 10px;
     margin-left: 10px;
   }
+  .section-19 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-20 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
   .section-22 {
     margin-right: 10px;
     margin-left: 10px;
@@ -2589,6 +2725,10 @@ figcaption {
   h1 {
     font-size: 36px;
     line-height: 52px;
+  }
+  .section {
+    font-size: 14px;
+    line-height: 16px;
   }
   .paragraph-bigger.cc-bigger-white-light {
     padding-right: 9px;
@@ -2664,6 +2804,11 @@ figcaption {
     -o-object-fit: fill;
     object-fit: fill;
   }
+  .link {
+    margin-right: 3px;
+    margin-left: 3px;
+    font-size: 9px;
+  }
   .submit-button {
     position: static;
     margin-right: auto;
@@ -2687,6 +2832,9 @@ figcaption {
   }
   .submit-button.zweibuttons {
     margin: 10px 4px;
+  }
+  .submit-button.edit {
+    width: 100%;
   }
   .bold-text {
     display: inline;
@@ -2905,10 +3053,13 @@ figcaption {
     padding-right: 8px;
     padding-left: 8px;
   }
+  .veranstalter {
+    margin-bottom: 5px;
+  }
   .section-19 {
     margin-top: 30px;
-    margin-right: 8px;
-    margin-left: 8px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
   .grid-4 {
     -ms-grid-columns: 0.25fr 4fr 0.75fr;
@@ -3024,5 +3175,15 @@ figcaption {
   .section-23 {
     margin-right: 10px;
     margin-left: 10px;
+  }
+  .grid-7 {
+    -ms-grid-columns: 2fr 0.5fr 0.5fr;
+    grid-template-columns: 2fr 0.5fr 0.5fr;
+  }
+  .button-11 {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
   }
 }

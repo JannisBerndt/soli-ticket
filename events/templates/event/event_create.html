@@ -1,18 +1,8 @@
 {% extends 'base.html' %}
-<!--  
-<form action='.' method='POST'> {% csrf_token %}
-	{{ event_form.as_p }}
-    <h2>Wo wird das Event stattfinden?</h2>
-    {{ location_form.as_p }}
-    <h2>Welche Produkte möchtest du verkaufen?</h2>
-    {{ buyable_form.as_p }}
-    <p>Hinweis: Du kannst später in deiner Eventübersicht noch mehr Produkte hinzufügen.</p>
-    <p>Hinweis 2: Sobald kein Name für ein Produkt angegeben wird wird dieses nicht gespeichert</p>
-    <input type='submit' value="Speichern" /><a href='../'>Abbrechen</a>
-</form>
- -->
 
 {% load static %}
+
+{% load custom_tags %}
 
 {% block title %}
 <title>Neue Veranstaltung erstellen</title>
@@ -31,10 +21,10 @@
         </div>
         <div class="container">
             <div class="w-form">
-                <form id="email-form" name="email-form" data-name="Email Form" class="form" method="POST"> {% csrf_token %}
+                <form id="wf-form-Veranstaltung-neu" name="wf-form-Veranstaltung-neu" data-name="Email Form" class="form" method="POST"> {% csrf_token %}
                     <div class="w-row">
-                        <div class="w-col w-col-3"></div>
-                        <div class="w-col w-col-6">
+                        <div class="w-col w-col-3 w-col-tiny-tiny-stack"></div>
+                        <div class="w-col w-col-6 w-col-tiny-tiny-stack">
 							{{ event_form.name.errors }}
 							<label for="{{ event_form.name.id_for_label }}">Name der Veranstaltung</label>
 							{{event_form.name}}
@@ -71,35 +61,32 @@
 							<label for="{{ event_form.date.id_for_label }}">Wann Hätte die Veranstaltung stattgefunden?</label>
 							{{ event_form.date }}
                             <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="" id="DateTime" required=""> -->
-                            <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Spendenaufruf</label>
-							<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer (Ihren &quot;Spendenaufruf&quot;)</label>
+                            <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Aufruf an ihre Unterstützer</label>
+			  				<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer</label>
 							{{ event_form.description.errors }}
 							{{ event_form.description }}
                             <!-- <textarea placeholder="Erzählen Sie mehr!" maxlength="5000" id="field-4" name="field-4" required="" data-name="Field 4" class="textarea text-field-2 w-input"></textarea> -->
-                            <div class="w-row">
-								<div class="w-col w-col-10">
-									<label>Tickets/Speisen/Getränke</label>
-									<label for="Name-der-Organisation-2" class="field-label-2">Fügen Sie nun die verschiedenen Dinge hinzu, die Ihre Besucher/Kunden üblicherweise vor und während Ihrer Veranstaltungen erworben hätten. Dazu gehören natürlich die Tickets, aber auch z.B. die Portion Popcorn, die Cola oder Anderes.</label>
-								</div>
-                                <div class="w-col w-col-2">
-									<label>Preis (€)</label>
-								</div>
-							</div>
-							{{ buyable_formset.management_form }}
-							{% for buyable_form in buyable_formset %}
-							<div class="w-row">
-                                <div class="w-col w-col-10">
-									{{ buyable_form.buyable_name.errors }}
-									{{ buyable_form.buyable_name }}
-									<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Bezeichnung-3" data-name="Bezeichnung 3" placeholder="Bezeichnung (z.B. &quot;Solidaritätsticket Kat. A&quot;)" id="Bezeichnung-3" required=""> -->
-								</div>
-                                <div class="w-col w-col-2">
-									{{ buyable_form.price.errors }}
-									{{ buyable_form.price }}
-									<!-- <input type="number" class="text-field-2 w-input" maxlength="256" name="field-3" data-name="Field 3" placeholder="0,00" id="field-3" required=""> -->
-								</div>
-							</div>
-							{% endfor %}
+                            <label for="Name-der-Organisation-2" class="field-label-5">Fügen Sie nun die verschiedenen Dinge hinzu, die Ihre Besucher/Kunden üblicherweise vor und während Ihrer Veranstaltungen erworben hätten. Dazu gehören natürlich die Tickets, aber auch z.B. die Portion Popcorn, die Cola oder anderes</label>
+                            <div class="w-layout-grid grid-7">
+                                <label>Tickets/Getränke/...</label>
+                                <label>Preis (€)</label>
+                                <label>Mwst</label>
+                                {{ buyable_formset.management_form }}
+                                {% for buyable_form in buyable_formset %}
+                                    <div>
+                                        {{ buyable_form.buyable_name.errors }}
+                                        {{ buyable_form.buyable_name }}
+                                    </div>
+                                    <div>
+                                        {{ buyable_form.price.errors }}
+                                        {{ buyable_form.price|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': '0,00', 'min': '0'}" }}
+                                    </div>
+                                    <div>
+                                        {{ buyable_form.tax_rate.errors }}
+                                        {{ buyable_form.tax_rate|setHTMLAttributes:"{'class': 'text-field-2 w-select'}" }}
+                                    </div>
+                                {% endfor %}
+                            </div>
 							<div class="w-row">
 								<div class="w-col w-col-3"><input type="submit" value="Fertig!" data-wait="Bitte warten..." class="submit-button w-button"></div>
 								<div class="w-col w-col-9"><a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="button-4 w-button">Abbrechen</a></div>

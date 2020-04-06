@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Mit Paypal zahlen</title>
+{% endblock %}
+
+{% block content %}
+<div class="w-row">
+	<div class="column-11 w-col w-col-5">
+	</div>
+	<div class="column-11 w-col w-col-2">
+		{{ form.render }}
+	</div>
+	<div class="column-11 w-col w-col-5">
+	</div>
+</div>
+{% endblock %}

@@ -38,6 +38,7 @@ class Organiser(User):
     bank_account_owner = models.CharField(max_length=120, null=True)
     kontosite = models.CharField(max_length=120, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    paypal_email = models.EmailField(null=True, blank=True, max_length=254)
     isActivated = models.BooleanField(default = True)
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten', blank = False)
 
@@ -68,3 +69,5 @@ class Order(models.Model):
     price = models.DecimalField(null=True, max_digits=1000, decimal_places=2)
     createdDateTime = models.DateTimeField(auto_now_add=True)
     changedDateTime = models.DateTimeField(auto_now=True)
+    invoiceUID = models.CharField(max_length = 64, null = False, default = 'nicht_migrierte_orders')
+    isPayed = models.BooleanField(default = False)

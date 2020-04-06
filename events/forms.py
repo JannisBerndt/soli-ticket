@@ -26,16 +26,27 @@ class EventlocationForm(forms.ModelForm):
 
 class BuyableForm(forms.ModelForm):
 	buyable_name = forms.CharField(label='Produktname',  widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Bezeichnung-3', 'placeholder': 'Bezeichnung des Tickets/Getränks/der Speise'}))
-	price = forms.DecimalField(label='Preis', widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3', 'placeholder': "0,00"}), min_value=0)
+	# price = forms.DecimalField(label='Preis', widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input', 'id': 'field-3', 'placeholder': "0,00"}), min_value=0)
 	class Meta:
 		model = Buyable
 		fields = [
 			'buyable_name',
 			'price',
+			'tax_rate',
 		]
+		
 BuyableFormSet = formset_factory(BuyableForm, extra=5, max_num=5)
 BuyableInlineFormSet = inlineformset_factory(Event, Buyable, form=BuyableForm, extra=5, max_num = 5)
 BuyableModelFormSet = modelformset_factory(Buyable, form=BuyableForm, extra=5, max_num = 5)
+
+def validate_with_initial(formset):
+	valid = True
+	for form in formset:
+		if form.has_changed():
+			if not form.is_valid():
+				valid = False
+				print('INVALID')
+	return valid
 
 class EventForm(forms.ModelForm):
 	name = forms.CharField(label='Eventname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-Des-Veranstaltungsortes', 'placeholder': "Veranstaltungsname"}))
