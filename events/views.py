@@ -39,12 +39,14 @@ def event_detail_view(request, id):
 			sum = 0
 			orders = []
 			
+			# Neue RechnungsUID wird generiert und es werden sich Orders, die dazu bereits in der DB existieren geholt
 			o_uid = invoiceUID_generator()
-			
-			
-			#while(order is not None):
-			#	o_uid = invoiceUID_generator()
-			#	order = Order.objects.filter(invoiceUID = o_uid)
+			o_orders = Order.objects.filter(invoiceUID = o_uid)
+		
+			#Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
+			while o_orders:
+				o_uid = invoiceUID_generator()
+				o_orders = Order.objects.filter(invoiceUID = o_uid)
 			
 			for order_form in order_formset:
 				order = order_form.save(commit=False)
