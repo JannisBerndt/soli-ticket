@@ -221,6 +221,12 @@ def payment_ipn(request):
             ipn_obj.verify()
 
     if(ipn_obj.payment_status == 'Completed'):
+	    o_Orders = Order.objects.filter(invoiceUID = ipn_obj.invoice)
+
+	    for o_Order in o_Orders:
+		    o_Order.isPayed = True
+		    o_Order.save()
+
 	    sendDankesEmail(ipn_obj)
 
     ipn_obj.save()

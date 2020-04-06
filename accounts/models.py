@@ -70,3 +70,4 @@ class Order(models.Model):
     createdDateTime = models.DateTimeField(auto_now_add=True)
     changedDateTime = models.DateTimeField(auto_now=True)
     invoiceUID = models.CharField(max_length = 64, null = False, default = 'nicht_migrierte_orders')
+    isPayed = models.BooleanField(default = False)
