@@ -5,7 +5,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import UserAddress, Organiser
-from .forms import UserAddressForm, OrganiserForm
+from .forms import UserAddressForm, OrganiserForm, Register1, Register2, Register3
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.conf import settings
+from solisite.settings import DEBUG
+import string
+import random
 
 
 def login_page(request):
@@ -14,12 +20,19 @@ def login_page(request):
         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
+            
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
+            
             if user is not None:
-                login(request, user)
-                return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
+                o_organiser = Organiser.objects.get(username = user.username)
+                if o_organiser is not None:
+                    if o_organiser.isActivated == False:
+                        return render(request, 'register/check_your_emails.html')
+                    else: 
+                        login(request, user)
+                        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
         try:
@@ -36,6 +49,8 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('accounts:login')
+
+
 
 
 # @login_required(login_url='login')
@@ -98,120 +113,95 @@ class accounts(View):
     template_name = ['register/register_start.html',
                      'register/register_start2.html',
                      'register/register_start3.html',
+					 'register/check_your_emails.html',
                      'register/register_finished.html']
-    context = {"error1" : "",
-               "error2" : "",
-               "error3" : "",
-               "error4" : "",
-               "error5" : "",
-               "error6" : "",
-			   'authenticated': False,
-			   'organiser_user': None,}
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
             "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
 
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name[0])
+
+        registerform = Register1()
+        context = {
+            'register1' : registerform,
+        }
+        return render(request, self.template_name[0], context)
 
 
 
     def post(self, request, *args, **kwargs):
 
-        # Errors "clearen"
-        for error in self.context.keys():
-            self.context[error] = ""
-
+        
         req = request.POST
 
         # Wir waren auf page 1:
         if "pw1" in req:
-            error = False
-            # keine Angabe:
-            if req.get("email") == "":
-                self.context["error1"] = "Bitte geben Sie eine gueltige Email ein!"
-                error = True
+            form = Register1(request.POST)
 
-            if req.get("username") == "":
-                error = True
-                self.context["error3"] = "Bitte geben Sie einen Benutzernamen ein"
-            # versch. Passwörter
-            # Tests der Inputs: (To-DO)
-            if req.get("pw1") != req.get("pw2"):
-                self.context["error3"] = "Passwoerter stimmen nicht ueberein!"
-                error = True
-
-            if req.get("pw1") == "":
-                self.context["error3"] = "Bitte geben Sie ein gueltiges Passwort ein!"
-                error = True
-
-            if len(req.get("pw1")) < 6:
-                self.context["error3"] = "Das Passwort muss min. 6 Zeichen lang sein"
-                error = True
-
-            if User.objects.filter(username = req.get("username")).exists():
-                self.context["error2"] = "Der Benutzername existiert bereits."
-                error = True
-
-            if User.objects.filter(email = req.get("email")).exists():
-                self.context["error1"] = "Die E-Mail Adresse wird bereits verwendet."
-                error = True
-            if error:
-                return render(request, self.template_name[0], self.context)
-
-            else:# Speichern der "sauberen" inputs in session
-                request.session["email"] = req.get("email")
-                request.session["pw"] = req.get("pw1")
-                request.session["username"] = req.get("username")
-                # "jump" to next page
-                return render(request, self.template_name[1], self.context)
+            if form.is_valid() and form.cleaned_data['pw1'] == form.cleaned_data['pw2']:
+                valid = True
+                if Organiser.objects.filter(email = req.get('email')).exists():
+                    valid = False
+                    form.add_error('email', 'Diese Email wird bereits verwendet.')
+                if Organiser.objects.filter(username = req.get('user')).exists():
+                    valid = False
+                    form.add_error('user', 'Der Username wird bereits verwendet.')
+                if valid:
+                    request.session["email"] = req.get("email")
+                    request.session["pw"] = req.get("pw1")
+                    request.session["username"] = req.get("user")
+                    # "jump" to next page
+                    form = Register2()
+                    context = {
+                        'register2' : form,
+                    } 
+                    return render(request, self.template_name[1], context)
+                
+            if form.cleaned_data['pw1'] != form.cleaned_data['pw2']:
+                form.add_error('pw1', 'Die Passwörter stimmen nicht überein')
+            context = {
+                'register1' : form,
+            }
+            return render(request, self.template_name[0], context)
 
         # Wir waren auf page 2:
         elif "nname" in req:
 
-            # Tests der Inputs (To-DO)
-            error_found = False
-            #checkt ob überall Daten gefunden wurden:
-            for tag,error in zip(["vname","nname","oname","art","strasse",
-                         "hnummer","plz","ort","telnr", "description"], ["error1","error1","error2",
-                         "error3","error4","error4","error5","error5","error6"]):
-
-                if (req.get(tag) == "" or req.get(tag) == None) and (tag not in ["telnr"]) and (tag not in ["description"]):
-                    error_found = True
-                    self.context[error] = "Bitte geben Sie auch diese Daten an:"
-
-            if Organiser.objects.filter(organisation_name = req.get('oname')).exists():
-                error_found = True
-                self.context['error2'] = "Diese Organisation ist bereits registriert."
-
-            if error_found:
-                return render(request, self.template_name[1], self.context)
-
-            for tag in ["vname","nname","oname","art","strasse",
+            form = Register2(request.POST)
+            if form.is_valid():
+                valid = True
+                if Organiser.objects.filter(organisation_name = req.get('oname')).exists():
+                    valid = False
+                    form.add_error('oname', 'Diese Organisation ist bereits registriert.')
+                if valid:
+                    for tag in ["vname","nname","oname","art","strasse",
                          "hnummer","plz","ort","telnr", "description"]:
-                request.session[tag] = req.get(tag)
+                        request.session[tag] = req.get(tag)
+                    form = Register3()
+                    context = {
+                        'register3' : form,
+                    }
+                    return render(request, self.template_name[2], context)
+            context = {
+                'register2' : form,
+            }
+            return render(request, self.template_name[1], context)
 
 
-            return render(request, self.template_name[2])
+            
 
         # Wir waren auf page 3:
-        elif "iban" in req:
+        elif "paypal_email" in req:
 
+            form = Register3(request.POST)
+            if not form.is_valid():
+                context = {
+                    'register3' : form,
+                }
+                return render(request, self.template_name[2], context)
+            
 
-            # Tests der Inputs (To-DO)
-            error_found = False
-            #checkt ob überall Daten gefunden wurden:
-            for tag,error in zip(["kontoinhaber","iban","bic"],
-                                 ["error1","error2", "error2"]):
-
-                if (req.get(tag) == "" or req.get(tag) == None):
-                    error_found = True
-                    self.context[error] = "Bitte geben Sie auch diese Daten an:"
-
-            if error_found:
-                return render(request, self.template_name[1], self.context)
-
-            for tag in ["kontoinhaber","iban","bic","kontourl"]:
+            for tag in ["paypal_email"]:
                 request.session[tag] = req.get(tag)
 
 
@@ -228,24 +218,20 @@ class accounts(View):
                                   contact_first_name = request.session["vname"],
                                   contact_last_name = request.session["nname"],
                                   contact_phone = request.session["telnr"],
-                                  iban = request.session["iban"],
-                                  bic = request.session["bic"],
-                                  bank_account_owner = request.session["kontoinhaber"],
-                                  kontosite = request.session["kontourl"],
                                   email =request.session["email"],
-								  description = request.session["description"],)
-
+								  description = request.session["description"],
+                                  paypal_email = request.session["paypal_email"],
+                                  isActivated = False)
+            
             organiser.set_password(request.session["pw"])
+            organiser.confirmationCode = confirmationCode_generator()
             organiser.save()
+
             organiser_user = Organiser.objects.get(username=request.session["username"])
-			# user direkt einloggen
-
-            # user = authenticate(request, username=organiser.username, password=organiser.password)
-            # if user is not None:
-            login(request, organiser_user)
-                # return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
-
-            #To Do: Umleitung auf Registrierung erfolgreich
+            
+            buildAndSendEmail(organiser_user)
+        
+            
             # Löschen der Sessions IDs:
             for tag in self.tags:
                 try:
@@ -253,7 +239,7 @@ class accounts(View):
                 except KeyError:
                     pass
 
-            return render(request, self.template_name[3], self.context)
+            return render(request, self.template_name[3])
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
@@ -262,3 +248,52 @@ class accounts(View):
                 del request.session[tag]
             response = redirect('error/')
             return response
+
+def confirm(request):
+    confirmation_Code = request.GET['confirmationCode']
+    myid = request.GET['id']
+    
+    # In der URL ist die User-ID eingebaut. Theoretisch sollte man also immer User aus der DB kriegen zu dem die ID gehört
+    organiser_user = Organiser.objects.get(id = myid)
+    
+    if organiser_user is None:
+        return error
+    # Check ob der in der URL vorhandene confirmationCode mit dem in der Datenbank übereinstimmt.
+    if(confirmation_Code != organiser_user.confirmationCode):
+        return error
+
+    organiser_user.isActivated = True
+    organiser_user.save()
+    login(request, organiser_user)
+    context = {
+		'organiser_user': organiser_user,
+    }
+    return render(request, 'register/register_finished.html', context)
+  
+def buildAndSendEmail(o_organiser):
+    email = o_organiser.email
+    id = o_organiser.id
+    o_code = o_organiser.confirmationCode
+    
+    if DEBUG:
+        confirmLink = 'http://127.0.0.1:8000/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
+    else:
+        confirmLink = '{host}accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(host = settings.HOST_URL_BASE, organiser_code = o_code, myid = id)
+
+
+    subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
+    content =   'Vielen Dank für die Registrierung auf soli-ticket.de \n'\
+                'Bitte klicken Sie auf den folgenden Link, um Ihren Account freizuschalten \n'\
+                '{confirmLink} \n\n'\
+                'Mit freundlichen Grüßen,\n\n'\
+                'Ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
+
+    if DEBUG:
+        # Hier eure email eintragen, wenn ihr was testen wollt. 
+        send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email])
+    else:
+        send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
+
+def confirmationCode_generator(size = 40, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
