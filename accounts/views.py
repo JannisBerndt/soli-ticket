@@ -50,23 +50,17 @@ def logout_user(request):
     logout(request)
     return redirect('accounts:login')
 
-
-
-
-# @login_required(login_url='login')
-# def profile(request):
-#     if request.user.is_authenticated:
-#         pk = request.user.username
-#     try:
-#         organiser = Organiser.objects.get(username=pk)
-#     except:
-#         return redirect('home')
-#     context = {
-# 		'organiser': organiser,
-# 		'authenticated': request.user.is_authenticated,
-# 	}
-#     return render(request, 'accounts/profile.html', context)
-
+def verify_email_view(request):
+    try:
+        organiser_user = Organiser.objects.get(username = request.user.username)
+    except:
+        organiser_user = None
+    if request.method == 'POST':
+        buildAndSendEmail(organiser_user)
+    context = {
+		'organiser_user': organiser_user,
+	}
+    return render(request, 'register/check_your_emails.html', context)
 
 def error(request):
     print("Error at registration")
