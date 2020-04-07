@@ -115,7 +115,7 @@ def profile_delete_view(request):
     organiser = get_object_or_404(Organiser, username=user.username)
     if request.method == 'POST':
         logout(request)
-        address = get_object_or_404(UserAddress, strasse=organiser.user_address.strasse)
+        address = organiser.user_address
         organiser.delete()
         address.delete()
         return redirect('home')
