@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -108,6 +108,21 @@ def profile_update_view(request):
 		'organiser_user': organiser,
 	}
 	return render(request, 'accounts/profile_update.html', context)
+
+@login_required(login_url='accounts:login')
+def profile_delete_view(request):
+    user = request.user
+    organiser = get_object_or_404(Organiser, username=user.username)
+    if request.method == 'POST':
+        logout(request)
+        address = get_object_or_404(UserAddress, strasse=organiser.user_address.strasse)
+        organiser.delete()
+        address.delete()
+        return redirect('home')
+    context = {
+        'organiser_user': organiser,
+    }
+    return render(request, 'accounts/profile_delete.html', context)
 
 class accounts(View):
     template_name = ['register/register_start.html',

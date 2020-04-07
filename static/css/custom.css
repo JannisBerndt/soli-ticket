@@ -3,3 +3,7 @@
     padding-left: 10px;
     margin-top: 0px;
 }
+
+.red-background {
+    background-color: #ff4a4aeb !important;
+}
