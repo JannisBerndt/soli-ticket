@@ -138,7 +138,6 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
-			send_email_firstEvent(organiser)
 			for buyable_form in buyable_formset:
 				if buyable_form.has_changed():
 					buyable = buyable_form.save(commit=False)
@@ -146,8 +145,8 @@ def event_create_view(request):
 					buyable.belonging_event = event
 					buyable.save()
 			if Event.objects.filter(creator = organiser).count() == 1:
-				# send_email_firstEvent(organiser)
-				print('SEND EMAIL')
+				send_email_firstEvent(organiser)
+
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
@@ -260,7 +259,6 @@ def send_email_firstEvent(Organiser):
 	subject = 'Danke für das Erstellen des ersten Events.'
 	html_message = render_to_string('event/mail_firstEvent.html')
 	plain_message = strip_tags(html_message)
-	#to = Organiser.email
 	to = 'roessler.paul@web.de'
-	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to], html_message = html_message)
+	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to, Organiser.email], html_message = html_message)
 
