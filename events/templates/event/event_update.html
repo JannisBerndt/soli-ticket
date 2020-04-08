@@ -59,7 +59,17 @@
 							</div>
 							{{ event_form.date.errors }}
 							<label for="{{ event_form.date.id_for_label }}">Wann Hätte die Veranstaltung stattgefunden?</label>
-							{{ event_form.date }}
+                            {{ event_form.date|setHTMLAttributes:"{'autocomplete': 'off',}" }}
+                            <script>
+                                $(function () {
+                                  $("#DateTime").datepicker({
+                                      language:"de-DE",
+                                      format:"dd.mm.yyyy",
+                                      autoHide: true,
+                                      weekStart: 1,
+                                  });
+                                });
+                            </script>
                             <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="" id="DateTime" required=""> -->
                             <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Spendenaufruf</label>
 							<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer (Ihren &quot;Spendenaufruf&quot;)</label>
