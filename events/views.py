@@ -13,12 +13,9 @@ from accounts.forms import OrderForm
 import uuid 
 import random
 import string
-<<<<<<< HEAD
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-=======
 import pdb
->>>>>>> master
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
