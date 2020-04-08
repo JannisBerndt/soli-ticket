@@ -254,11 +254,13 @@ def invoiceUID_generator(size = 7, chars= string.digits):
     return 'ST'+''.join(random.choice(chars) for _ in range(size))
 
 
-def send_email_firstEvent(Organiser):
-	breakpoint()
+def send_email_firstEvent(organiser):
 	subject = 'Danke für das Erstellen des ersten Events.'
 	html_message = render_to_string('event/mail_firstEvent.html')
 	plain_message = strip_tags(html_message)
-	to = 'roessler.paul@web.de'
-	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to, Organiser.email], html_message = html_message)
+	if settings.DEBUG:
+		to = ['roessler.paul@web.de', 'kolzmertz@gmail.com', organiser.email]
+	else:
+		to = [organiser.email]
+	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, to, html_message = html_message)
 
