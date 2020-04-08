@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .models import UserAddress, Organiser
 from .forms import UserAddressForm, OrganiserForm, Register1, Register2, Register3
 from django.core.mail import send_mail
@@ -69,18 +70,20 @@ def error(request):
     return render(request, 'register/error.html')
 
 def organiser_list_view(request):
-	organisers = Organiser.objects.all()
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	cities = UserAddress.objects.values('ort').distinct().order_by('ort')
-	context = {
-		'organisers': organisers,
-		'organiser_user': organiser_user,
-		'cities': cities,
-	}
-	return render(request, 'accounts/organiser_list.html', context)
+    organisers = Organiser.objects.filter(is_active=True)
+    try:
+        organiser_user = Organiser.objects.get(username = request.user.username)
+    except:
+        organiser_user = None
+    addresses = UserAddress.objects.filter(organiser_address__is_active = True).distinct()
+    print(addresses)
+    cities = addresses.values('ort').order_by('ort')
+    context = {
+        'organisers': organisers,
+        'organiser_user': organiser_user,
+        'cities': cities,
+    }
+    return render(request, 'accounts/organiser_list.html', context)
 
 @login_required(login_url='accounts:login')
 def profile_update_view(request):
@@ -111,9 +114,8 @@ def profile_delete_view(request):
     organiser = get_object_or_404(Organiser, username=user.username)
     if request.method == 'POST':
         logout(request)
-        address = organiser.user_address
-        organiser.delete()
-        address.delete()
+        organiser.is_active = False
+        organiser.save()
         return redirect('home')
     context = {
         'organiser_user': organiser,

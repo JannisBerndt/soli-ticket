@@ -21,6 +21,9 @@ from paypal.standard.ipn.models import PayPalIPN
 from paypal.standard.models import DEFAULT_ENCODING
 from paypal.utils import warn_untested
 
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
                       "application/x-www-form-urlencoded. If using django's "
                       "test Client, set `content_type` explicitly")
@@ -245,15 +248,13 @@ def sendDankesEmail(ipn_obj):
 	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 
 	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
-	content = 	'Ihre Unterstützung ist bei {Veranstalter} angekommen!'.format(Veranstalter = o_Organisation.organisation_name)+\
-				'Vielen vielen Dank dafür, dass Sie den Fortbestand unserer Kulturlandschaft aktiv unterstützen. {Veranstalter} und das Team von Soli-Ticket.de danken Ihnen von ganzem Herzen!\n'.format(Veranstalter = o_Organisation.organisation_name)+\
-				'Wir, das Team von Soli-Ticket, betreiben diese kostenfreie Plattform als Projekt neben unserem Studium. Falls Sie auch uns eine Kaffee ausgeben möchten oder uns helfen möchten unsere Kosten zu decken, können Sie dies auf der folgenden Seite tun: http://soli-ticket.de/event/Soli-Ticket/ .\n'\
-				'Genau so würde es uns und den vielen Veranstaltern und Kulturstätten helfen, wenn Sie unsere Plattform weiterempfehlen. An Ihre Bekannten, Freunde, Kollegen, aber natürlich auch an andere Kulturstätten, die Ihnen am Herzen liegen.\n'\
-				'Vielen, vielen Dank.\n\n'\
-				'Bleiben Sie gesund, voller Hoffnung und voller Energie!\n'
+	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
+	plain_message = strip_tags(html_message)
+	to = 'roessler.paul@web.de'
+	
+
 
 	if settings.PAYPAL_TEST:
-		send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'])
-	send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'])
-	send_mail(subject, content, settings.EMAIL_HOST_USER, [o_Order.customer_mail])
+		send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'], html_message = html_message)
+	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [o_Order.customer_mail], html_message = html_message)
 #endregion

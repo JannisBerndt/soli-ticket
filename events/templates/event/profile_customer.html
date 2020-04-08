@@ -32,7 +32,7 @@
         <div class="div-block"></div>
 	  </div>
 	  {% if organiser.description %}
-	  	<p class="paragraph-18">{{ organiser.description }}</p>
+	  	<p class="paragraph-18">{{ organiser.description|linebreaksbr }}</p>
 	  {% endif %}
       <h3>Alle Events von {{ organiser.organisation_name }}</h3>
       <div class="w-layout-grid grid-5">
