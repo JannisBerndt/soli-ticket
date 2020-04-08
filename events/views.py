@@ -200,7 +200,6 @@ def event_update_view(request, id):
 		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			location.save()
 			event.save()
-			send_email_firstEvent(organiser)
 			buyables = buyable_formset.save(commit=False)
 			for buyable in buyables:
 				buyable.creator = organiser
