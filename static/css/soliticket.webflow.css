@@ -2356,6 +2356,37 @@ figcaption {
   margin-bottom: 50px;
 }
 
+.container-19 {
+  margin-top: 60px;
+}
+
+.button-13 {
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.section-28 {
+  margin: 50px 10px 80px;
+  text-align: justify;
+}
+
+.image-10 {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.face {
+  width: auto;
+  height: auto;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.grid-9 {
+  -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -2771,6 +2802,10 @@ figcaption {
     margin-left: 10px;
   }
   .section-27 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-28 {
     margin-right: 10px;
     margin-left: 10px;
   }
@@ -3249,6 +3284,10 @@ figcaption {
     overflow: visible;
   }
   .section-27 {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .section-28 {
     margin-right: 10px;
     margin-left: 10px;
   }

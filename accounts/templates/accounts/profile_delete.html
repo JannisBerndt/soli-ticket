@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>Profil löschen</title>
+{% endblock %}
+
+{% block content %}
+<div class="section-9">
+    <div class="w-row">
+      <div class="w-col w-col-3"></div>
+      <div class="w-col w-col-6">
+        <form action='.' method='POST'> {% csrf_token %}
+            <h3 class="heading-31">Möchten Sie Ihr Profil bei uns wirklich löschen?</h3>
+            <p>Dadurch wird Ihr Profil und alle damit verbundenen Daten, wie erstellte Veranstaltungen und Tickets dauerhaft gelöscht.</p>
+            <div class="container-3 w-container">
+                <input type="submit" class="button-3 w-button red-background" value="Löschen :("></input>
+            </div>
+            <div class="container-4 w-container">
+                <a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="button-3 w-button">Abbrechen :)</a>
+            </div>
+        </form>
+      </div>
+      <div class="w-col w-col-3"></div>
+    </div>
+  </div>
+{% endblock %}
