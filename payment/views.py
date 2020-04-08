@@ -250,10 +250,7 @@ def sendDankesEmail(ipn_obj):
 	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
 	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
 	plain_message = strip_tags(html_message)
-	to = 'roessler.paul@web.de'
 	
-
-
 	if settings.PAYPAL_TEST:
 		send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'], html_message = html_message)
 	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'], html_message = html_message)
