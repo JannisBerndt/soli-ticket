@@ -13,6 +13,8 @@ from accounts.forms import OrderForm
 import uuid 
 import random
 import string
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
@@ -136,6 +138,7 @@ def event_create_view(request):
 			event.location = location
 			event.creator = organiser
 			event.save()
+			send_email_firstEvent(organiser)
 			for buyable_form in buyable_formset:
 				if buyable_form.has_changed():
 					buyable = buyable_form.save(commit=False)
@@ -185,6 +188,7 @@ def event_update_view(request, id):
 		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			location.save()
 			event.save()
+			send_email_firstEvent(organiser)
 			buyables = buyable_formset.save(commit=False)
 			for buyable in buyables:
 				buyable.creator = organiser
@@ -249,3 +253,14 @@ def event_organiser_list_view(request, organiser):
 
 def invoiceUID_generator(size = 7, chars= string.digits):
     return 'ST'+''.join(random.choice(chars) for _ in range(size))
+
+
+def send_email_firstEvent(Organiser):
+	breakpoint()
+	subject = 'Danke für das Erstellen des ersten Events.'
+	html_message = render_to_string('event/mail_firstEvent.html')
+	plain_message = strip_tags(html_message)
+	#to = Organiser.email
+	to = 'roessler.paul@web.de'
+	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to], html_message = html_message)
+
