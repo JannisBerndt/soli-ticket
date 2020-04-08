@@ -15,10 +15,13 @@ import random
 import string
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+import pdb
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
+
+	
 	print(organiser)
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
@@ -36,6 +39,14 @@ def event_detail_view(request, id):
 			customer = None
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
+
+	
+		o_Event = Event.objects.get(id = id)
+		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
+
+		if not o_Organisation.paypal_email:
+			return render(request, 'event/error.html')
+
 		if order_formset.is_valid():
 			i=0
 			sum = 0
@@ -74,10 +85,12 @@ def event_detail_view(request, id):
 					'organiser_user': organiser_user,
 				}
 
-				request.session["invoiceUID"] = o_uid
-				request.session["sum"] = sum
-				request.session["paypal_email"] = organiser.paypal_email
-				return redirect(reverse('payment:process'))
+				if organiser.paypal_email:
+					request.session["invoiceUID"] = o_uid
+					request.session["sum"] = sum
+					request.session["paypal_email"] = organiser.paypal_email
+					return redirect(reverse('payment:process'))
+				
 
 	formset = zip(buyables, order_formset)
 	context = {
@@ -254,10 +267,13 @@ def invoiceUID_generator(size = 7, chars= string.digits):
     return 'ST'+''.join(random.choice(chars) for _ in range(size))
 
 
-def send_email_firstEvent(Organiser):
-	subject = 'Danke für das Erstellen des ersten Events.'
+def send_email_firstEvent(organiser):
+	subject = 'Glückwunsch! Sie haben Ihre erste Veranstaltung erstellt'
 	html_message = render_to_string('event/mail_firstEvent.html')
 	plain_message = strip_tags(html_message)
-	to = 'roessler.paul@web.de'
-	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [to, Organiser.email], html_message = html_message)
+	if settings.DEBUG:
+		to = ['roessler.paul@web.de', 'kolzmertz@gmail.com', organiser.email]
+	else:
+		to = [organiser.email]
+	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, to, html_message = html_message)
 

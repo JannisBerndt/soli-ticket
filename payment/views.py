@@ -252,7 +252,6 @@ def sendDankesEmail(ipn_obj):
 	plain_message = strip_tags(html_message)
 	
 	if settings.PAYPAL_TEST:
-		send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de'], html_message = html_message)
-	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'], html_message = html_message)
+		send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'], html_message = html_message)
 	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [o_Order.customer_mail], html_message = html_message)
 #endregion
