@@ -13,12 +13,18 @@ from accounts.forms import OrderForm
 import uuid 
 import random
 import string
+<<<<<<< HEAD
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+=======
+import pdb
+>>>>>>> master
 
 def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
+
+	
 	print(organiser)
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
@@ -36,6 +42,14 @@ def event_detail_view(request, id):
 			customer = None
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
+
+	
+		o_Event = Event.objects.get(id = id)
+		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
+
+		if not o_Organisation.paypal_email:
+			return render(request, 'event/error.html')
+
 		if order_formset.is_valid():
 			i=0
 			sum = 0
@@ -74,10 +88,12 @@ def event_detail_view(request, id):
 					'organiser_user': organiser_user,
 				}
 
-				request.session["invoiceUID"] = o_uid
-				request.session["sum"] = sum
-				request.session["paypal_email"] = organiser.paypal_email
-				return redirect(reverse('payment:process'))
+				if organiser.paypal_email:
+					request.session["invoiceUID"] = o_uid
+					request.session["sum"] = sum
+					request.session["paypal_email"] = organiser.paypal_email
+					return redirect(reverse('payment:process'))
+				
 
 	formset = zip(buyables, order_formset)
 	context = {
