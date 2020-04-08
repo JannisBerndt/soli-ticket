@@ -12,4 +12,5 @@ urlpatterns = [
     path('error/', views.error, name='register_error'),
     path('organizer/', views.organiser_list_view, name='organiser_list'),
     path('confirm/', views.confirm),
+    path('verify/', views.verify_email_view, name="verify_email"),
 ]
