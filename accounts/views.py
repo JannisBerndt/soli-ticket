@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -12,6 +12,7 @@ from django.conf import settings
 from solisite.settings import DEBUG
 import string
 import random
+from urllib.parse import urlencode
 
 
 def login_page(request):
@@ -29,7 +30,9 @@ def login_page(request):
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        return render(request, 'register/check_your_emails.html')
+                        params = urlencode({'code': o_organiser.confirmationCode})
+                        url = "{}?{}".format(reverse('accounts:verify_email'), params)
+                        return redirect(url)
                     else: 
                         login(request, user)
                         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
@@ -51,14 +54,13 @@ def logout_user(request):
     return redirect('accounts:login')
 
 def verify_email_view(request):
-    try:
-        organiser_user = Organiser.objects.get(username = request.user.username)
-    except:
-        organiser_user = None
+    code = request.GET["code"]
+    organiser = get_object_or_404(Organiser, confirmationCode=code)
     if request.method == 'POST':
-        buildAndSendEmail(organiser_user)
+        buildAndSendEmail(organiser)
     context = {
-		'organiser_user': organiser_user,
+		'organiser_user': None,
+        'code': code,
 	}
     return render(request, 'register/check_your_emails.html', context)
 
@@ -247,8 +249,10 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-
-            return render(request, self.template_name[3])
+            
+            params = urlencode({'code': organiser_user.confirmationCode})
+            url = "{}?{}".format(reverse('accounts:verify_email'), params)
+            return redirect(url)
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
