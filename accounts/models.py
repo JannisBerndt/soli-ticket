@@ -53,7 +53,7 @@ class Organiser(User):
         return "{}{}".format(HOST_URL_BASE, reverse("events:event_organiser_list", kwargs={"organiser": self.organisation_name})[1:])
 
     def get_confirm_url(self):
-        return "{}{}/?confirmationCode={}&id={}".format(HOST_URL_BASE, reverse("accounts:confirm")[1:], self.confirmationCode, self.id)
+        return "{}{}?confirmationCode={}&id={}".format(HOST_URL_BASE, reverse("accounts:confirm")[1:], self.confirmationCode, self.id)
 
     def getContactPerson(self):
         return self.contact_first_name + " " + self.contact_last_name

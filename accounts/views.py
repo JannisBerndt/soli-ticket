@@ -286,17 +286,9 @@ def confirm(request):
 		'organiser_user': organiser_user,
     }
     return render(request, 'register/register_finished.html', context)
-  
-def buildAndSendEmail(o_organiser):
-    email = o_organiser.email
-    id = o_organiser.id
-    o_code = o_organiser.confirmationCode
-    
-    if DEBUG:
-        confirmLink = 'http://127.0.0.1:8000/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
-    else:
-        confirmLink = '{host}accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(host = settings.HOST_URL_BASE, organiser_code = o_code, myid = id)
 
+def buildAndSendEmail(o_organiser):
+    confirmLink = o_organiser.get_confirm_url()
 
     subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
     content =   'Vielen Dank für die Registrierung auf soli-ticket.de \n'\
