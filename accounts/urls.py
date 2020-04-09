@@ -1,15 +1,14 @@
 from django.urls import path
-from . import views
+from .views import login_view, logout_view, profile_update_view, profile_delete_view, accounts, error_view, organiser_list_view, confirm_view
 
 app_name='accounts'
-
 urlpatterns = [
-    path('login/', views.login_page, name = 'login'),
-    path('logout/', views.logout_user, name = 'logout'),
-    path('profile/edit/', views.profile_update_view, name='profile_update'),
-    path('profile/delete/', views.profile_delete_view, name='profile_delete'),
-    path('register/', views.accounts.as_view(), name='register'),
-    path('error/', views.error, name='register_error'),
-    path('organizer/', views.organiser_list_view, name='organiser_list'),
-    path('confirm/', views.confirm),
+    path('login/', login_view, name ='login'),
+    path('logout/', logout_view, name ='logout'),
+    path('profile/edit/', profile_update_view, name='profile_update'),
+    path('profile/delete/', profile_delete_view, name='profile_delete'),
+    path('register/', accounts.as_view(), name='register'),
+    path('error/', error_view, name='register_error'),
+    path('organizer/', organiser_list_view, name='organiser_list'),
+    path('confirm/', confirm_view, name='confirm'),
 ]
