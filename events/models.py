@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core.validators import MinValueValidator
 from accounts.models import Organiser
 from decimal import Decimal
+from solisite.settings import HOST_URL_BASE
 
 class Eventlocation(models.Model):
 	creator = models.ForeignKey(Organiser, on_delete=models.CASCADE, 
@@ -36,7 +37,7 @@ class Event(models.Model):
 		return reverse("events:event_detail", kwargs={"id": self.id})
 
 	def get_share_url(self):
-		return reverse("events:event_organiser_list", kwargs={'organiser': self.creator.organisation_name})
+		return "{}{}".format(HOST_URL_BASE, reverse("events:event_detail", kwargs={"id": self.id})[1:])
 
 	def __str__(self):
 		return self.name

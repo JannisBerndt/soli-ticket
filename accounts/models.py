@@ -1,6 +1,8 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from solisite.settings import HOST_URL_BASE
 
 
 class UserAddress(models.Model):
@@ -46,6 +48,9 @@ class Organiser(User):
 
     def __str__(self):
         return self.organisation_name
+
+    def get_share_url(self):
+        return "{}{}".format(HOST_URL_BASE, reverse("events:event_organiser_list", kwargs={"organiser": self.organisation_name})[1:])
 
     def getContactPerson(self):
         return self.contact_first_name + " " + self.contact_last_name
