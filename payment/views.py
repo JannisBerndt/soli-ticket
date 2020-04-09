@@ -9,7 +9,7 @@ from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
 
-#region Imports, die aus der paypal.standarf.ipn.views kommen. 
+#region Imports, die aus der paypal.standarf.ipn.views kommen.
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
 from django.core.mail import send_mail
 import logging
@@ -37,11 +37,11 @@ def payment_process(request):
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
 		organiser_user = None
-	
+
 	host = settings.HOST_URL_BASE
 
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
-	
+
 	if orders is None:
 		return Exception
 
@@ -53,7 +53,7 @@ def payment_process(request):
 	strasse = o_adresse.strasse
 	ort = o_adresse.ort
 	plz = o_adresse.plz
-	
+
 	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
 	"""
 
@@ -106,14 +106,14 @@ def payment_process(request):
 	paypal_dict['quantity_2'] = 3
 
 	for order in orders:
-		
+
 		platzhalter = 'item_name_'+str(i)
 		buyable = Buyable.objects.get(id = order.article_id)
 		wert = buyable.buyable_name
 		paypal_dict[platzhalter] = wert
 		i+=1
 	"""
-	
+
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	print(form)
 	context = {
@@ -128,7 +128,9 @@ def payment_done(request):
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
 		organiser_user = None
+    organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 	context = {
+        'organiser': organiser,
 		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/done.html', context)
@@ -242,7 +244,7 @@ def payment_ipn(request):
     return HttpResponse("OKAY")
 
 def sendDankesEmail(ipn_obj):
-	
+
 	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
 	o_Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
 	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
@@ -250,7 +252,10 @@ def sendDankesEmail(ipn_obj):
 	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
 	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
 	plain_message = strip_tags(html_message)
-	
+	to = 'roessler.paul@web.de'
+
+
+
 	if settings.PAYPAL_TEST:
 		send_mail(subject, plain_message, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com'], html_message = html_message)
 	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [o_Order.customer_mail], html_message = html_message)
