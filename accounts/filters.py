@@ -1,5 +1,6 @@
 import django_filters
 from django_filters import CharFilter
+#from django_filters.groups import CombinedGroup
 
 from .models import Organiser, UserAddress
 
@@ -8,4 +9,7 @@ class OrganiserFilter(django_filters.FilterSet):
     city = CharFilter(field_name='user_address__ort', lookup_expr='icontains', label='Ort')
     class Meta:
         model = Organiser
-        fields = []
+        fields = []#['organisation_name', 'user_address__ort']
+        #groups = [
+        #    CombinedGroup(filters=['organisation_name', 'user_address__ort'], combine=operator.or_),
+        #]
