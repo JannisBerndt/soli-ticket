@@ -15,23 +15,23 @@ import string
 import random
 
 
-def login_page(request):
+def login_view(request):
     if request.user.is_authenticated:
         username = request.user
         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
-            
+
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
-            
+
             if user is not None:
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
                         return render(request, 'register/check_your_emails.html')
-                    else: 
+                    else:
                         login(request, user)
                         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
@@ -47,31 +47,15 @@ def login_page(request):
         return render(request, 'accounts/login.html', context)
 
 
-def logout_user(request):
+def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
 
-
-
-# @login_required(login_url='login')
-# def profile(request):
-#     if request.user.is_authenticated:
-#         pk = request.user.username
-#     try:
-#         organiser = Organiser.objects.get(username=pk)
-#     except:
-#         return redirect('home')
-#     context = {
-# 		'organiser': organiser,
-# 		'authenticated': request.user.is_authenticated,
-# 	}
-#     return render(request, 'accounts/profile.html', context)
-
-
-def error(request):
+def error_view(request):
     print("Error at registration")
     return render(request, 'register/error.html')
+
 
 def organiser_list_view(request):
     organisers = Organiser.objects.filter(is_active=True)
@@ -88,6 +72,7 @@ def organiser_list_view(request):
         'cities': cities,
     }
     return render(request, 'accounts/organiser_list.html', context)
+
 
 @login_required(login_url='accounts:login')
 def profile_update_view(request):
@@ -112,6 +97,7 @@ def profile_update_view(request):
 	}
 	return render(request, 'accounts/profile_update.html', context)
 
+
 @login_required(login_url='accounts:login')
 def profile_delete_view(request):
     user = request.user
@@ -125,6 +111,7 @@ def profile_delete_view(request):
         'organiser_user': organiser,
     }
     return render(request, 'accounts/profile_delete.html', context)
+
 
 class accounts(View):
     template_name = ['register/register_start.html',
@@ -148,7 +135,7 @@ class accounts(View):
 
     def post(self, request, *args, **kwargs):
 
-        
+
         req = request.POST
 
         # Wir waren auf page 1:
@@ -171,9 +158,9 @@ class accounts(View):
                     form = Register2()
                     context = {
                         'register2' : form,
-                    } 
+                    }
                     return render(request, self.template_name[1], context)
-                
+
             if form.cleaned_data['pw1'] != form.cleaned_data['pw2']:
                 form.add_error('pw1', 'Die Passwörter stimmen nicht überein')
             context = {
@@ -205,7 +192,7 @@ class accounts(View):
             return render(request, self.template_name[1], context)
 
 
-            
+
 
         # Wir waren auf page 3:
         elif "paypal_email" in req:
@@ -216,7 +203,7 @@ class accounts(View):
                     'register3' : form,
                 }
                 return render(request, self.template_name[2], context)
-            
+
 
             for tag in ["paypal_email"]:
                 request.session[tag] = form.cleaned_data[tag]
@@ -239,16 +226,16 @@ class accounts(View):
 								  description = request.session["description"],
                                   paypal_email = request.session["paypal_email"],
                                   isActivated = False)
-            
+
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
-            
+
             buildAndSendEmail(organiser_user)
-        
-            
+
+
             # Löschen der Sessions IDs:
             for tag in self.tags:
                 try:
@@ -266,13 +253,14 @@ class accounts(View):
             response = redirect('error/')
             return response
 
-def confirm(request):
+
+def confirm_view(request):
     confirmation_Code = request.GET['confirmationCode']
     myid = request.GET['id']
-    
+
     # In der URL ist die User-ID eingebaut. Theoretisch sollte man also immer User aus der DB kriegen zu dem die ID gehört
     organiser_user = Organiser.objects.get(id = myid)
-    
+
     if organiser_user is None:
         return error
     # Check ob der in der URL vorhandene confirmationCode mit dem in der Datenbank übereinstimmt.
@@ -298,11 +286,10 @@ def buildAndSendEmail(o_organiser):
                 'Ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
 
     if DEBUG:
-        # Hier eure email eintragen, wenn ihr was testen wollt. 
+        # Hier eure email eintragen, wenn ihr was testen wollt.
         send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email])
     else:
         send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
 
 def confirmationCode_generator(size = 40, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-

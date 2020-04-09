@@ -9,7 +9,7 @@ from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
 
-#region Imports, die aus der paypal.standarf.ipn.views kommen. 
+#region Imports, die aus der paypal.standarf.ipn.views kommen.
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
 from django.core.mail import send_mail
 import logging
@@ -30,18 +30,18 @@ CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
 logger = logging.getLogger(__name__)
 #endregion
 
-def payment_process(request):
+def payment_process_view(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
 		organiser_user = None
-	
+
 	host = settings.HOST_URL_BASE
 
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
-	
+
 	if orders is None:
 		return Exception
 
@@ -53,7 +53,7 @@ def payment_process(request):
 	strasse = o_adresse.strasse
 	ort = o_adresse.ort
 	plz = o_adresse.plz
-	
+
 	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
 	"""
 
@@ -106,14 +106,14 @@ def payment_process(request):
 	paypal_dict['quantity_2'] = 3
 
 	for order in orders:
-		
+
 		platzhalter = 'item_name_'+str(i)
 		buyable = Buyable.objects.get(id = order.article_id)
 		wert = buyable.buyable_name
 		paypal_dict[platzhalter] = wert
 		i+=1
 	"""
-	
+
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	print(form)
 	context = {
@@ -123,7 +123,7 @@ def payment_process(request):
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
-def payment_done(request):
+def payment_done_view(request):
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
@@ -134,7 +134,7 @@ def payment_done(request):
 	return render(request, 'payment/done.html', context)
 
 @csrf_exempt
-def payment_canceled(request):
+def payment_canceled_view(request):
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
@@ -147,7 +147,7 @@ def payment_canceled(request):
 #region IPN-Handling
 @require_POST
 @csrf_exempt
-def payment_ipn(request):
+def payment_ipn_view(request):
     """
     PayPal IPN endpoint (notify_url).
     Used by both PayPal Payments Pro and Payments Standard to confirm transactions.
@@ -242,7 +242,7 @@ def payment_ipn(request):
     return HttpResponse("OKAY")
 
 def sendDankesEmail(ipn_obj):
-	
+
 	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
 	o_Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
 	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
@@ -251,7 +251,7 @@ def sendDankesEmail(ipn_obj):
 	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
 	plain_message = strip_tags(html_message)
 	to = 'roessler.paul@web.de'
-	
+
 
 
 	if settings.PAYPAL_TEST:
