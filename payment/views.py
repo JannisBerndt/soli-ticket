@@ -67,7 +67,6 @@ def payment_process(request):
 		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
 		'cancel_return': '{host_base_url}payment/canceled/'.format(host_base_url = host),
 		'submit':'PayPal',
-		'custom':'DAS ist die Info im Custom-Feld'
 	}
 
 
