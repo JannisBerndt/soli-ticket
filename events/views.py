@@ -201,6 +201,7 @@ def event_update_view(request, id):
 			location.save()
 			event.save()
 			buyables = buyable_formset.save(commit=False)
+			print(buyables)
 			for buyable in buyables:
 				buyable.creator = organiser
 				buyable.save()
