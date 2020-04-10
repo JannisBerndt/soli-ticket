@@ -160,7 +160,11 @@ def event_create_view(request):
 					buyable.save()
 			if Event.objects.filter(creator = organiser).count() == 1:
 				send_email_firstEvent(organiser)
-
+			try:
+				organiser.acceptedTac = True if request.POST.get("checkbox") != "" else False
+				organiser.save()
+			except:
+				pass
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
