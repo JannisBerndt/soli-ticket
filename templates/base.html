@@ -65,7 +65,7 @@
 					<nav role="navigation" class="navigation-items w-nav-menu">
 						<a href="{% url 'home' %}" class="w-nav-link">Home</a>
 						{% if organiser_user %}
-						<a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="w-nav-link">Mein Profil</a>
+						<a href="{% url 'accounts:profile' organiser_user.organisation_name %}" class="w-nav-link">Mein Profil</a>
 						{% endif %}
 						<a href="{% url 'blog' %}" class="w-nav-link">News</a>
 						<a href="{% url 'about' %}" class="w-nav-link">Über Uns</a>
