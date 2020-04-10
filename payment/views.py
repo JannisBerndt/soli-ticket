@@ -128,9 +128,9 @@ def payment_done(request):
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
 		organiser_user = None
-	organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
+	#organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 	context = {
-        'organiser': organiser,
+        #'organiser': organiser,
 		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/done.html', context)
