@@ -50,13 +50,8 @@ def login_page(request):
                         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
-        try:
-            organiser_user = Organiser.objects.get(username = request.user.username)
-        except:
-            organiser_user = None
         context = {
 			'authenticated': request.user.is_authenticated,
-			'organiser_user': organiser_user,
 		}
         return render(request, 'accounts/login.html', context)
 

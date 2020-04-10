@@ -3,9 +3,11 @@ from accounts.models import Organiser
 def organiser_user(request):
     if hasattr(request, 'user'):
         user = request.user
-        organiser_user = Organiser.objects.get(username=user.username)
+        try:
+            organiser_user = Organiser.objects.get(username=user.username)
+        except:
+            organiser_user = None
     else:
-        from django.contrib.auth.models import AnonymousUser
         organiser_user = None
 
     return {
