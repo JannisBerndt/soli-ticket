@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -13,6 +13,9 @@ from django.conf import settings
 from solisite.settings import DEBUG
 import string
 import random
+from .filters import OrganiserFilter
+from django.db.models.query import QuerySet
+from urllib.parse import urlencode
 
 
 def login_view(request):
@@ -24,25 +27,33 @@ def login_view(request):
 
             username = request.POST.get('username')
             password = request.POST.get('password')
+            try:
+                organiser = Organiser.objects.get(email=username)
+                username = organiser.username
+            except:
+                pass
+            try:
+                organiser = Organiser.objects.get(organisation_name=username)
+                username = organiser.username
+            except:
+                pass
+
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        return render(request, 'register/check_your_emails.html')
-                    else:
+                        params = urlencode({'code': o_organiser.confirmationCode})
+                        url = "{}?{}".format(reverse('accounts:verify_email'), params)
+                        return redirect(url)
+                    else: 
                         login(request, user)
                         return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
-        try:
-            organiser_user = Organiser.objects.get(username = request.user.username)
-        except:
-            organiser_user = None
         context = {
 			'authenticated': request.user.is_authenticated,
-			'organiser_user': organiser_user,
 		}
         return render(request, 'accounts/login.html', context)
 
@@ -51,6 +62,16 @@ def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
+def verify_email_view(request):
+    code = request.GET["code"]
+    organiser = get_object_or_404(Organiser, confirmationCode=code)
+    if request.method == 'POST':
+        buildAndSendEmail(organiser)
+    context = {
+		'organiser_user': None,
+        'code': code,
+	}
+    return render(request, 'register/check_your_emails.html', context)
 
 def error_view(request):
     print("Error at registration")
@@ -63,13 +84,19 @@ def organiser_list_view(request):
         organiser_user = Organiser.objects.get(username = request.user.username)
     except:
         organiser_user = None
-    addresses = UserAddress.objects.filter(organiser_address__is_active = True).distinct()
-    print(addresses)
+
+    myFilter = OrganiserFilter(request.GET, queryset=organisers)
+    organisers = myFilter.qs
+    list_of_ids = []
+    for organiser in organisers:
+        list_of_ids.append(organiser.user_address.id)
+    addresses = UserAddress.objects.filter(id__in=list_of_ids).distinct()
     cities = addresses.values('ort').order_by('ort')
     context = {
         'organisers': organisers,
         'organiser_user': organiser_user,
         'cities': cities,
+        'myFilter': myFilter,
     }
     return render(request, 'accounts/organiser_list.html', context)
 
@@ -242,8 +269,10 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-
-            return render(request, self.template_name[3])
+            
+            params = urlencode({'code': organiser_user.confirmationCode})
+            url = "{}?{}".format(reverse('accounts:verify_email'), params)
+            return redirect(url)
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"

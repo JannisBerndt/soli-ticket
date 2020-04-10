@@ -53,7 +53,18 @@ Neue Veranstaltung erstellen
 							</div>
 							<label for="{{ event_form.date.id_for_label }}">Wann Hätte die Veranstaltung stattgefunden?</label>
 							{{ event_form.date.errors }}
-							{{ event_form.date|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Format: DD.MM.YYYY'}" }}
+							{{ event_form.date|setHTMLAttributes:"{'class':'text-field-2 w-input', 'autocomplete': 'off', 'placeholder':'Format: DD.MM.YYYY'}" }}
+                            <script>
+                                $(function () {
+                                  $("#DateTime").datepicker({
+                                      language:"de-DE",
+                                      format:"dd.mm.yyyy",
+                                      autoHide: true,
+                                      weekStart: 1,
+                                  });
+                                });
+                            </script>
+                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="" id="DateTime" required=""> -->
                             <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Aufruf an ihre Unterstützer</label>
 			  				<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer</label>
 							{{ event_form.description.errors }}

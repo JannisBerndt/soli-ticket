@@ -67,7 +67,6 @@ def payment_process_view(request):
 		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
 		'cancel_return': '{host_base_url}payment/canceled/'.format(host_base_url = host),
 		'submit':'PayPal',
-		'custom':'DAS ist die Info im Custom-Feld'
 	}
 
 
@@ -128,7 +127,9 @@ def payment_done_view(request):
 		organiser_user = Organiser.objects.get(username = request.user.username)
 	except:
 		organiser_user = None
+	#organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 	context = {
+        #'organiser': organiser,
 		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/done.html', context)

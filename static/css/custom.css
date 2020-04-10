@@ -4,6 +4,10 @@
     margin-top: 0px;
 }
 
+.errorlist li {
+    color: red;
+}
+
 .red-background {
     background-color: #ff4a4aeb !important;
 }
