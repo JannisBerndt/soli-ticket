@@ -28,8 +28,11 @@
 				<div class="w-row">
 					<div class="w-col w-col-4"><input type="submit" value="Einloggen" data-wait="Please wait..." class="submit-button w-button"></div>
           <div class="w-col w-col-8"><a href="{% url 'accounts:register' %}" class="link-2">Noch kein Konto? Hier registrieren!</a></div>
-          <div>Passwort vergessen? <a href="{% url 'accounts:password_reset' %}">Hier zurücksetzen</a></div>
-				</div>
+        </div>
+        <div class="w-row">
+          <div class="w-col w-col-4"></div>
+          <div class="w-col w-col-8"><a href="{% url 'accounts:password_reset' %}">Passwort vergessen? Hier zurücksetzen</a></div>
+        </div>
 			  </div>
 			  <div class="w-col w-col-3"></div>
 			</div>
