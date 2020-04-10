@@ -1,5 +1,9 @@
 {%  extends 'base.html' %}
 
+{% load static %}
+
+{% load custom_tags %}
+
 {% block content %}
   <div class="section cc-store-home-wrap">
     <div class="form-header">
@@ -13,16 +17,28 @@
       <div class="w-form">
         <form id="email-form" name="email-form" data-name="Email Form" class="form"> {% csrf_token %}
           <div class="w-row">
-            <div class="w-col w-col-3"></div>
-            <div class="w-col w-col-6"><label for="paypal-mail">Ihr Paypal-Geschäftskonto</label>
-            {% for error in register3.paypal_email.errors %}
-                  <font size="3" color="red" disabled = "True"> {{ error }} </font>
+            <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack w-col-stack"></div>
+            <div class="w-col w-col-6 w-col-small-small-stack w-col-tiny-tiny-stack w-col-stack">
+              <label for="paypal-mail">Ihr Paypal-Geschäftskonto</label>
+              {% for error in register3.paypal_email.errors %}
+                <font size="3" color="red" disabled = "True"> {{ error }} </font>
               {% endfor %}
-            {{ register3.paypal_email }}
-              <p class="paragraph-20">Bitte geben Sie hier die Email-Adresse an, mit der Ihre Organisation bei PayPal angemeldet ist. Sollte Ihre Organisation noch kein PayPal-Geschäftskonto besitzen, können Sie hier eines erstellen:</p><a href="https://www.paypal.com/de/webapps/mpp/merchant" target="_blank">Für nicht-gemeinnützige Organisationen</a><a href="https://www.paypal.com/de/webapps/mpp/charity" target="_blank">Für gemeinnützige Organisationen</a>
+              {{ register3.paypal_email }}
+              <p class="paragraph-20">Bitte geben Sie hier die Email-Adresse an, mit der Ihre Organisation bei PayPal angemeldet ist. Sollte Ihre Organisation noch kein PayPal-Geschäftskonto besitzen, können Sie hier eines erstellen:</p>
+              <a id="external_link" href="https://www.paypal.com/de/webapps/mpp/merchant" target="_blank">Für nicht-gemeinnützige Organisationen</a>
+              <a id="external_link" href="https://www.paypal.com/de/webapps/mpp/charity" target="_blank">Für gemeinnützige Organisationen‍</a>
               <p class="paragraph-20">Sie können den Registrierungsvorgang auch ohne PayPal-Geschäftskonto abschließen. Auf Ihrer Profilseite können Sie es dann jederzeit ergänzen.</p>
-              <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post"></div>
-            <div class="w-col w-col-3"></div>
+              <label class="w-checkbox">
+                {{ register3.acceptedTac.errors }}
+                {{ register3.acceptedTac|setHTMLAttributes:"{'class': 'w-checkbox-input'}" }}
+                <!-- <input type="checkbox" id="checkbox" name="checkbox" data-name="Checkbox" class="w-checkbox-input"> -->
+                <span class="checkbox-label-2 w-form-label">Ich habe die AGB des Plattformbetreibers zur kenntnis genommen und bin mit deren Geltung einverstanden<br>
+                  <a href="{% url 'agb' %}">Link zu den AGB</a>
+                </span>
+              </label>
+              <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post">
+            </div>
+              <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack w-col-stack"></div>
           </div>
         </form>
       </div>

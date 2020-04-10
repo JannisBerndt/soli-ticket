@@ -48,6 +48,7 @@ class Organiser(User):
     paypal_email = models.EmailField(null=True, blank=True, max_length=254)
     isActivated = models.BooleanField(default = True)
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten')
+    acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
 
 
     def __str__(self):

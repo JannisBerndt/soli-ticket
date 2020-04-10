@@ -232,7 +232,7 @@ class accounts(View):
                 return render(request, self.template_name[2], context)
 
 
-            for tag in ["paypal_email"]:
+            for tag in ["paypal_email", "acceptedTac"]:
                 request.session[tag] = form.cleaned_data[tag]
 
 
@@ -252,7 +252,8 @@ class accounts(View):
                                   email =request.session["email"],
 								  description = request.session["description"],
                                   paypal_email = request.session["paypal_email"],
-                                  isActivated = False)
+                                  isActivated = False,
+                                  acceptedTac = request.session["acceptedTac"],)
 
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
