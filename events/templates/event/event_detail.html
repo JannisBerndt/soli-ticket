@@ -99,6 +99,10 @@
 			<div class="column-5 w-col w-col-7"></div>
 		  </div>
 		  <p class="paragraph-5">Hinweis: Mit Ihrer Zahlung unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB.<strong></strong></p>
+		  <label class="w-checkbox">
+            <input type="checkbox" id="Checkbox" name="Checkbox" data-name="Checkbox" class="w-checkbox-input" required>
+            <span for="Checkbox" class="w-form-label">Ich habe die AGB des Plattformbetreibers zur Kenntnis genommen und bin mit deren Geltung einverstanden</span>
+		  </label>
 		  <a href="{% url 'agb' %}" class="link-3">Link zu den AGB</a>
           <input type="submit" value="Zahlungspflichtig bestellen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
         </form>

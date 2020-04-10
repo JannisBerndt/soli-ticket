@@ -87,6 +87,7 @@ class Order(models.Model):
     changedDateTime = models.DateTimeField(auto_now=True)
     invoiceUID = models.CharField(max_length = 64, default = 'nicht_migrierte_orders')
     isPayed = models.BooleanField(default = False)
+    acceptedTac = models.BooleanField()
 
     def setPrice(self):
         self.price = self.article.price * self.amount

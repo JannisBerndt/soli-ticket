@@ -68,6 +68,7 @@ def event_detail_view(request, id):
 					order.price = buyables[i].price * order.amount
 					order.customer = customer
 					order.customer_mail = request.POST.get('field-4')
+					order.acceptedTac = True if request.POST.get('Checkbox') == "on" else False
 					order.invoiceUID = o_uid
 					order.save()
 					sum += order.price
