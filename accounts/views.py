@@ -28,13 +28,11 @@ def login_page(request):
             try:
                 organiser = Organiser.objects.get(email=username)
                 username = organiser.username
-                print('GOT HERE')
             except:
                 pass
             try:
                 organiser = Organiser.objects.get(organisation_name=username)
                 username = organiser.username
-                print('GOT HERE')
             except:
                 pass
 
