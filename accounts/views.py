@@ -25,6 +25,19 @@ def login_page(request):
             
             username = request.POST.get('username')
             password = request.POST.get('password')
+            try:
+                organiser = Organiser.objects.get(email=username)
+                username = organiser.username
+                print('GOT HERE')
+            except:
+                pass
+            try:
+                organiser = Organiser.objects.get(organisation_name=username)
+                username = organiser.username
+                print('GOT HERE')
+            except:
+                pass
+
             user = authenticate(request, username=username, password=password)
             
             if user is not None:
