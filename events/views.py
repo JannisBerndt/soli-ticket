@@ -10,7 +10,7 @@ from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
 from accounts.forms import OrderForm
-import uuid 
+import uuid
 import random
 import string
 from django.template.loader import render_to_string
@@ -21,7 +21,7 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
 
-	
+
 	print(organiser)
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
@@ -40,7 +40,7 @@ def event_detail_view(request, id):
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
 
-	
+
 		o_Event = Event.objects.get(id = id)
 		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
 
@@ -51,11 +51,11 @@ def event_detail_view(request, id):
 			i=0
 			sum = 0
 			orders = []
-			
+
 			# Neue RechnungsUID wird generiert und es werden sich Orders, die dazu bereits in der DB existieren geholt
 			o_uid = invoiceUID_generator()
 			o_orders = Order.objects.filter(invoiceUID = o_uid)
-		
+
 			#Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
 			while o_orders:
 				o_uid = invoiceUID_generator()
@@ -90,7 +90,7 @@ def event_detail_view(request, id):
 					request.session["sum"] = sum
 					request.session["paypal_email"] = organiser.paypal_email
 					return redirect(reverse('payment:process'))
-				
+
 
 	formset = zip(buyables, order_formset)
 	context = {
@@ -275,4 +275,3 @@ def send_email_firstEvent(organiser):
 	else:
 		to = [organiser.email]
 	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, to, html_message = html_message)
-

@@ -21,6 +21,10 @@ class UserAddress(models.Model):
 
 
 class Organiser(User):
+    TYPES = (
+        ('gemeinnützig', 'gemeinnützig'),
+        ('nicht gemeinnützig', 'nicht gemeinnützig'),
+    )
     user_address = models.OneToOneField(
         UserAddress,
         on_delete=models.CASCADE,
@@ -29,7 +33,7 @@ class Organiser(User):
         related_query_name="organiser_address"
     )
     organisation_name = models.CharField(max_length=120)
-    organisation_type = models.CharField(max_length=120)
+    organisation_type = models.CharField(max_length=120, choices=TYPES)
     contact_first_name = models.CharField(max_length=120)
     contact_last_name = models.CharField(max_length=120)
     contact_phone = models.CharField(null=True, max_length=100)
