@@ -1,46 +1,17 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_tags %}
+
+{% block additionaljs %}
+<script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
+{% endblock %}
 
 {% block title %}
-	<title>{{ event.name }} ansehen</title>
+	{{ event.name }} ansehen
 {% endblock title %}
 
 {% block content %}
-<script type="text/javascript">
-	function myFunction() {
-		/* Get the text field */
-		var copyText = document.getElementById("link");
-
-		/* Select the text field */
-		copyText.select();
-		copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-		/* Copy the text inside the text field */
-		document.execCommand("copy");
-
-		/* Alert the copied text */
-		// alert("Copied the text: " + copyText.value);
-	}
-
-	function calcSum() {
-		var amounts = document.getElementsByClassName('amount-field');
-		var prices = document.getElementsByClassName('price');
-		var sum = 0.00;
-		for (var i = 0; i < amounts.length; i++) {
-			var price = parseFloat(prices[i].innerHTML.replace(',', "."));
-			var amount = parseInt(amounts[i].value);
-			if(Number.isNaN(amount)) {
-				amount = 0;
-			}
-			console.log(i);
-			console.log(amount + ' mal ' + price);
-			sum += amount * price;
-		}
-		console.log(sum.toFixed(2));
-		document.getElementById('sum').innerHTML = sum.toFixed(2).replace('.', ",");
-	}
-</script>
 <div class="section-18">
     <div class="w-container">
       <div class="intro-text">
@@ -58,8 +29,8 @@
 		  <div class="w-form">
 			<div class="w-layout-grid grid-4">
 				<div></div>
-				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="http://soli-ticket.de{{event.get_absolute_url}}">
-				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="myFunction();" id="copyToClip">
+				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="{{event.get_share_url}}">
+				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="copyLink();" id="copyToClip">
 			</div>
 		  </div>
       <div class="divider"></div>
@@ -82,11 +53,15 @@
       <div class="w-form">
         <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST"> {% csrf_token %}
           <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€)</label><label>Anzahl</label>
-            {{ order_formset.management_form }}
+			{{ order_formset.management_form }}
+			{{ order_formset.non_form_errors }}
 			{% for buyable, order_form in formset %}
 				<p>{{ buyable.buyable_name }}</p>
 				<p class="price">{{ buyable.price }}</p>
-				{{ order_form.amount }}
+				<div>
+					{{ order_form.amount.errors }}
+					{{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
+				</div>
 			{% endfor %}
 			<p class="paragraph-4">Gesamt:</p>
 			<p class="paragraph-3" id="sum">0,00</p>
@@ -94,11 +69,21 @@
 		  <p class="paragraph-5"></p>
           <div class="divider"></div>
            <div class="w-row">
-            <div class="w-col w-col-5"><label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
-				<input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
+			<div class="w-col w-col-5">
+				<label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
+				{{ contact_form.email.errors }}
+				{{ contact_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+				<!-- <input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""> -->
+			</div>
 			<div class="column-5 w-col w-col-7"></div>
 		  </div>
 		  <p class="paragraph-5">Hinweis: Mit Ihrer Zahlung unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB.<strong></strong></p>
+		  <label class="w-checkbox">
+			  {{ contact_form.acceptedTac.errors }}
+			  {{ contact_form.acceptedTac|setHTMLAttributes:"{'class': 'w-checkbox-input'}" }}
+            <!-- <input type="checkbox" id="Checkbox" name="Checkbox" data-name="Checkbox" class="w-checkbox-input" required> -->
+            <span for="Checkbox" class="w-form-label">Ich habe die AGB des Plattformbetreibers zur Kenntnis genommen und bin mit deren Geltung einverstanden</span>
+		  </label>
 		  <a href="{% url 'agb' %}" class="link-3">Link zu den AGB</a>
           <input type="submit" value="Zahlungspflichtig bestellen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
         </form>

@@ -1,26 +1,42 @@
 {% extends "base.html" %}
 
+{% load custom_tags %}
+
 {% block title %}
-<title>Liste aller Veranstalter</title>
+Liste aller Veranstalter
 {% endblock %}
 
 {% block content %}
 <div class="section-19">
-    <div class="w-container">
-      <h3 class="heading-21">Hier finden Sie alle Veranstalter, die Sie bei uns unterstützen können!</h3>
-      <div class="divider"></div>
+  <div class="w-container">
+    <h3 class="heading-21">Hier finden Sie alle Veranstalter, die Sie bei uns unterstützen können!</h3>
+    <div class="w-form">
+      <form id="email-form" name="email-form" data-name="Email Form">
+        <div class="w-row">
+          <div class="w-col w-col-3"></div>
+          <div class="w-col w-col-6">
+            {{ myFilter.form.city|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nach Ort suchen...'}" }}
+            <input type="submit" value="Suchen" class="submit-button-2 w-button">
+          </div>
+          <div class="w-col w-col-3"></div>
+        </div>
+      </form>
     </div>
+  <div class="divider"></div>
+</div>
+
   {% for city in cities %}
   <div class="ort w-container">
 	<h4 class="veranstaltungsort">{{ city.ort }}</h4>
 	{% for organiser in organisers %}
 		{% if organiser.user_address.ort == city.ort %}
-			<a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
+			<a href="{% url 'events:event_organiser_list' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
 		{% endif %}
 	{% endfor %}
     <div class="platz"></div>
     <div class="divider"></div>
   </div>
   {% endfor %}
+  <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
 </div>
 {% endblock %}

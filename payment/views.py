@@ -33,10 +33,6 @@ logger = logging.getLogger(__name__)
 def payment_process_view(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
 
 	host = settings.HOST_URL_BASE
 
@@ -67,7 +63,6 @@ def payment_process_view(request):
 		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
 		'cancel_return': '{host_base_url}payment/canceled/'.format(host_base_url = host),
 		'submit':'PayPal',
-		'custom':'DAS ist die Info im Custom-Feld'
 	}
 
 
@@ -118,31 +113,16 @@ def payment_process_view(request):
 	print(form)
 	context = {
 		'form': form,
-		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
 def payment_done_view(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/done.html', context)
+	return render(request, 'payment/done.html')
 
 @csrf_exempt
 def payment_canceled_view(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/canceled.html', context)
+	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST

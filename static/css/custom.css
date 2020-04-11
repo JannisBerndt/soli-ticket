@@ -4,6 +4,20 @@
     margin-top: 0px;
 }
 
+.errorlist li {
+    color: red;
+}
+
 .red-background {
     background-color: #ff4a4aeb !important;
+}
+
+#external_link {
+    background-image: url(../images/icons8-external-link-26.png);
+    background-size: 1em;
+    background-repeat: no-repeat;
+    background-position: 98% 44%;
+    padding-right: 1.7em;
+    margin-right: auto;
+    display: inline-block;
 }

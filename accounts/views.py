@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -13,36 +13,47 @@ from django.conf import settings
 from solisite.settings import DEBUG
 import string
 import random
-from events.models import Event
+from .filters import OrganiserFilter
+from django.db.models.query import QuerySet
+from urllib.parse import urlencode
 
 
 def login_view(request):
     if request.user.is_authenticated:
         username = request.user
-        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
+        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
+
             username = request.POST.get('username')
             password = request.POST.get('password')
+            try:
+                organiser = Organiser.objects.get(email=username)
+                username = organiser.username
+            except:
+                pass
+            try:
+                organiser = Organiser.objects.get(organisation_name=username)
+                username = organiser.username
+            except:
+                pass
+
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        return render(request, 'register/check_your_emails.html')
-                    else:
+                        params = urlencode({'code': o_organiser.confirmationCode})
+                        url = "{}?{}".format(reverse('accounts:verify_email'), params)
+                        return redirect(url)
+                    else: 
                         login(request, user)
-                        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
+                        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
-        try:
-            organiser_user = Organiser.objects.get(username = request.user.username)
-        except:
-            organiser_user = None
         context = {
 			'authenticated': request.user.is_authenticated,
-			'organiser_user': organiser_user,
 		}
         return render(request, 'accounts/login.html', context)
 
@@ -51,6 +62,15 @@ def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
+def verify_email_view(request):
+    code = request.GET["code"]
+    organiser = get_object_or_404(Organiser, confirmationCode=code)
+    if request.method == 'POST':
+        buildAndSendEmail(organiser)
+    context = {
+        'code': code,
+	}
+    return render(request, 'register/check_your_emails.html', context)
 
 def error_view(request):
     print("Error at registration")
@@ -59,47 +79,20 @@ def error_view(request):
 
 def organiser_list_view(request):
     organisers = Organiser.objects.filter(is_active=True)
-    try:
-        organiser_user = Organiser.objects.get(username = request.user.username)
-    except:
-        organiser_user = None
-    addresses = UserAddress.objects.filter(organiser_address__is_active = True).distinct()
-    print(addresses)
+
+    myFilter = OrganiserFilter(request.GET, queryset=organisers)
+    organisers = myFilter.qs
+    list_of_ids = []
+    for organiser in organisers:
+        list_of_ids.append(organiser.user_address.id)
+    addresses = UserAddress.objects.filter(id__in=list_of_ids).distinct()
     cities = addresses.values('ort').order_by('ort')
     context = {
         'organisers': organisers,
-        'organiser_user': organiser_user,
         'cities': cities,
+        'myFilter': myFilter,
     }
     return render(request, 'accounts/organiser_list.html', context)
-
-
-def profile_view(request, organiser):
-	o_object = get_object_or_404(Organiser, organisation_name = organiser)
-	event_list = Event.objects.filter(creator = o_object)
-	event_list = event_list.order_by('date')
-	user = request.user
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	print(user)
-	#print(o_object.user_adress_contact_set)
-	logged_in = user.username == o_object.username
-	context = {
-		'request': request,
-		'organiser': o_object,
-		'event_list': event_list,
-		'logged_in': logged_in,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-		'organiser_user': organiser_user,
-	}
-
-	if(logged_in):
-		return render(request, "event/profile_organiser.html", context)
-	else:
-		return render(request, "event/profile_customer.html", context)
 
 
 @login_required(login_url='accounts:login')
@@ -113,7 +106,7 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			organiser_form.save()
 			address.save()
-			return redirect('accounts:profile', organiser=organiser)
+			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		organiser_form = OrganiserForm(instance = organiser)
 		address_form = UserAddressForm(instance = address)
@@ -233,7 +226,7 @@ class accounts(View):
                 return render(request, self.template_name[2], context)
 
 
-            for tag in ["paypal_email"]:
+            for tag in ["paypal_email", "acceptedTac"]:
                 request.session[tag] = form.cleaned_data[tag]
 
 
@@ -253,7 +246,8 @@ class accounts(View):
                                   email =request.session["email"],
 								  description = request.session["description"],
                                   paypal_email = request.session["paypal_email"],
-                                  isActivated = False)
+                                  isActivated = False,
+                                  acceptedTac = request.session["acceptedTac"],)
 
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
@@ -270,8 +264,10 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-
-            return render(request, self.template_name[3])
+            
+            params = urlencode({'code': organiser_user.confirmationCode})
+            url = "{}?{}".format(reverse('accounts:verify_email'), params)
+            return redirect(url)
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
@@ -304,15 +300,7 @@ def confirm_view(request):
     return render(request, 'register/register_finished.html', context)
 
 def buildAndSendEmail(o_organiser):
-    email = o_organiser.email
-    id = o_organiser.id
-    o_code = o_organiser.confirmationCode
-
-    if DEBUG:
-        confirmLink = 'http://127.0.0.1:8000/accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(organiser_code = o_code, myid = id)
-    else:
-        confirmLink = '{host}accounts/confirm/?confirmationCode={organiser_code}&id={myid}'.format(host = settings.HOST_URL_BASE, organiser_code = o_code, myid = id)
-
+    confirmLink = o_organiser.get_confirm_url()
 
     subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
     content =   'Vielen Dank für die Registrierung auf soli-ticket.de \n'\
