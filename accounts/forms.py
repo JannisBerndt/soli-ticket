@@ -12,6 +12,10 @@ class OrderForm(forms.ModelForm):
 		]
 
 
+class OrderContactForm(forms.Form):
+	email = forms.EmailField(required=True)
+	acceptedTac = forms.BooleanField(required=True)
+
 
 class Register1(forms.ModelForm):
 	email =		forms.EmailField(widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email'}))

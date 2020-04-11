@@ -53,12 +53,15 @@
       <div class="w-form">
         <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST"> {% csrf_token %}
           <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€)</label><label>Anzahl</label>
-            {{ order_formset.management_form }}
+			{{ order_formset.management_form }}
+			{{ order_formset.non_form_errors }}
 			{% for buyable, order_form in formset %}
 				<p>{{ buyable.buyable_name }}</p>
 				<p class="price">{{ buyable.price }}</p>
-				{{ order_form.amount.errors }}
-				{{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
+				<div>
+					{{ order_form.amount.errors }}
+					{{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
+				</div>
 			{% endfor %}
 			<p class="paragraph-4">Gesamt:</p>
 			<p class="paragraph-3" id="sum">0,00</p>
@@ -66,13 +69,19 @@
 		  <p class="paragraph-5"></p>
           <div class="divider"></div>
            <div class="w-row">
-            <div class="w-col w-col-5"><label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
-				<input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""></div>
+			<div class="w-col w-col-5">
+				<label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
+				{{ contact_form.email.errors }}
+				{{ contact_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+				<!-- <input type="email" class="text-field-2 w-input" maxlength="256" name="field-4" data-name="Field 4" id="field-4" required=""> -->
+			</div>
 			<div class="column-5 w-col w-col-7"></div>
 		  </div>
 		  <p class="paragraph-5">Hinweis: Mit Ihrer Zahlung unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB.<strong></strong></p>
 		  <label class="w-checkbox">
-            <input type="checkbox" id="Checkbox" name="Checkbox" data-name="Checkbox" class="w-checkbox-input" required>
+			  {{ contact_form.acceptedTac.errors }}
+			  {{ contact_form.acceptedTac|setHTMLAttributes:"{'class': 'w-checkbox-input'}" }}
+            <!-- <input type="checkbox" id="Checkbox" name="Checkbox" data-name="Checkbox" class="w-checkbox-input" required> -->
             <span for="Checkbox" class="w-form-label">Ich habe die AGB des Plattformbetreibers zur Kenntnis genommen und bin mit deren Geltung einverstanden</span>
 		  </label>
 		  <a href="{% url 'agb' %}" class="link-3">Link zu den AGB</a>

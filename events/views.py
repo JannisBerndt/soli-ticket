@@ -9,7 +9,7 @@ from django import forms
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
-from accounts.forms import OrderForm
+from accounts.forms import OrderForm, OrderContactForm
 import uuid
 import random
 import string
@@ -31,6 +31,7 @@ def event_detail_view(request, id):
 	location = event.location
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
 	order_formset = OrderFormSet(queryset=Order.objects.none())
+	contact_form = OrderContactForm()
 
 	if request.method == 'POST':
 		try:
@@ -39,7 +40,7 @@ def event_detail_view(request, id):
 			customer = None
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
-
+		contact_form = OrderContactForm(request.POST)
 
 		o_Event = Event.objects.get(id = id)
 		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
@@ -47,7 +48,7 @@ def event_detail_view(request, id):
 		if not o_Organisation.paypal_email:
 			return render(request, 'event/error.html')
 
-		if order_formset.is_valid():
+		if order_formset.is_valid() and contact_form.is_valid():
 			i=0
 			sum = 0
 			orders = []
@@ -67,8 +68,8 @@ def event_detail_view(request, id):
 					order.article = buyables[i]
 					order.price = buyables[i].price * order.amount
 					order.customer = customer
-					order.customer_mail = request.POST.get('field-4')
-					order.acceptedTac = True if request.POST.get('Checkbox') == "on" else False
+					order.customer_mail = contact_form.cleaned_data["email"]
+					order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
 					order.invoiceUID = o_uid
 					order.save()
 					sum += order.price
@@ -104,6 +105,7 @@ def event_detail_view(request, id):
 		'formset': formset,
 		'organiser_user': organiser_user,
 		'organiser': organiser,
+		'contact_form': contact_form,
 	}
 	return render(request, "event/event_detail.html", context)
 
