@@ -21,3 +21,6 @@ def faq_view(request):
 
 def agb_view(request):
     return render(request, 'solisite/agb.html')
+
+def contact_view(request):
+    return render(request, 'solisite/contact.html')
