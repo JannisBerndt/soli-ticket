@@ -128,22 +128,10 @@ def event_detail_view(request, id):
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
-	if organiser.organisation_type == 'gemeinnützig':
-		initial_data = [{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},]
-	else:
-		initial_data = [{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},]
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none(), initial = initial_data)
+		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none())
 		if event_form.is_valid() and location_form.is_valid() and validate_with_initial(buyable_formset):
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
@@ -169,7 +157,7 @@ def event_create_view(request):
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none(), initial = initial_data)
+		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none())
 
 	context = {
 		'event_form': event_form,
@@ -185,23 +173,10 @@ def event_update_view(request, id):
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
 	location = event.location
-	if organiser.organisation_type == 'gemeinnützig':
-		initial_data = [{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},]
-	else:
-		initial_data = [{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},]
-	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST, instance = event)
 		location_form = EventlocationForm(request.POST, instance = location)
-		buyable_formset = BuyableInlineFormSet(request.POST, instance = event, initial = initial_data)
+		buyable_formset = BuyableInlineFormSet(request.POST, instance = event)
 		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			location.save()
 			event.save()
@@ -217,7 +192,7 @@ def event_update_view(request, id):
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
-		buyable_formset = BuyableInlineFormSet(instance=event, initial = initial_data)
+		buyable_formset = BuyableInlineFormSet(instance=event)
 
 	context = {
 		'event_form': event_form,
