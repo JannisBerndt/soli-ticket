@@ -16,15 +16,15 @@ import random
 from .filters import OrganiserFilter
 from django.db.models.query import QuerySet
 from urllib.parse import urlencode
-from events.models import Event
 
 
 def login_view(request):
     if request.user.is_authenticated:
         username = request.user
-        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
+        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
+
             username = request.POST.get('username')
             password = request.POST.get('password')
             try:
@@ -49,7 +49,7 @@ def login_view(request):
                         return redirect(url)
                     else: 
                         login(request, user)
-                        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
+                        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
         context = {
@@ -95,34 +95,6 @@ def organiser_list_view(request):
     return render(request, 'accounts/organiser_list.html', context)
 
 
-def profile_view(request, organiser):
-	o_object = get_object_or_404(Organiser, organisation_name = organiser)
-	event_list = Event.objects.filter(creator = o_object)
-	event_list = event_list.order_by('date')
-	user = request.user
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	print(user)
-	#print(o_object.user_adress_contact_set)
-	logged_in = user.username == o_object.username
-	context = {
-		'request': request,
-		'organiser': o_object,
-		'event_list': event_list,
-		'logged_in': logged_in,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-		'organiser_user': organiser_user,
-	}
-
-	if(logged_in):
-		return render(request, "event/profile_organiser.html", context)
-	else:
-		return render(request, "event/profile_customer.html", context)
-
-
 @login_required(login_url='accounts:login')
 def profile_update_view(request):
 	user = request.user
@@ -134,7 +106,7 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			organiser_form.save()
 			address.save()
-			return redirect('accounts:profile', organiser=organiser)
+			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		organiser_form = OrganiserForm(instance = organiser)
 		address_form = UserAddressForm(instance = address)

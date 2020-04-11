@@ -30,7 +30,7 @@ Liste aller Veranstalter
 	<h4 class="veranstaltungsort">{{ city.ort }}</h4>
 	{% for organiser in organisers %}
 		{% if organiser.user_address.ort == city.ort %}
-			<a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
+			<a href="{% url 'events:event_organiser_list' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
 		{% endif %}
 	{% endfor %}
     <div class="platz"></div>

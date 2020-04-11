@@ -17,8 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import pdb
 
-
-def event_detail_view(request, organiser, id):
+def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
 
@@ -42,6 +41,7 @@ def event_detail_view(request, organiser, id):
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
 		contact_form = OrderContactForm(request.POST)
+
 		o_Event = Event.objects.get(id = id)
 		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
 
@@ -198,6 +198,22 @@ def event_delete_view(request, id):
 		'organiser_user': organiser,
 	}
 	return render(request, "event/event_delete.html", context)
+
+def event_organiser_list_view(request, organiser):
+	o_object = get_object_or_404(Organiser, organisation_name = organiser)
+	event_list = Event.objects.filter(creator = o_object)
+	event_list = event_list.order_by('date')
+	user = request.user
+	logged_in = user.username == o_object.username
+	context = {
+		'organiser': o_object,
+		'event_list': event_list,
+	}
+
+	if(logged_in):
+		return render(request, "event/profile_organiser.html", context)
+	else:
+		return render(request, "event/profile_customer.html", context)
 
 
 def invoiceUID_generator(size = 7, chars= string.digits):
