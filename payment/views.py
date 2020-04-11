@@ -118,11 +118,11 @@ def payment_process_view(request):
 
 @csrf_exempt
 def payment_done_view(request):
-	return render(request, 'payment/done.html', context)
+	return render(request, 'payment/done.html')
 
 @csrf_exempt
 def payment_canceled_view(request):
-	return render(request, 'payment/canceled.html', context)
+	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
