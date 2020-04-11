@@ -1,46 +1,17 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_tags %}
+
+{% block additionaljs %}
+<script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
+{% endblock %}
 
 {% block title %}
 	{{ event.name }} ansehen
 {% endblock title %}
 
 {% block content %}
-<script type="text/javascript">
-	function myFunction() {
-		/* Get the text field */
-		var copyText = document.getElementById("link");
-
-		/* Select the text field */
-		copyText.select();
-		copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-		/* Copy the text inside the text field */
-		document.execCommand("copy");
-
-		/* Alert the copied text */
-		// alert("Copied the text: " + copyText.value);
-	}
-
-	function calcSum() {
-		var amounts = document.getElementsByClassName('amount-field');
-		var prices = document.getElementsByClassName('price');
-		var sum = 0.00;
-		for (var i = 0; i < amounts.length; i++) {
-			var price = parseFloat(prices[i].innerHTML.replace(',', "."));
-			var amount = parseInt(amounts[i].value);
-			if(Number.isNaN(amount)) {
-				amount = 0;
-			}
-			console.log(i);
-			console.log(amount + ' mal ' + price);
-			sum += amount * price;
-		}
-		console.log(sum.toFixed(2));
-		document.getElementById('sum').innerHTML = sum.toFixed(2).replace('.', ",");
-	}
-</script>
 <div class="section-18">
     <div class="w-container">
       <div class="intro-text">
@@ -59,7 +30,7 @@
 			<div class="w-layout-grid grid-4">
 				<div></div>
 				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="{{event.get_share_url}}">
-				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="myFunction();" id="copyToClip">
+				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="copyLink();" id="copyToClip">
 			</div>
 		  </div>
       <div class="divider"></div>
@@ -86,7 +57,8 @@
 			{% for buyable, order_form in formset %}
 				<p>{{ buyable.buyable_name }}</p>
 				<p class="price">{{ buyable.price }}</p>
-				{{ order_form.amount }}
+				{{ order_form.amount.errors }}
+				{{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
 			{% endfor %}
 			<p class="paragraph-4">Gesamt:</p>
 			<p class="paragraph-3" id="sum">0,00</p>

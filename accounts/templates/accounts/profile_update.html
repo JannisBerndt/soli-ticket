@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_tags %}
 
 {% block title %}
 Mein Profil bearbeiten
@@ -17,69 +18,53 @@ Mein Profil bearbeiten
         <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST'> {% csrf_token %}
 			<label for="name" class="field-label">EMAIL-Adresse</label>
 			{{ organiser_form.email.errors }}
-			{{ organiser_form.email }}
-			<!-- <input type="email" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" id="email" required=""> -->
-			<!-- <label for="email">Passwort</label> -->
-			<!-- <input type="password" class="text-field-2 w-input" maxlength="256" name="email" data-name="Email" id="email" required=""> -->
+			{{ organiser_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
 			<label for="name" class="field-label">Ansprechpartner</label>
           <div class="w-row">
             <div class="column-11 w-col w-col-6">
 				{{ organiser_form.contact_first_name.errors }}
-				{{ organiser_form.contact_first_name }}
-				<!-- <input type="text" class="text-field-2 w-input" autofocus="true" maxlength="256" name="name" data-name="Name" placeholder="Vorname" id="vorname" required=""> -->
+				{{ organiser_form.contact_first_name|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Vorname'}" }}
 			</div>
             <div class="column-12 w-col w-col-6">
 				{{ organiser_form.contact_last_name.errors }}
-				{{ organiser_form.contact_last_name }}
-				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="name" data-name="Name" placeholder="Nachname" id="nachname" required=""> -->
+				{{ organiser_form.contact_last_name|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nachname'}" }}
 			</div>
 		  </div>
 		  <label for="Name-der-Organisation">Name der Organisation</label>
 		  {{ organiser_form.organisation_name.errors }}
-		  {{ organiser_form.organisation_name }}
-		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Name-der-Organisation" data-name="Name Der Organisation" id="Name-der-Organisation" required=""> -->
+		  {{ organiser_form.organisation_name|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
 		  <label for="Art">Erzählen sie ihren Spendern etwas über sich und ihre aktuelle situation</label>
 		  {{ organiser_form.description.errors }}
-		  {{ organiser_form.description }}
-		  <!-- <textarea placeholder="(optional)" maxlength="5000" id="field" name="field" data-name="Field" class="textarea-2 w-input"></textarea> -->
+		  {{ organiser_form.description|setHTMLAttributes:"{'rows': 2,'class': 'textarea-2 w-input', 'placeholder': '(optional)'}" }}
 		  <label for="Art">Art der Organisation</label>
 		  {{ organiser_form.organisation_type.errors }}
-		  {{ organiser_form.organisation_type }}
-		  <!-- <select id="Art" name="Art" data-name="Art" required="" class="select-field w-select">
-			  <option value="Another Choice">Bitte wählen</option><option value="">gemeinnützig</option><option value="Third">nicht gemeinnützig</option>
-			</select> -->
+		  {{ organiser_form.organisation_type|setHTMLAttributes:"{'class': 'select-field w-select'}" }}
 			<label for="Art">Adresse</label>
           <div class="w-row">
             <div class="column-13 w-col w-col-9">
 				{{ address_form.strasse.errors }}
-				{{ address_form.strasse }}
-				<!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Stra E" placeholder="Straße" id="Stra-e" required=""> -->
+				{{ address_form.strasse|setHTMLAttributes:"{'class': 'text-field-2 text-field-ind w-input', 'placeholder': 'Straße'}" }}
 			</div>
             <div class="column-14 w-col w-col-3">
 				{{ address_form.hnummer.errors }}
-				{{ address_form.hnummer }}
-				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr" id="HN" required=""> -->
+				{{ address_form.hnummer|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'HausNr'}" }}
 			</div>
           </div>
           <div class="w-row">
             <div class="column-15 w-col w-col-4">
 				{{ address_form.plz.errors }}
-				{{ address_form.plz }}
-				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl" id="PLZ" required=""> -->
+				{{ address_form.plz|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Postleitzahl'}" }}
 			</div>
             <div class="column-16 w-col w-col-8">
 				{{ address_form.ort.errors }}
-				{{ address_form.ort }}
-				<!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort" id="Ort" required=""> -->
+				{{ address_form.ort|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Ort'}" }}
 			</div>
 		  </div><label for="Art">Telefonnummer</label>
 		  {{ organiser_form.contact_phone.errors }}
-		  {{ organiser_form.contact_phone }}
-		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Telenummer" data-name="Telenummer" placeholder="(optional)" id="Telenummer"> -->
+		  {{ organiser_form.contact_phone|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': '(optional)'}" }}
 		  <label for="Kontoinhaber">Ihr Paypal-Geschäftskonto</label>
 		  {{ organiser_form.paypal_email.errors }}
-		  {{ organiser_form.paypal_email }}
-		  <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Kontoinhaber" data-name="Kontoinhaber" placeholder="Email-Adresse" id="Kontoinhaber" required=""> -->
+		  {{ organiser_form.paypal_email|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': '(optional)'}" }}
 		  <a href="{% url 'accounts:password_change' %}">Passwort ändern</a>
 		  <input type="submit" value="Änderungen speichern" data-wait="Please wait..." class="submit-button edit w-button">
 		  <a href="{% url 'events:event_organiser_list' organiser_user %}" class="button-11 w-button">Abbrechen</a>

@@ -81,7 +81,7 @@ class Order(models.Model):
     article = models.ForeignKey('events.Buyable', on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE, related_name='customer_set')
     customer_mail = models.EmailField(max_length=120)
-    amount = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    amount = models.PositiveIntegerField(validators=[MinValueValidator(1)], default=0)
     price = models.DecimalField(max_digits=1000, decimal_places=2, validators=[MinValueValidator(0)])
     createdDateTime = models.DateTimeField(auto_now_add=True)
     changedDateTime = models.DateTimeField(auto_now=True)
