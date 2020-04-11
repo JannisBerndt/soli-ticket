@@ -33,10 +33,6 @@ logger = logging.getLogger(__name__)
 def payment_process_view(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
 
 	host = settings.HOST_URL_BASE
 
@@ -117,32 +113,15 @@ def payment_process_view(request):
 	print(form)
 	context = {
 		'form': form,
-		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
 def payment_done_view(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	#organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
-	context = {
-        #'organiser': organiser,
-		'organiser_user': organiser_user,
-	}
 	return render(request, 'payment/done.html', context)
 
 @csrf_exempt
 def payment_canceled_view(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
 	return render(request, 'payment/canceled.html', context)
 
 #region IPN-Handling

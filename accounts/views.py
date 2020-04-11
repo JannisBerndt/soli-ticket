@@ -68,7 +68,6 @@ def verify_email_view(request):
     if request.method == 'POST':
         buildAndSendEmail(organiser)
     context = {
-		'organiser_user': None,
         'code': code,
 	}
     return render(request, 'register/check_your_emails.html', context)
@@ -80,10 +79,6 @@ def error_view(request):
 
 def organiser_list_view(request):
     organisers = Organiser.objects.filter(is_active=True)
-    try:
-        organiser_user = Organiser.objects.get(username = request.user.username)
-    except:
-        organiser_user = None
 
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
@@ -94,7 +89,6 @@ def organiser_list_view(request):
     cities = addresses.values('ort').order_by('ort')
     context = {
         'organisers': organisers,
-        'organiser_user': organiser_user,
         'cities': cities,
         'myFilter': myFilter,
     }

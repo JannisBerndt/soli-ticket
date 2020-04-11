@@ -99,8 +99,6 @@ def event_detail_view(request, id):
 		'event': event,
 		'buyables': buyables,
 		'location': location,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
 		'order_formset': order_formset,
 		'formset': formset,
 		'organiser_user': organiser_user,
@@ -109,22 +107,6 @@ def event_detail_view(request, id):
 	}
 	return render(request, "event/event_detail.html", context)
 
-# def checkout_view(request, id):
-# 	event = Event.objects.get(id=id)
-# 	organiser = event.creator
-# 	customer = Customer.objects.get(username='default')
-# 	orders = customer.customer_set.all()
-# 	sum = 0
-# 	for order in orders:
-# 		sum += order.price
-# 	context = {
-# 		'sum': sum,
-# 		'organiser': organiser,
-# 		'orders': orders,
-# 		'event': event,
-# 		'authenticated': request.user.is_authenticated,
-# 	}
-# 	return render(request, "event/event_donate.html", context)
 
 @login_required(login_url='accounts:login')
 def event_create_view(request):
@@ -222,21 +204,10 @@ def event_organiser_list_view(request, organiser):
 	event_list = Event.objects.filter(creator = o_object)
 	event_list = event_list.order_by('date')
 	user = request.user
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	print(user)
-	#print(o_object.user_adress_contact_set)
 	logged_in = user.username == o_object.username
 	context = {
-		'request': request,
 		'organiser': o_object,
 		'event_list': event_list,
-		'logged_in': logged_in,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-		'organiser_user': organiser_user,
 	}
 
 	if(logged_in):
