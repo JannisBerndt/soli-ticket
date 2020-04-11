@@ -137,7 +137,7 @@ def event_create_view(request):
 				organiser.save()
 			except:
 				pass
-			return redirect('events:event_organiser_list', organiser=organiser)
+			return redirect('accounts:profile', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
@@ -172,7 +172,7 @@ def event_update_view(request, id):
 			for obj in buyable_formset.deleted_objects:
 				obj.delete()
 
-			return redirect('events:event_organiser_list', organiser=organiser)
+			return redirect('accounts:profile', organiser=organiser)
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
@@ -192,28 +192,12 @@ def event_delete_view(request, id):
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == "POST":
 		event.delete()
-		return redirect('events:event_organiser_list', organiser.organisation_name)
+		return redirect('accounts:profile', organiser.organisation_name)
 	context = {
 		"event": event,
 		'organiser_user': organiser,
 	}
 	return render(request, "event/event_delete.html", context)
-
-def event_organiser_list_view(request, organiser):
-	o_object = get_object_or_404(Organiser, organisation_name = organiser)
-	event_list = Event.objects.filter(creator = o_object)
-	event_list = event_list.order_by('date')
-	user = request.user
-	logged_in = user.username == o_object.username
-	context = {
-		'organiser': o_object,
-		'event_list': event_list,
-	}
-
-	if(logged_in):
-		return render(request, "event/profile_organiser.html", context)
-	else:
-		return render(request, "event/profile_customer.html", context)
 
 
 def invoiceUID_generator(size = 7, chars= string.digits):

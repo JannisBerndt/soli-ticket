@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_view, logout_view, profile_update_view, profile_delete_view, accounts, error_view, organiser_list_view, confirm_view, verify_email_view
+from .views import login_view, logout_view, profile_update_view, profile_delete_view, accounts, error_view, organiser_list_view, confirm_view, verify_email_view, profile_view
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from solisite.settings import EMAIL_HOST_USER
@@ -15,7 +15,7 @@ urlpatterns = [
     path('organizer/', organiser_list_view, name='organiser_list'),
     path('confirm/', confirm_view, name="confirm"),
     path('verify/', verify_email_view, name="verify_email"),
-
+    path('profile/<str:organiser>', profile_view, name='profile'),
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='register/password_change.html', success_url=reverse_lazy('accounts:password_change_complete')), name="password_change"),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='register/password_change_done.html'), name='password_change_complete'),
 

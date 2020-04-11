@@ -16,12 +16,13 @@ import random
 from .filters import OrganiserFilter
 from django.db.models.query import QuerySet
 from urllib.parse import urlencode
+from events.models import Event
 
 
 def login_view(request):
     if request.user.is_authenticated:
         username = request.user
-        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
+        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
     else:
         if request.method == 'POST':
 
@@ -47,9 +48,9 @@ def login_view(request):
                         params = urlencode({'code': o_organiser.confirmationCode})
                         url = "{}?{}".format(reverse('accounts:verify_email'), params)
                         return redirect(url)
-                    else: 
+                    else:
                         login(request, user)
-                        return redirect('events:event_organiser_list', Organiser.objects.get(username=username).organisation_name)
+                        return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
             else:
                 messages.info(request, 'Username or Password is incorrect')
         context = {
@@ -95,6 +96,23 @@ def organiser_list_view(request):
     return render(request, 'accounts/organiser_list.html', context)
 
 
+def profile_view(request, organiser):
+	o_object = get_object_or_404(Organiser, organisation_name = organiser)
+	event_list = Event.objects.filter(creator = o_object)
+	event_list = event_list.order_by('date')
+	user = request.user
+	logged_in = user.username == o_object.username
+	context = {
+		'organiser': o_object,
+		'event_list': event_list,
+	}
+
+	if(logged_in):
+		return render(request, "event/profile_organiser.html", context)
+	else:
+		return render(request, "event/profile_customer.html", context)
+
+
 @login_required(login_url='accounts:login')
 def profile_update_view(request):
 	user = request.user
@@ -106,7 +124,7 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			organiser_form.save()
 			address.save()
-			return redirect('events:event_organiser_list', organiser=organiser)
+			return redirect('accounts:profile', organiser=organiser)
 	else:
 		organiser_form = OrganiserForm(instance = organiser)
 		address_form = UserAddressForm(instance = address)
@@ -264,7 +282,7 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-            
+
             params = urlencode({'code': organiser_user.confirmationCode})
             url = "{}?{}".format(reverse('accounts:verify_email'), params)
             return redirect(url)
