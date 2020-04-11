@@ -63,6 +63,7 @@ def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
+
 def verify_email_view(request):
     code = request.GET["code"]
     organiser = get_object_or_404(Organiser, confirmationCode=code)
