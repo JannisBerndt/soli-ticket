@@ -32,7 +32,7 @@
     display: flex;
     justify-content: space-evenly;
     background-color: #eee;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
     font-size: 14px;
     line-height: 18px;
@@ -46,9 +46,10 @@
 }
 
 .more-info {
-    margin: 4px;
+    margin: 6px;
 }
 
 .buttons {
     display: flex;
+    justify-content: space-evenly;
 }
