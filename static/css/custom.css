@@ -23,20 +23,32 @@
 }
 
 .cookie-banner {
-    position: sticky;
+    position: fixed;
     bottom: 20px;
-    left: 10%;
-    right: 10%;
-    width: 80%;
+    left: 5%;
+    right: 5%;
+    width: 90%;
     padding: 5px 14px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     background-color: #eee;
     border-radius: 5px;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 18px;
 }
 
-.close-banner {
-    
+@media (max-width: 600px) {
+    .cookie-banner {
+        flex-direction: column;
+        font-size: 12px;
+    }
+}
+
+.more-info {
+    margin: 4px;
+}
+
+.buttons {
+    display: flex;
 }
