@@ -30,3 +30,13 @@ function calcSum() {
     console.log(sum.toFixed(2));
     document.getElementById('sum').innerHTML = sum.toFixed(2).replace('.', ",");
 }
+
+window.onload = function() {
+if (localStorage.getItem('cookieSeen') != 'shown') {
+    $('.cookie-banner').delay(2000).fadeIn();
+    localStorage.setItem('cookieSeen','shown')
+  };
+  $('.close-banner').click(function() {
+    $('.cookie-banner').fadeOut();
+  })
+}
