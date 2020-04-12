@@ -33,10 +33,10 @@ function calcSum() {
 
 window.onload = function() {
 if (localStorage.getItem('cookieSeen') != 'shown') {
-    $('.cookie-banner').delay(2000).fadeIn();
-    localStorage.setItem('cookieSeen','shown')
+    document.getElementById('cookie-banner').style.display = "flex";
   };
   $('.close-banner').click(function() {
+    localStorage.setItem('cookieSeen','shown')
     $('.cookie-banner').fadeOut();
   })
 }
