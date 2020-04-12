@@ -15,7 +15,7 @@ Liste aller Veranstalter
         <div class="w-row">
           <div class="w-col w-col-3"></div>
           <div class="w-col w-col-6">
-            {{ myFilter.form.city|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+            {{ myFilter.form.city|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nach Ort suchen...'}" }}
             <input type="submit" value="Suchen" class="submit-button-2 w-button">
           </div>
           <div class="w-col w-col-3"></div>
@@ -37,5 +37,6 @@ Liste aller Veranstalter
     <div class="divider"></div>
   </div>
   {% endfor %}
+  <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
 </div>
 {% endblock %}
