@@ -143,7 +143,7 @@ def payment_stripe(request):
 
 	payment_intent = stripe.PaymentIntent.create(
 	payment_method_types=['card'],
-	amount=amount * 100,
+	amount=int(amount * 100),
 	currency='eur',
 	application_fee_amount=0,
 	#stripe_account='%s'.format(stripe_id),
