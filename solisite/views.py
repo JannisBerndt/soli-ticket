@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from accounts.models import Organiser
+from django.views.decorators.csrf import csrf_exempt
 import stripe
 def landingpage_view(request):
     return render(request, 'solisite/landingpage.html')
@@ -7,6 +8,7 @@ def landingpage_view(request):
 def about_view(request):
     return render(request, 'solisite/about.html')
 
+@csrf_exempt
 def oauth_view(request):
     state = request.GET.get('state')
     o_Organisation = Organiser.objects.get(id = state)
