@@ -21,7 +21,7 @@ def oauth_view(request):
     print(response)
     connected_account_id = response["stripe_user_id"]
     print(connected_account_id)
-    o_Organisation.stripe_user_id = connected_account_id
+    o_Organisation.stripe_account_id = connected_account_id
     o_Organisation.save()
 
     return render(request, 'solisite/about.html')
