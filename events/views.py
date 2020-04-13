@@ -91,6 +91,9 @@ def event_detail_view(request, id):
 					request.session["invoiceUID"] = o_uid
 					request.session["sum"] = sum
 					request.session["paypal_email"] = organiser.paypal_email
+					request.session["stripe_account_id"] = 'AchHaLtDieScHnAuZe187'
+					if organiser.stripe_account_id:
+						request.session["stripe_account_id"] = organiser.stripe_account_id
 					return redirect(reverse('payment:process'))
 
 

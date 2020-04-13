@@ -127,12 +127,24 @@ def payment_stripe(request):
 	print('Hello')
 	token = request.POST.get('stripeToken')
 
-	#stripe_id = request.get('stripe_id')
+	invoiceUID = request.session["invoiceUID"]
+	stripe_account_id = request.session["stripe_account_id"]
 
+	host = settings.HOST_URL_BASE
 
+	orders = Order.objects.filter(invoiceUID = invoiceUID)
+
+	amount = 0
+	for o_Order in orders:
+		amount = amount + o_Order.price
+	
+	if(amount == 0):
+		return render(Exception)
+
+	breakpoint()
 	payment_intent = stripe.PaymentIntent.create(
 	payment_method_types=['card'],
-	amount=1000,
+	amount=amount * 100,
 	currency='eur',
 	application_fee_amount=0,
 	#stripe_account='%s'.format(stripe_id),
