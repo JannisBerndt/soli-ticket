@@ -200,6 +200,10 @@ def event_delete_view(request, id):
 	return render(request, "event/event_delete.html", context)
 
 
+def profile_redirect(request, organiser):
+	return redirect('accounts:profile', organiser)
+
+
 def invoiceUID_generator(size = 7, chars= string.digits):
     return 'ST'+''.join(random.choice(chars) for _ in range(size))
 
