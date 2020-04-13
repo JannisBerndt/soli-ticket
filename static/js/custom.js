@@ -1,3 +1,5 @@
+var to_top_button = null;
+
 function copyLink() {
     /* Get the text field */
     var copyText = document.getElementById("link");
@@ -32,11 +34,25 @@ function calcSum() {
 }
 
 window.onload = function() {
-if (localStorage.getItem('cookieSeen') != 'shown') {
-    document.getElementById('cookie-banner').style.display = "flex";
-  };
-  $('.close-banner').click(function() {
-    localStorage.setItem('cookieSeen','shown')
-    $('.cookie-banner').fadeOut();
-  })
+    this.to_top_button = document.getElementById('to-top-button');
+
+    if (localStorage.getItem('cookieAccepted') != 1) {
+        document.getElementById('cookie-banner').style.display = "flex";
+    };
+    $('.close-banner').click(function() {
+        localStorage.setItem('cookieAccepted', 1)
+        $('.cookie-banner').fadeOut();
+    })
+}
+
+window.onscroll = function() {
+    setToTopButtonVisibility(this.to_top_button);
+}
+
+function setToTopButtonVisibility(button) {
+    if(document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        button.style.display = "block";
+    } else {
+        button.style.display = "none";
+    }
 }
