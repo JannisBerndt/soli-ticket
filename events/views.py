@@ -9,8 +9,8 @@ from django import forms
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
-from accounts.forms import OrderForm
-import uuid 
+from accounts.forms import OrderForm, OrderContactForm
+import uuid
 import random
 import string
 from django.template.loader import render_to_string
@@ -21,7 +21,7 @@ def event_detail_view(request, id):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
 
-	
+
 	print(organiser)
 	try:
 		organiser_user = Organiser.objects.get(username = request.user.username)
@@ -31,6 +31,7 @@ def event_detail_view(request, id):
 	location = event.location
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
 	order_formset = OrderFormSet(queryset=Order.objects.none())
+	contact_form = OrderContactForm()
 
 	if request.method == 'POST':
 		try:
@@ -39,23 +40,23 @@ def event_detail_view(request, id):
 			customer = None
 
 		order_formset = OrderFormSet(request.POST, instance=customer)
+		contact_form = OrderContactForm(request.POST)
 
-	
 		o_Event = Event.objects.get(id = id)
 		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
 
 		if not o_Organisation.paypal_email:
 			return render(request, 'event/error.html')
 
-		if order_formset.is_valid():
+		if order_formset.is_valid() and contact_form.is_valid():
 			i=0
 			sum = 0
 			orders = []
-			
+
 			# Neue RechnungsUID wird generiert und es werden sich Orders, die dazu bereits in der DB existieren geholt
 			o_uid = invoiceUID_generator()
 			o_orders = Order.objects.filter(invoiceUID = o_uid)
-		
+
 			#Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
 			while o_orders:
 				o_uid = invoiceUID_generator()
@@ -67,7 +68,8 @@ def event_detail_view(request, id):
 					order.article = buyables[i]
 					order.price = buyables[i].price * order.amount
 					order.customer = customer
-					order.customer_mail = request.POST.get('field-4')
+					order.customer_mail = contact_form.cleaned_data["email"]
+					order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
 					order.invoiceUID = o_uid
 					order.save()
 					sum += order.price
@@ -90,59 +92,30 @@ def event_detail_view(request, id):
 					request.session["sum"] = sum
 					request.session["paypal_email"] = organiser.paypal_email
 					return redirect(reverse('payment:process'))
-				
+
 
 	formset = zip(buyables, order_formset)
 	context = {
 		'event': event,
 		'buyables': buyables,
 		'location': location,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
 		'order_formset': order_formset,
 		'formset': formset,
 		'organiser_user': organiser_user,
 		'organiser': organiser,
+		'contact_form': contact_form,
 	}
 	return render(request, "event/event_detail.html", context)
 
-# def checkout_view(request, id):
-# 	event = Event.objects.get(id=id)
-# 	organiser = event.creator
-# 	customer = Customer.objects.get(username='default')
-# 	orders = customer.customer_set.all()
-# 	sum = 0
-# 	for order in orders:
-# 		sum += order.price
-# 	context = {
-# 		'sum': sum,
-# 		'organiser': organiser,
-# 		'orders': orders,
-# 		'event': event,
-# 		'authenticated': request.user.is_authenticated,
-# 	}
-# 	return render(request, "event/event_donate.html", context)
 
 @login_required(login_url='accounts:login')
 def event_create_view(request):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
-	if organiser.organisation_type == 'gemeinnützig':
-		initial_data = [{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},]
-	else:
-		initial_data = [{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},]
 	if request.method == 'POST':
 		event_form = EventForm(request.POST)
 		location_form = EventlocationForm(request.POST)
-		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none(), initial = initial_data)
+		buyable_formset = BuyableModelFormSet(request.POST, queryset=Buyable.objects.none())
 		if event_form.is_valid() and location_form.is_valid() and validate_with_initial(buyable_formset):
 			event = event_form.save(commit=False)
 			location = location_form.save(commit=False)
@@ -159,12 +132,16 @@ def event_create_view(request):
 					buyable.save()
 			if Event.objects.filter(creator = organiser).count() == 1:
 				send_email_firstEvent(organiser)
-
+			try:
+				organiser.acceptedTac = True if request.POST.get("checkbox") != "" else False
+				organiser.save()
+			except:
+				pass
 			return redirect('events:event_organiser_list', organiser=organiser)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
-		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none(), initial = initial_data)
+		buyable_formset = BuyableModelFormSet(queryset=Buyable.objects.none())
 
 	context = {
 		'event_form': event_form,
@@ -180,27 +157,15 @@ def event_update_view(request, id):
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
 	location = event.location
-	if organiser.organisation_type == 'gemeinnützig':
-		initial_data = [{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},
-						{'tax_rate': Buyable.ZERO},]
-	else:
-		initial_data = [{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},
-						{'tax_rate': Buyable.NINETEEN},]
-	print(organiser)
 	if request.method == 'POST':
 		event_form = EventForm(request.POST, instance = event)
 		location_form = EventlocationForm(request.POST, instance = location)
-		buyable_formset = BuyableInlineFormSet(request.POST, instance = event, initial = initial_data)
+		buyable_formset = BuyableInlineFormSet(request.POST, instance = event)
 		if event_form.is_valid() and location_form.is_valid() and buyable_formset.is_valid():
 			location.save()
 			event.save()
 			buyables = buyable_formset.save(commit=False)
+			print(buyables)
 			for buyable in buyables:
 				buyable.creator = organiser
 				buyable.save()
@@ -211,7 +176,7 @@ def event_update_view(request, id):
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
-		buyable_formset = BuyableInlineFormSet(instance=event, initial = initial_data)
+		buyable_formset = BuyableInlineFormSet(instance=event)
 
 	context = {
 		'event_form': event_form,
@@ -239,21 +204,10 @@ def event_organiser_list_view(request, organiser):
 	event_list = Event.objects.filter(creator = o_object)
 	event_list = event_list.order_by('date')
 	user = request.user
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	print(user)
-	#print(o_object.user_adress_contact_set)
 	logged_in = user.username == o_object.username
 	context = {
-		'request': request,
 		'organiser': o_object,
 		'event_list': event_list,
-		'logged_in': logged_in,
-		'user': request.user,
-		'authenticated': request.user.is_authenticated,
-		'organiser_user': organiser_user,
 	}
 
 	if(logged_in):
@@ -275,4 +229,3 @@ def send_email_firstEvent(organiser):
 	else:
 		to = [organiser.email]
 	send_mail(subject, plain_message, settings.EMAIL_HOST_USER, to, html_message = html_message)
-

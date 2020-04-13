@@ -5,15 +5,16 @@ from events.models import Buyable, Event
 from .helpers.validators import *
 
 class OrderForm(forms.ModelForm):
-	# article = forms.CharField(disabled=True)
-	amount = forms.IntegerField(label='Anzahl', min_value=0, initial=0, widget=forms.NumberInput(attrs={'class': 'text-field-2 w-input amount-field', 'id': 'field-3', 'oninput': 'calcSum()'}))
 	class Meta:
 		model = Order
 		fields = [
 			'amount',
-			# 'price',
 		]
 
+
+class OrderContactForm(forms.Form):
+	email = forms.EmailField(required=True)
+	acceptedTac = forms.BooleanField(required=True)
 
 
 class Register1(forms.ModelForm):
@@ -35,7 +36,7 @@ class Register1(forms.ModelForm):
 class Register2(forms.ModelForm):
 	vname =	 forms.CharField(label='Vorname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'vorname', 'placeholder': 'Vorname'}))	
 	nname =      forms.CharField(label='Nachname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'nachname', 'placeholder': 'Nachname'}))
-	oname =   forms.CharField(label='Name der Organisation', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-der-Organisation'}))		
+	oname =   forms.CharField(label='Name der Organisation', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-der-Organisation', 'placeholder': 'Name der Organisation'}))		
 	description = 	forms.CharField(required=False, label='Informationen über Sie', widget=forms.Textarea(attrs={'rows': 2,'class': 'textarea-2 w-input', 'id': 'field', 'placeholder': '(optional)'}))
 	CHOICES = ((None, 'Bitte wählen'), ('gemeinnützig' , 'gemeinnützig'), ('nicht gemeinnützig', 'nicht gemeinnützig'))
 	art =	forms.ChoiceField(choices=CHOICES, widget= forms.Select(attrs ={'class':'select-field w-select'}))
@@ -62,27 +63,17 @@ class Register2(forms.ModelForm):
 
 class Register3(forms.ModelForm):
 	paypal_email =	forms.EmailField(required=False,widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
-
+	acceptedTac = forms.BooleanField(required=True)
 	class Meta:
 		model = Organiser
 		fields = [
 			'paypal_email',
+			'acceptedTac',
 		]
 
 
 class OrganiserForm(forms.ModelForm):
-	organisation_name = forms.CharField(label='Name der Organisation', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Name-der-Organisation'}))
-	organisation_type = forms.ChoiceField(required=False, label='Art der Organisation', widget=forms.Select(attrs={'class': 'select-field w-select', 'id': 'Art'}), choices = [('gemeinnützig', 'gemeinnützig'), ('nicht gemeinnützig', 'nicht gemeinnützig')])
-	contact_first_name = forms.CharField(label='Vorname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'vorname', 'placeholder': 'Vorname'}))
-	contact_last_name = forms.CharField(label='Nachname', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'nachname', 'placeholder': 'Nachname'}))
-	contact_phone = forms.CharField(required=False, label='Telefonnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer', 'placeholder': '(optional)'}))
-	email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email'}))
-	paypal_email = forms.EmailField(required=False,label='Paypal Email', widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'paypal_email'}))
-	# iban = forms.CharField(label='IBAN', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'IBAN', 'placeholder': 'IBAN'}))
-	# bic = forms.CharField(label='BIC', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'BIC', 'placeholder': 'BIC'}))
-	# bank_account_owner = forms.CharField(label='Kontoinhaber', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Kontoinhaber', 'placeholder': 'Kontoinhaber'}))
-	# kontosite = forms.CharField(required=False, label='Seite der Kontodaten', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'KontoVerifikationsLink', 'placeholder': '(optional)'}))
-	description = forms.CharField(required=False, label='Informationen über Sie', widget=forms.Textarea(attrs={'rows': 2,'class': 'textarea-2 w-input', 'id': 'field', 'placeholder': '(optional)'}))
+	email = forms.EmailField(required=True)
 	class Meta:
 		model = Organiser
 		fields = [
@@ -93,10 +84,6 @@ class OrganiserForm(forms.ModelForm):
 			'contact_phone',
 			'email',
 			'paypal_email',
-			# 'iban',
-			# 'bic',
-			# 'bank_account_owner',
-			# 'kontosite',
 			'description',
 		]
 
@@ -113,10 +100,6 @@ class OrganiserForm(forms.ModelForm):
 
 
 class UserAddressForm(forms.ModelForm):
-	strasse = forms.CharField(label='Straße', widget=forms.TextInput(attrs={'class': 'text-field-2 text-field-ind w-input', 'id': 'Stra-e', 'placeholder': 'Straße'}))
-	hnummer = forms.CharField(label='Hausnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'HN', 'placeholder': 'HausNr'}))
-	plz = forms.CharField(label='Postleitzahl', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'PLZ', 'placeholder': 'Postleitzahl'}))
-	ort = forms.CharField(label='Ort', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Ort', 'placeholder': 'Ort'}))
 	class Meta:
 		model = UserAddress
 		fields = [

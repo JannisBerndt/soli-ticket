@@ -32,14 +32,9 @@ CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
 logger = logging.getLogger(__name__)
 #endregion
 
-def payment_process(request):
-	breakpoint()
+def payment_process_view(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
 
 	host = settings.HOST_URL_BASE
 
@@ -120,29 +115,17 @@ def payment_process(request):
 	print(form)
 	context = {
 		'form': form,
-		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
-def payment_done(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	organiser = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
-	context = {
-        'organiser': organiser,
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/done.html', context)
+def payment_done_view(request):
+	return render(request, 'payment/done.html')
 
 @csrf_exempt
 def payment_stripe(request):
 	print('Hello')
-	breakpoint() 
 	token = request.POST.get('stripeToken')
-	breakpoint() 
 
 	#stripe_id = request.get('stripe_id')
 
@@ -156,25 +139,16 @@ def payment_stripe(request):
 	stripe_account = 'ca_H4vYAME7WEKYsLYMEm4ss40RGj1V0ajW',
 	)
 
-	breakpoint()
-
 	return render(request, 'payment/done.html')
 
 @csrf_exempt
-def payment_canceled(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/canceled.html', context)
+def payment_canceled_view(request):
+	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
 @csrf_exempt
-def payment_ipn(request):
+def payment_ipn_view(request):
     """
     PayPal IPN endpoint (notify_url).
     Used by both PayPal Payments Pro and Payments Standard to confirm transactions.
