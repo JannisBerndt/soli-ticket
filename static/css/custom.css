@@ -49,6 +49,10 @@
     margin: 6px;
 }
 
+.close-banner:hover {
+    color: black;
+}
+
 .buttons {
     display: flex;
     justify-content: space-evenly;
