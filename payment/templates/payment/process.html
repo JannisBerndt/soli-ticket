@@ -7,6 +7,12 @@
 {% endblock %}
 
 {% block content %}
+
+<script src="https://js.stripe.com/v3/">
+  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW');
+</script>
+
+
 <div class="section-27">
   <div class="w-container">
     <h3 class="heading-32">Zahlungsmethode</h3>
@@ -16,4 +22,99 @@
     </div>
   </div>
 </div>
+
+<div>
+  <h1>https://connect.stripe.com/oauth/authorize?client_id=ca_H4vYAME7WEKYsLYMEm4ss40RGj1V0ajW&state=5&scope=read_write&response_type=code&stripe_user[email]=user@example.com</h1>
+</div>
+<form id="payment-form" action="/payment/stripe/" method="post">
+  <div class="form-row">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+    <div class="StripeElement StripeElement--empty" id="card-element">
+      <div class="__PrivateStripeElement" style="background: none !important; margin: 0px !important; padding: 0px !important; border: medium !important; border-image: none !important; display: block !important; position: relative !important; opacity: 1 !important;">
+        <iframe name="__privateStripeFrame5" title="Secure payment input frame" src="https://js.stripe.com/v3/elements-inner-card-af6c36fe3bb96744407e596128eb10f3.html#style[base][color]=%2332325d&amp;style[base][fontFamily]=%22Helvetica+Neue%22%2C+Helvetica%2C+sans-serif&amp;style[base][fontSmoothing]=antialiased&amp;style[base][fontSize]=16px&amp;style[base][::placeholder][color]=%23aab7c4&amp;style[invalid][color]=%23fa755a&amp;style[invalid][iconColor]=%23fa755a&amp;componentName=card&amp;wait=false&amp;rtl=false&amp;keyMode=test&amp;apiKey=pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW&amp;origin=https%3A%2F%2Fstripe.com&amp;referrer=https%3A%2F%2Fstripe.com%2Fdocs%2Fstripe-js&amp;controllerId=__privateStripeController1" frameborder="0" scrolling="no" allowpaymentrequest="true" style="margin: 0px !important; padding: 0px !important; border: medium !important; border-image: none !important; width: 1px !important; height: 19.2px; overflow: hidden !important; display: block !important; min-width: 100% !important;" allowtransparency="true">
+        </iframe>
+        <input class="__PrivateStripeElement-input" aria-hidden="true" style="background: none !important; margin: 0px !important; padding: 0px !important; border: medium !important; border-image: none !important; left: 0px !important; top: 0px !important; width: 100% !important; height: 1px !important; font-size: 16px !important; display: block !important; position: absolute !important; opacity: 0 !important; pointer-events: none !important;" aria-label=" " maxlength="1" autocomplete="false">
+      </div>
+    </div>
+    <!-- Used to display form errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+  <button>Submit Payment</button>
+</form>
+
+
+
+<script>
+  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW');
+
+// Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    // Submit the form
+    form.submit();
+  }
+</script>
 {% endblock %}

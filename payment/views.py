@@ -8,6 +8,8 @@ from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 #region Imports, die aus der paypal.standarf.ipn.views kommen.
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
@@ -31,6 +33,7 @@ logger = logging.getLogger(__name__)
 #endregion
 
 def payment_process(request):
+	breakpoint()
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 	try:
@@ -133,6 +136,29 @@ def payment_done(request):
 		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/done.html', context)
+
+@csrf_exempt
+def payment_stripe(request):
+	print('Hello')
+	breakpoint() 
+	token = request.POST.get('stripeToken')
+	breakpoint() 
+
+	#stripe_id = request.get('stripe_id')
+
+
+	payment_intent = stripe.PaymentIntent.create(
+	payment_method_types=['card'],
+	amount=1000,
+	currency='eur',
+	application_fee_amount=0,
+	#stripe_account='%s'.format(stripe_id),
+	stripe_account = 'ca_H4vYAME7WEKYsLYMEm4ss40RGj1V0ajW',
+	)
+
+	breakpoint()
+
+	return render(request, 'payment/done.html')
 
 @csrf_exempt
 def payment_canceled(request):

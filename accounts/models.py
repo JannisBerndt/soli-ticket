@@ -42,6 +42,7 @@ class Organiser(User):
     isActivated = models.BooleanField(default = True)
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten', blank = False)
 
+    stripe_account_id = models.CharField(max_length = 50, blank = True, null = True)
 
     def __str__(self):
         return self.organisation_name
