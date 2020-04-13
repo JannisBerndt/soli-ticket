@@ -87,3 +87,7 @@
     border-color: #85d8c2;
     box-shadow: 0px 0px 5px #85d8c2;
 }
+
+#copyToClip {
+    cursor: pointer;
+}
