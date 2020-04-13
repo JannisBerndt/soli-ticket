@@ -129,8 +129,7 @@ def payment_stripe(request):
 
 	invoiceUID = request.session["invoiceUID"]
 	stripe_account_id = request.session["stripe_account_id"]
-
-	host = settings.HOST_URL_BASE
+	print(stripe_account_id)
 
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
 
