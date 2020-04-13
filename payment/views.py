@@ -148,6 +148,8 @@ def payment_stripe(request):
 	application_fee_amount=1,
 	#stripe_account='%s'.format(stripe_id),
 	stripe_account = stripe_account_id,
+	#source = token,
+	token = token,
 	)
 
 	return render(request, 'payment/done.html')
