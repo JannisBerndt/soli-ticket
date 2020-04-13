@@ -128,9 +128,10 @@ def payment_stripe(request):
 	token = request.POST.get('stripeToken')
 
 	invoiceUID = request.session["invoiceUID"]
+	print('Test1\n')
 	stripe_account_id = request.session["stripe_account_id"]
 	print(stripe_account_id)
-
+	print('Test1\n')
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
 
 	amount = 0
