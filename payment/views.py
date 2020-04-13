@@ -145,7 +145,7 @@ def payment_stripe(request):
 	payment_method_types=['card'],
 	amount=int(amount * 100),
 	currency='eur',
-	application_fee_amount=0,
+	application_fee_amount=1,
 	#stripe_account='%s'.format(stripe_id),
 	stripe_account = stripe_account_id,
 	)
