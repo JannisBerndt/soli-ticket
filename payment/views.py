@@ -141,14 +141,13 @@ def payment_stripe(request):
 	if(amount == 0):
 		return render(Exception)
 
-	breakpoint()
 	payment_intent = stripe.PaymentIntent.create(
 	payment_method_types=['card'],
 	amount=amount * 100,
 	currency='eur',
 	application_fee_amount=0,
 	#stripe_account='%s'.format(stripe_id),
-	stripe_account = 'ca_H4vYAME7WEKYsLYMEm4ss40RGj1V0ajW',
+	stripe_account = stripe_account_id,
 	)
 
 	return render(request, 'payment/done.html')
