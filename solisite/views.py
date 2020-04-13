@@ -12,18 +12,18 @@ def about_view(request):
 def oauth_view(request):
     state = request.GET.get('state')
     print(state)
-    o_Organisation = Organiser.objects.get(id = 4)
+    o_Organisation = Organiser.objects.get(organisation_name = 'IchAG')
     print(o_Organisation)
-    if (o_Organisation is not None):
-        print('Hello')
-        code = request.GET.get('code')
-        response = stripe.OAuth.token(grant_type="authorization_code", code=code,)
-        print(response)
-        connected_account_id = response["stripe_user_id"]
-        print(connected_account_id)
-        o_Organisation.stripe_user_id = connected_account_id
-        o_Organisation.save()
-    
+    #if (o_Organisation is not None):
+    print('Hello')
+    code = request.GET.get('code')
+    response = stripe.OAuth.token(grant_type="authorization_code", code=code,)
+    print(response)
+    connected_account_id = response["stripe_user_id"]
+    print(connected_account_id)
+    o_Organisation.stripe_user_id = connected_account_id
+    o_Organisation.save()
+
     return render(request, 'solisite/about.html')
             
 
