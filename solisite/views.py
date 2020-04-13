@@ -12,7 +12,7 @@ def about_view(request):
 def oauth_view(request):
     state = request.GET.get('state')
     print(state)
-    o_Organisation = Organiser.objects.get(organisation_name = 'IchAG')
+    o_Organisation = Organiser.objects.get(paypal_email = 'berndtjannis@gmail.com')
     print(o_Organisation)
     #if (o_Organisation is not None):
     print('Hello')
@@ -23,7 +23,6 @@ def oauth_view(request):
     print(connected_account_id)
     o_Organisation.stripe_account_id = connected_account_id
     o_Organisation.save()
-
     return render(request, 'solisite/about.html')
             
 
