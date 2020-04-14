@@ -51,7 +51,7 @@ window.onscroll = function() {
 
 function setToTopButtonVisibility(button) {
     if(document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        button.style.display = "block";
+        button.style.display = "inline-block";
     } else {
         button.style.display = "none";
     }
