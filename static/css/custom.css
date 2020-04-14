@@ -34,7 +34,7 @@
     margin-right: 5%;
     margin-top: 10px;
     width: 90%;
-    padding: 5px 14px;
+    padding: 5px 10px;
     display: flex;
     justify-content: space-evenly;
     background-color: #eee;
@@ -52,7 +52,11 @@
 }
 
 .more-info {
-    margin: 6px;
+    margin: 4px !important;
+}
+
+.close-banner {
+    margin: 4px !important;
 }
 
 .close-banner:hover {
