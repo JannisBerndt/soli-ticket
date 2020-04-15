@@ -8,10 +8,14 @@ Mit Paypal zahlen
 
 {% block content %}
 
-<script src="https://js.stripe.com/v3/">
-  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW');
-</script>
 
+<script src="https://js.stripe.com/v3/">
+  
+  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW',
+  {
+    stripeAccount: "{{stripe_account_id}}",
+  });
+</script>
 
 <div class="section-27">
   <div class="w-container">
@@ -26,7 +30,8 @@ Mit Paypal zahlen
 <div>
   <h1>https://connect.stripe.com/oauth/authorize?client_id=ca_H4vYAME7WEKYsLYMEm4ss40RGj1V0ajW&state=5&scope=read_write&response_type=code&stripe_user[email]=user@example.com</h1>
 </div>
-<form id="payment-form" action="/payment/stripe/" method="post">
+<!-- <form id="payment-form" action="/payment/stripe/" method="post"> -->
+<form id="payment-form">
   <div class="form-row">
     <label for="card-element">
       Credit or debit card
@@ -47,7 +52,13 @@ Mit Paypal zahlen
 
 
 <script>
-  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW');
+  
+  var stripe = Stripe('pk_test_8uos5JLoo1wqTZ9kE7iqGaMR00LoD9XGMW',
+  {
+    stripeAccount: "{{stripe_account_id}}",
+  });
+  console.log(stripe.stripeAccount + "\n");
+  console.log("{{stripe_account_id}}");
 
 // Create an instance of Elements.
   var elements = stripe.elements();
@@ -71,13 +82,13 @@ Mit Paypal zahlen
   };
 
   // Create an instance of the card Element.
-  var card = elements.create('card', {style: style});
+  var cardElement = elements.create('card', {style: style});
 
   // Add an instance of the card Element into the `card-element` <div>.
-  card.mount('#card-element');
+  cardElement.mount('#card-element');
 
   // Handle real-time validation errors from the card Element.
-  card.addEventListener('change', function(event) {
+  cardElement.addEventListener('change', function(event) {
     var displayError = document.getElementById('card-errors');
     if (event.error) {
       displayError.textContent = event.error.message;
@@ -86,35 +97,39 @@ Mit Paypal zahlen
     }
   });
 
-  // Handle form submission.
   var form = document.getElementById('payment-form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
 
-    stripe.createToken(card).then(function(result) {
-      if (result.error) {
-        // Inform the user if there was an error.
-        var errorElement = document.getElementById('card-errors');
-        errorElement.textContent = result.error.message;
-      } else {
-        // Send the token to your server.
-        stripeTokenHandler(result.token);
+var client_secret = "{{client_secret_id}}";
+
+
+
+console.log(client_secret);
+form.addEventListener('submit', function(ev) {
+  console.log("CardElement: " + cardElement + "\n");
+  ev.preventDefault();
+  stripe.confirmCardPayment(client_secret, {
+    payment_method: {
+      card: cardElement,
+      billing_details: {
+        name: 'Jenny Rosen',
+      },
+    }
+  }).then(function(result) {
+    if (result.error) {
+      // Show error to your customer (e.g., insufficient funds)
+      console.log(result.error.message);
+    } else {
+      // The payment has been processed!
+      if (result.paymentIntent.status === 'succeeded') {
+        // Show a success message to your customer
+        // There's a risk of the customer closing the window before callback
+        // execution. Set up a webhook or plugin to listen for the
+        // payment_intent.succeeded event that handles any business critical
+        // post-payment actions.
       }
-    });
+    }
   });
-
-  // Submit the form with the token ID.
-  function stripeTokenHandler(token) {
-    // Insert the token ID into the form so it gets submitted to the server
-    var form = document.getElementById('payment-form');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
-
-    // Submit the form
-    form.submit();
-  }
+});
 </script>
+
 {% endblock %}

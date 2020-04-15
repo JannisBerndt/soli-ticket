@@ -35,26 +35,51 @@ logger = logging.getLogger(__name__)
 def payment_process_view(request):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
+	#stripe_account_id = request.session["stripe_account_id"]
+	stripe_account_id = 'acct_1GXRR6JWtm7By1ge'
+	client_secret_id = getClientSecretID(invoiceUID, stripe_account_id)
+	form = getPaypalPaymentsForm(invoiceUID, paypal_email)
+	
+	context = {
+		'form': form,
+		'stripe_account_id': stripe_account_id,
+		'client_secret_id': client_secret_id,
+	}
 
-	host = settings.HOST_URL_BASE
+	return render(request, 'payment/process.html', context)
 
+@csrf_exempt
+def payment_done_view(request):
+	return render(request, 'payment/done.html')
+
+@csrf_exempt
+def payment_canceled_view(request):
+	return render(request, 'payment/canceled.html')
+
+def getClientSecretID(invoiceUID, stripe_account_id):
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
+	amount = 0
+	for o_Order in orders:
+		amount = amount + o_Order.price
+	
+	if(amount == 0):
+		return render(Exception)
 
-	if orders is None:
-		return Exception
+	payment_intent = stripe.PaymentIntent.create(
+	payment_method_types=['card'],
+	amount=int(amount * 100),
+	currency='eur',
+	application_fee_amount=None,
+	stripe_account = stripe_account_id,
+	)
+	client_secret_id = payment_intent.client_secret
+	return client_secret_id
 
-	"""
-	sql = 'SELECT au.id, strasse, hnummer, plz, ort FROM accounts_useraddress AS au INNER JOIN auth_user AS auu ON au.id = auu.id INNER JOIN events_buyable AS eb ON eb.creator_id = auu.id INNER JOIN accounts_order AS ao ON eb.id = ao.article_id WHERE ao.invoiceUID = %s'
-	o_adresse = UserAddress.objects.raw(sql, [invoiceUID])[0]
 
-	hnummer = o_adresse.hnummer
-	strasse = o_adresse.strasse
-	ort = o_adresse.ort
-	plz = o_adresse.plz
 
-	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
-	"""
-
+def getPaypalPaymentsForm(invoiceUID, paypal_email):
+	host = settings.HOST_URL_BASE
+	orders = Order.objects.filter(invoiceUID = invoiceUID)
 	paypal_dict = {
 		'cmd':'_cart',
 		'upload':1,
@@ -92,71 +117,7 @@ def payment_process_view(request):
 
 		i+=1
 
-	"""
-	paypal_dict['item_name_1'] = 'Cola'
-	paypal_dict['item_name_2'] = 'Eintrittskarte'
-	paypal_dict['tax_1'] = 0.5
-	paypal_dict['tax_2'] = 0.7
-	paypal_dict['amount_1'] = 1.00
-	paypal_dict['amount_2'] = 1.00
-	paypal_dict['quantity_1'] = 1
-	paypal_dict['quantity_2'] = 3
-
-	for order in orders:
-
-		platzhalter = 'item_name_'+str(i)
-		buyable = Buyable.objects.get(id = order.article_id)
-		wert = buyable.buyable_name
-		paypal_dict[platzhalter] = wert
-		i+=1
-	"""
-
 	form = PayPalPaymentsForm(initial=paypal_dict)
-	print(form)
-	context = {
-		'form': form,
-	}
-	return render(request, 'payment/process.html', context)
-
-@csrf_exempt
-def payment_done_view(request):
-	return render(request, 'payment/done.html')
-
-@csrf_exempt
-def payment_stripe(request):
-	print('Hello')
-	token = request.POST.get('stripeToken')
-
-	invoiceUID = request.session["invoiceUID"]
-	print('Test1\n')
-	stripe_account_id = request.session["stripe_account_id"]
-	print(stripe_account_id)
-	print('Test1\n')
-	orders = Order.objects.filter(invoiceUID = invoiceUID)
-
-	amount = 0
-	for o_Order in orders:
-		amount = amount + o_Order.price
-	
-	if(amount == 0):
-		return render(Exception)
-
-	payment_intent = stripe.PaymentIntent.create(
-	payment_method_types=['card'],
-	amount=int(amount * 100),
-	currency='eur',
-	application_fee_amount=1,
-	#stripe_account='%s'.format(stripe_id),
-	stripe_account = stripe_account_id,
-	source = token,
-	#token = token,
-	)
-
-	return render(request, 'payment/done.html')
-
-@csrf_exempt
-def payment_canceled_view(request):
-	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
