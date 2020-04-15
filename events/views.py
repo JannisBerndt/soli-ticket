@@ -222,7 +222,7 @@ def invoiceUID_generator(size = 7, chars= string.digits):
 
 def send_email_firstEvent(organiser):
 	subject = 'Glückwunsch! Sie haben Ihre erste Veranstaltung erstellt'
-	html_message = render_to_string('event/mail_firstEvent.html')
+	html_message = render_to_string('email/first_event_created.html')
 	plain_message = strip_tags(html_message)
 	if settings.DEBUG:
 		to = ['roessler.paul@web.de', 'kolzmertz@gmail.com', organiser.email]

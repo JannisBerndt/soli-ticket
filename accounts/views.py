@@ -303,7 +303,7 @@ def confirm_view(request):
 
 def buildAndSendEmail(o_organiser):
     subject = '[Soli-Ticket] Registrierung abschließen'
-    html_message = render_to_string('register/doubleOptInMail.html', {'organiser': o_organiser})
+    html_message = render_to_string('email/double_opt_in.html', {'organiser': o_organiser})
     plain_message = strip_tags(html_message)
     if settings.DEBUG:
         to = ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email]
