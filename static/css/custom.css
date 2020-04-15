@@ -22,13 +22,19 @@
     display: inline-block;
 }
 
-.cookie-banner {
+#additionals {
     position: fixed;
     bottom: 20px;
-    left: 5%;
-    right: 5%;
+    width: 100%;
+    line-height: 0px;
+}
+
+.cookie-banner {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10px;
     width: 90%;
-    padding: 5px 14px;
+    padding: 5px 10px;
     display: flex;
     justify-content: space-evenly;
     background-color: #eee;
@@ -46,7 +52,11 @@
 }
 
 .more-info {
-    margin: 6px;
+    margin: 4px !important;
+}
+
+.close-banner {
+    margin: 4px !important;
 }
 
 .close-banner:hover {
@@ -60,14 +70,28 @@
 
 #to-top-button {
     display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: relative;
+    left: calc(100% - 68px);
     cursor: pointer;
     z-index: 999;
-    box-shadow: 0px 0px 5px #8fcdff;
+    box-shadow: 0px 0px 5px #8bcafd;
     border: 2px solid #8bcafd;
     width: 50px;
     height: 50px;
     margin: 0px;
+    background-image: url(../images/scroll-to-top-arrow.png);
+    background-size: 1.5em;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#to-top-button:hover {
+    background-color: #93d7c5;
+    border-color: #85d8c2;
+    box-shadow: 0px 0px 5px #85d8c2;
+}
+
+#copyToClip {
+    cursor: pointer;
 }
