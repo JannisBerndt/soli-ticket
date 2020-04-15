@@ -23,6 +23,8 @@ from paypal.utils import warn_untested
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+import braintree
+
 
 CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
                       "application/x-www-form-urlencoded. If using django's "
@@ -41,17 +43,14 @@ def payment_process_view(request):
 	if orders is None:
 		return Exception
 
-	"""
-	sql = 'SELECT au.id, strasse, hnummer, plz, ort FROM accounts_useraddress AS au INNER JOIN auth_user AS auu ON au.id = auu.id INNER JOIN events_buyable AS eb ON eb.creator_id = auu.id INNER JOIN accounts_order AS ao ON eb.id = ao.article_id WHERE ao.invoiceUID = %s'
-	o_adresse = UserAddress.objects.raw(sql, [invoiceUID])[0]
 
-	hnummer = o_adresse.hnummer
-	strasse = o_adresse.strasse
-	ort = o_adresse.ort
-	plz = o_adresse.plz
+	gateway = braintree.BraintreeGateway(client_id = "client_id$sandbox$p6fg6pm5znyzsrxt", client_secret = "client_secret$sandbox$f9a511f49e52b32c50bbebbdc08a49b3")
 
-	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
-	"""
+	url = gateway.oauth.connect_url({
+		"redirect_uri": "https://twentyonecoders.pythonanywhere.com/oauth/",
+		"scope": "shared_vault_transactions",
+		"state": "achhaltdieSchnauze"
+	})
 
 	paypal_dict = {
 		'cmd':'_cart',
@@ -90,29 +89,11 @@ def payment_process_view(request):
 
 		i+=1
 
-	"""
-	paypal_dict['item_name_1'] = 'Cola'
-	paypal_dict['item_name_2'] = 'Eintrittskarte'
-	paypal_dict['tax_1'] = 0.5
-	paypal_dict['tax_2'] = 0.7
-	paypal_dict['amount_1'] = 1.00
-	paypal_dict['amount_2'] = 1.00
-	paypal_dict['quantity_1'] = 1
-	paypal_dict['quantity_2'] = 3
-
-	for order in orders:
-
-		platzhalter = 'item_name_'+str(i)
-		buyable = Buyable.objects.get(id = order.article_id)
-		wert = buyable.buyable_name
-		paypal_dict[platzhalter] = wert
-		i+=1
-	"""
-
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	print(form)
 	context = {
 		'form': form,
+		'connect_url_from_server':url,
 	}
 	return render(request, 'payment/process.html', context)
 
