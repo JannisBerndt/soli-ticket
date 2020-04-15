@@ -35,6 +35,7 @@ function calcSum() {
 
 window.onload = function() {
     this.to_top_button = document.getElementById('to-top-button');
+    this.to_top_button.onclick = function() {window.scrollTo({top: 0, behavior: "smooth",})};
 
     if (localStorage.getItem('cookieAccepted') != 1) {
         document.getElementById('cookie-banner').style.display = "flex";
