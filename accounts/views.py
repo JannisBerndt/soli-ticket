@@ -16,6 +16,8 @@ import random
 from .filters import OrganiserFilter
 from django.db.models.query import QuerySet
 from urllib.parse import urlencode
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 def login_view(request):
@@ -300,20 +302,14 @@ def confirm_view(request):
     return render(request, 'register/register_finished.html', context)
 
 def buildAndSendEmail(o_organiser):
-    confirmLink = o_organiser.get_confirm_url()
-
-    subject = 'Bestätigung für die Registrierung auf Soli-Ticket'
-    content =   'Vielen Dank für die Registrierung auf soli-ticket.de \n'\
-                'Bitte klicken Sie auf den folgenden Link, um Ihren Account freizuschalten \n'\
-                '{confirmLink} \n\n'\
-                'Mit freundlichen Grüßen,\n\n'\
-                'Ihr Soli-Ticket-Team'.format(confirmLink = confirmLink)
-
-    if DEBUG:
-        # Hier eure email eintragen, wenn ihr was testen wollt.
-        send_mail(subject, content, settings.EMAIL_HOST_USER, ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email])
+    subject = '[Soli-Ticket] Registrierung abschließen'
+    html_message = render_to_string('register/doubleOptInMail.html', {'organiser': o_organiser})
+    plain_message = strip_tags(html_message)
+    if settings.DEBUG:
+        to = ['roessler.paul@web.de', 'kolzmertz@gmail.com', o_organiser.email]
     else:
-        send_mail(subject, content, settings.EMAIL_HOST_USER, [o_organiser.email])
+        to = [o_organiser.email]
+    send_mail(subject, plain_message, settings.EMAIL_HOST_USER, to, html_message = html_message)
 
 def confirmationCode_generator(size = 40, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
