@@ -41,3 +41,8 @@ def oauth(request):
     #expires_at = result.credentials.expires_at
     refresh_token = result.credentials.refresh_token
 
+    o_Organiser = Organiser.objects.get(paypal_email = 'berndtjannis@gmail.com') 
+    o_Organiser.braintree_access_token = access_token
+    o_Organiser.braintree_refresh_token = refresh_token
+
+

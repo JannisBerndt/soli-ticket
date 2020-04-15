@@ -50,6 +50,9 @@ class Organiser(User):
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten')
     acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
 
+    braintree_access_token = models.CharField(max_length = 60, default = 'none')
+    braintree_refresh_token = models.CharField(max_length = 60, default = 'none')
+
 
     def __str__(self):
         return self.organisation_name
