@@ -3,7 +3,7 @@ from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
 from accounts.models import Organiser, Customer, Order
 from django.core.mail import send_mail
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.conf import settings
 from django import forms
 from decimal import Decimal
@@ -19,14 +19,8 @@ import pdb
 
 def event_detail_view(request, id, organiser):
 	event = get_object_or_404(Event, id=id)
-	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
+	o_organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
 
-
-	print(organiser)
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
@@ -77,21 +71,21 @@ def event_detail_view(request, id, organiser):
 				i += 1
 			sum = float(sum)
 			if orders:
-				organiser = event.creator
+				o_organiser = event.creator
 				context = {
 					'sum': sum,
-					'organiser': organiser,
+					'organiser': o_organiser,
 					'orders': orders,
 					'event': event,
 					'authenticated': request.user.is_authenticated,
-					'organiser_user': organiser_user,
 				}
 
-				if organiser.paypal_email:
+				if o_organiser.paypal_email:
 					request.session["invoiceUID"] = o_uid
 					request.session["sum"] = sum
-					request.session["paypal_email"] = organiser.paypal_email
-					return redirect(reverse('payment:process'))
+					request.session["paypal_email"] = o_organiser.paypal_email
+					print(organiser)
+					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organiser, 'id': id}))
 
 
 	formset = zip(buyables, order_formset)
@@ -101,7 +95,6 @@ def event_detail_view(request, id, organiser):
 		'location': location,
 		'order_formset': order_formset,
 		'formset': formset,
-		'organiser_user': organiser_user,
 		'organiser': organiser,
 		'contact_form': contact_form,
 	}

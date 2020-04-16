@@ -25,7 +25,6 @@ urlpatterns = [
 	path('imprint/', imprint_view, name='imprint'),
 	path('about/', about_view, name='about'),
     path('accounts/', include('accounts.urls')),
-	path('payment/', include('payment.urls')),
     path('blog/', blog_view, name='blog'),
 	path('faq/', faq_view, name='faq'),
     path('agb/', agb_view, name='agb'),
