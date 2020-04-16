@@ -228,7 +228,7 @@ def sendDankesEmail(ipn_obj):
 	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 
 	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
-	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
+	html_message = render_to_string('email/thanks_for_paying.html', {'Veranstalter' : o_Organisation.organisation_name})
 	plain_message = strip_tags(html_message)
 	to = 'roessler.paul@web.de'
 

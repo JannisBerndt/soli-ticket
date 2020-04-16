@@ -1,15 +1,3 @@
-.w-layout-grid {
-  display: -ms-grid;
-  display: grid;
-  grid-auto-columns: 1fr;
-  -ms-grid-columns: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  -ms-grid-rows: auto auto;
-  grid-template-rows: auto auto;
-  grid-row-gap: 16px;
-  grid-column-gap: 16px;
-}
-
 .w-checkbox {
   display: block;
   margin-bottom: 5px;
@@ -87,6 +75,18 @@
 
 .w-checkbox-input--inputType-custom.w--redirected-focus {
   box-shadow: 0px 0px 3px 1px #3898ec;
+}
+
+.w-layout-grid {
+  display: -ms-grid;
+  display: grid;
+  grid-auto-columns: 1fr;
+  -ms-grid-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: auto auto;
+  grid-template-rows: auto auto;
+  grid-row-gap: 16px;
+  grid-column-gap: 16px;
 }
 
 body {
@@ -2519,6 +2519,14 @@ figcaption {
 
 .paragraph-29 {
   text-align: center;
+}
+
+.link-5 {
+  margin-top: 10px;
+}
+
+.link-6 {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 991px) {
