@@ -59,9 +59,9 @@ def payment_process_view(request, id, organisation_name):
 		'business': paypal_email,
 		'invoice': str(invoiceUID),
 		'currency_code': 'EUR',
-		'notify_url': '{host_base_url}{notify}'.format(host_base_url = host, notify=reverse('accounts:events:payment:ipn', kwargs={'organiser': organiser, 'id': id})[1:]),
-		'return_url': '{host_base_url}{done}'.format(host_base_url = host, done=reverse('accounts:events:payment:done', kwargs={'organiser': organiser, 'id': id})[1:]),
-		'cancel_return': '{host_base_url}{canceled}'.format(host_base_url = host, canceled=reverse('accounts:events:payment:canceled', kwargs={'organiser': organiser, 'id': id})[1:]),
+		'notify_url': '{host_base_url}{notify}'.format(host_base_url = host, notify=reverse('accounts:events:payment:ipn', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'return_url': '{host_base_url}{done}'.format(host_base_url = host, done=reverse('accounts:events:payment:done', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'cancel_return': '{host_base_url}{canceled}'.format(host_base_url = host, canceled=reverse('accounts:events:payment:canceled', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
 		'submit':'PayPal',
 	}
 

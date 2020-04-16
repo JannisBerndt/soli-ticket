@@ -19,84 +19,49 @@ import pdb
 
 def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
-	organiser_object = get_object_or_404(Organiser, organisation_name=organisation_name)
+	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
-	location = event.location
-	order_formset = OrderFormSet(queryset=Order.objects.none())
+	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
 
 	if request.method == 'POST':
-		try:
-			customer = Customer.objects.get(username=request.user.username)
-		except:
-			customer = None
-
-		order_formset = OrderFormSet(request.POST, instance=customer)
+		order_formset = OrderFormSet(request.POST)
 		contact_form = OrderContactForm(request.POST)
 
-		o_Event = Event.objects.get(id = id)
-		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
-
-		if not o_Organisation.paypal_email:
+		if not organisation.paypal_email:
 			return render(request, 'event/error.html')
 
 		if order_formset.is_valid() and contact_form.is_valid():
-			i=0
 			sum = 0
-			orders = []
-
-			# Neue RechnungsUID wird generiert und es werden sich Orders, die dazu bereits in der DB existieren geholt
 			o_uid = invoiceUID_generator()
-			o_orders = Order.objects.filter(invoiceUID = o_uid)
-
-			#Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
-			while o_orders:
-				o_uid = invoiceUID_generator()
-				o_orders = Order.objects.filter(invoiceUID = o_uid)
-
-			for order_form in order_formset:
+	
+			for order_form in order_formset.orders_to_be_saved():
 				order = order_form.save(commit=False)
-				if order.amount:
-					order.article = buyables[i]
-					order.price = buyables[i].price * order.amount
-					order.customer = customer
-					order.customer_mail = contact_form.cleaned_data["email"]
-					order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
-					order.invoiceUID = o_uid
-					order.save()
-					sum += order.price
-					orders.append(order)
-				i += 1
-			sum = float(sum)
-			if orders:
-				o_organiser = event.creator
-				context = {
-					'sum': sum,
-					'organiser': o_organiser,
-					'orders': orders,
-					'event': event,
-					'authenticated': request.user.is_authenticated,
-				}
+				order.article = buyables[int(order_form.prefix[-1])]
+				order.price = buyables[int(order_form.prefix[-1])].price * order.amount
+				order.customer_mail = contact_form.cleaned_data["email"]
+				order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
+				order.invoiceUID = o_uid
+				order.save()
+				sum += order.price
 
-				if o_organiser.paypal_email:
-					request.session["invoiceUID"] = o_uid
-					request.session["sum"] = sum
-					request.session["paypal_email"] = o_organiser.paypal_email
-					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organisation_name, 'id': id}))
+			if organisation.paypal_email:
+				request.session["invoiceUID"] = o_uid
+				request.session["sum"] = float(sum)
+				request.session["paypal_email"] = organisation.paypal_email
+				return redirect(reverse('accounts:events:payment:process', kwargs={'organisation_name': organisation.organisation_name, 'id': id}))
 
 	withoutMwst = True
 	for buyable in buyables:
 		if buyable.tax_rate != 0.00:
 			withoutMwst = False
 
-	formset = zip(buyables, order_formset)
 	context = {
 		'event': event,
 		'buyables': buyables,
-		'location': location,
 		'order_formset': order_formset,
-		'formset': formset,
-		'organiser': organiser_object,
+		'formset': zip(buyables, order_formset),
+		'organiser': organisation,
 		'contact_form': contact_form,
 		'withoutMwst': withoutMwst,
 	}
@@ -204,7 +169,14 @@ def event_detail_redirect_view(request, id):
 
 
 def invoiceUID_generator(size = 7, chars= string.digits):
-    return 'ST'+''.join(random.choice(chars) for _ in range(size))
+	uid = 'ST'+''.join(random.choice(chars) for _ in range(size))
+	existingUIDs = Order.objects.filter(invoiceUID = uid).values('invoiceUID')
+
+	# Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
+	while existingUIDs:
+		uid = 'ST'+''.join(random.choice(chars) for _ in range(size))
+		existingUIDs = Order.objects.filter(invoiceUID = uid).values('invoiceUID')
+	return uid
 
 
 def send_email_firstEvent(organiser):

@@ -1,6 +1,6 @@
 from django import forms
 from accounts.models import Organiser, Order, UserAddress, Customer
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, BaseFormSet
 from events.models import Buyable, Event
 from .helpers.validators import *
 
@@ -10,7 +10,38 @@ class OrderForm(forms.ModelForm):
 		fields = [
 			'amount',
 		]
-OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=5, max_num=5)
+
+class BaseOrderFormset(BaseFormSet):
+	def clean(self):
+		if any(self.errors):
+			# Don't bother validating the formset unless each form is valid on its own
+			return
+		
+		# Check for at least one order
+		has_orders = False
+		for form in self.forms:
+			if form.cleaned_data.get('amount'):
+				has_orders = True
+				break
+		if not has_orders:
+			raise ValidationError("Es wurden keine Tickets zur Bestellung ausgewählt.")
+	
+	def orders_to_be_saved(self):
+		orders = []
+		for form in self.forms:
+			if form.cleaned_data.get('amount'):
+				orders.append(form)
+		return orders
+
+	def set_articles_and_prices(self, buyables):
+		for form, buyable in zip(self.forms, buyables):
+			if form.cleaned_data.get('amount'):
+				print(form)
+				form.cleaned_data['article'] = Buyable.objects.get(buyable_name=buyable.buyable_name)
+				form.cleaned_data['price'] = buyable.price * form.cleaned_data.get('amount')
+		return self
+
+OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=5, max_num=5, can_delete=False)
 
 class OrderContactForm(forms.Form):
 	email = forms.EmailField(required=True)
