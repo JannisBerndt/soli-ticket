@@ -99,15 +99,14 @@ def organiser_list_view(request):
     return render(request, 'accounts/organiser_list.html', context)
 
 
-def profile_view(request, organiser):
-	print(organiser)
-	o_object = get_object_or_404(Organiser, organisation_name = organiser)
-	event_list = Event.objects.filter(creator = o_object)
+def profile_view(request, organisation_name):
+	organiser_object = get_object_or_404(Organiser, organisation_name = organisation_name)
+	event_list = Event.objects.filter(creator = organiser_object)
 	event_list = event_list.order_by('date')
 	user = request.user
-	logged_in = user.username == o_object.username
+	logged_in = user.username == organiser_object.username
 	context = {
-		'organiser': o_object,
+		'organiser': organiser_object,
 		'event_list': event_list,
 	}
 

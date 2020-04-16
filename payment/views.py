@@ -30,7 +30,7 @@ CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
 logger = logging.getLogger(__name__)
 #endregion
 
-def payment_process_view(request, id, organiser):
+def payment_process_view(request, id, organisation_name):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 
@@ -117,17 +117,17 @@ def payment_process_view(request, id, organiser):
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
-def payment_done_view(request, id, organiser):
-	return render(request, 'payment/done.html', {'organiser': organiser,})
+def payment_done_view(request, id, organisation_name):
+	return render(request, 'payment/done.html', {'organiser': organisation_name,})
 
 @csrf_exempt
-def payment_canceled_view(request, id, organiser):
+def payment_canceled_view(request, id, organisation_name):
 	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
 @csrf_exempt
-def payment_ipn_view(request, id, organiser):
+def payment_ipn_view(request, id, organisation_name):
     """
     PayPal IPN endpoint (notify_url).
     Used by both PayPal Payments Pro and Payments Standard to confirm transactions.

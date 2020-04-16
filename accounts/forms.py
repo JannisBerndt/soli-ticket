@@ -1,5 +1,5 @@
 from django import forms
-from accounts.models import Organiser, Order, UserAddress
+from accounts.models import Organiser, Order, UserAddress, Customer
 from django.forms import inlineformset_factory
 from events.models import Buyable, Event
 from .helpers.validators import *
@@ -10,7 +10,7 @@ class OrderForm(forms.ModelForm):
 		fields = [
 			'amount',
 		]
-
+OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=5, max_num=5)
 
 class OrderContactForm(forms.Form):
 	email = forms.EmailField(required=True)

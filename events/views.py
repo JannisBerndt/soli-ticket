@@ -9,7 +9,7 @@ from django import forms
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
-from accounts.forms import OrderForm, OrderContactForm
+from accounts.forms import OrderForm, OrderContactForm, OrderFormSet
 import uuid
 import random
 import string
@@ -17,13 +17,11 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import pdb
 
-def event_detail_view(request, id, organiser):
+def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
-	o_organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
-
+	organiser_object = get_object_or_404(Organiser, organisation_name=organisation_name)
 	buyables = Buyable.objects.filter(belonging_event=event)
 	location = event.location
-	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
 	order_formset = OrderFormSet(queryset=Order.objects.none())
 	contact_form = OrderContactForm()
 
@@ -84,8 +82,7 @@ def event_detail_view(request, id, organiser):
 					request.session["invoiceUID"] = o_uid
 					request.session["sum"] = sum
 					request.session["paypal_email"] = o_organiser.paypal_email
-					print(organiser)
-					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organiser, 'id': id}))
+					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organisation_name, 'id': id}))
 
 	withoutMwst = True
 	for buyable in buyables:
@@ -99,7 +96,7 @@ def event_detail_view(request, id, organiser):
 		'location': location,
 		'order_formset': order_formset,
 		'formset': formset,
-		'organiser': organiser,
+		'organiser': organiser_object,
 		'contact_form': contact_form,
 		'withoutMwst': withoutMwst,
 	}
@@ -107,7 +104,7 @@ def event_detail_view(request, id, organiser):
 
 
 @login_required(login_url='accounts:login')
-def event_create_view(request, organiser):
+def event_create_view(request, organisation_name):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == 'POST':
@@ -150,7 +147,7 @@ def event_create_view(request, organiser):
 	return render(request, "event/event_create.html", context)
 
 @login_required(login_url='accounts:login')
-def event_update_view(request, id, organiser):
+def event_update_view(request, id, organisation_name):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
@@ -184,7 +181,7 @@ def event_update_view(request, id, organiser):
 	}
 	return render(request, "event/event_update.html", context)
 
-def event_delete_view(request, id, organiser):
+def event_delete_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
