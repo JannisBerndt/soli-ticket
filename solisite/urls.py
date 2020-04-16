@@ -28,7 +28,7 @@ urlpatterns = [
     path('agb/', agb_view, name='agb'),
     path('contact/', contact_view, name='contact'),
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    path('', include('accounts.urls')),
 
     # redirects and old urls
     path('event/<int:id>/', event_detail_redirect_view, name='event_detail_redirect'),
