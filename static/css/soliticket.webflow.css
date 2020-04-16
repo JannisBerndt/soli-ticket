@@ -1472,7 +1472,7 @@ figcaption {
 }
 
 .submit-button.zweibuttons {
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .submit-button.buttonerfolgreich {
@@ -2527,6 +2527,10 @@ figcaption {
 
 .link-6 {
   margin-bottom: 10px;
+}
+
+.paragraph-30 {
+  text-transform: none;
 }
 
 @media screen and (max-width: 991px) {
