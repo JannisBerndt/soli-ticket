@@ -35,7 +35,7 @@ Events von {{ organiser }}
 		{% if organiser.paypal_email %}
 			<a href="{% url 'accounts:events:event_create' organiser_user.organisation_name %}" class="button-5 w-button">Neue Veranstaltung erstellen</a>
 		{% else %}
-			<p style="color: red;">Sie können erst neue Veranstaltungen erstellen, wenn Sie eine Email-Adresse für Ihr Paypal-Konto in Ihrem Profil hinterlegt haben, da Sie sonst keine Zahlungen empfangen können.</p>
+			<p style="color: red;">Sie können erst neue Veranstaltungen erstellen, wenn Sie eine E-Mail-Adresse für Ihr Paypal-Konto in Ihrem Profil hinterlegt haben, da Sie sonst keine Zahlungen empfangen können.</p>
 			<a class="button-9 w-button" href="{% url 'accounts:profile_update' %}">Paypal E-Mail-Adresse hinzufügen</a>
 		{% endif %}
 	</div>
