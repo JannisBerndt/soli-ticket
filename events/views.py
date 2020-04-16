@@ -1,20 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
-from accounts.models import Organiser, Customer, Order
 from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
 from django.conf import settings
-from django import forms
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
+from accounts.models import Organiser, Customer, Order
 from accounts.forms import OrderForm, OrderContactForm, OrderFormSet
 import uuid
 import random
 import string
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 import pdb
 
 def event_detail_view(request, id, organisation_name):
