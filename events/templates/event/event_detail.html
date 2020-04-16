@@ -52,7 +52,7 @@
     <div class="w-container">
       <div class="w-form">
         <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST" target="_blank"> {% csrf_token %}
-          <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€)</label><label>Anzahl</label>
+          <div class="w-layout-grid grid-3"><label for="name"><strong>TICKETS</strong></label><label>PREIS (€) {% if not withoutMwst %}(incl. Mwst){% endif %}</label><label>Anzahl</label>
             {{ order_formset.management_form }}
             {{ order_formset.non_form_errors }}
             {% for buyable, order_form in formset %}

@@ -87,6 +87,10 @@ def event_detail_view(request, id, organiser):
 					print(organiser)
 					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organiser, 'id': id}))
 
+	withoutMwst = True
+	for buyable in buyables:
+		if buyable.tax_rate != 0.00:
+			withoutMwst = False
 
 	formset = zip(buyables, order_formset)
 	context = {
@@ -97,6 +101,7 @@ def event_detail_view(request, id, organiser):
 		'formset': formset,
 		'organiser': organiser,
 		'contact_form': contact_form,
+		'withoutMwst': withoutMwst,
 	}
 	return render(request, "event/event_detail.html", context)
 
