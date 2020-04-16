@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import pdb
 
-def event_detail_view(request, id):
+def event_detail_view(request, id, organiser):
 	event = get_object_or_404(Event, id=id)
 	organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
 
@@ -109,7 +109,7 @@ def event_detail_view(request, id):
 
 
 @login_required(login_url='accounts:login')
-def event_create_view(request):
+def event_create_view(request, organiser):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == 'POST':
@@ -152,7 +152,7 @@ def event_create_view(request):
 	return render(request, "event/event_create.html", context)
 
 @login_required(login_url='accounts:login')
-def event_update_view(request, id):
+def event_update_view(request, id, organiser):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
@@ -186,7 +186,7 @@ def event_update_view(request, id):
 	}
 	return render(request, "event/event_update.html", context)
 
-def event_delete_view(request, id):
+def event_delete_view(request, id, organiser):
 	event = get_object_or_404(Event, id=id)
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
@@ -200,8 +200,12 @@ def event_delete_view(request, id):
 	return render(request, "event/event_delete.html", context)
 
 
-def profile_redirect(request, organiser):
+def profile_redirect_view(request, organiser):
 	return redirect('accounts:profile', organiser)
+
+def event_detail_redirect_view(request, id):
+	event = get_object_or_404(Event, id=id)
+	return redirect('accounts:events:event_detail', id=id, organiser=event.creator.organisation_name)
 
 
 def invoiceUID_generator(size = 7, chars= string.digits):

@@ -9,14 +9,16 @@ urlpatterns = [
     path('login/', login_view, name = 'login'),
     path('logout/', logout_view, name = 'logout'),
     path('organizer/', organiser_list_view, name='organiser_list'),
-    path('profile/<str:organiser>', profile_view, name='profile'),
     path('profile/edit/', profile_update_view, name='profile_update'),
     path('profile/delete/', profile_delete_view, name='profile_delete'),
-    path('profile/<str:organiser>/events/', include('events.urls'), name='new_events'),
+    path('profile/<str:organiser>/', profile_view, name='profile'),
+    path('profile/<str:organiser>/events/', include('events.urls')),
     path('register/', accounts.as_view(), name='register'),
     path('error/', error_view, name='register_error'),
     path('confirm/', confirm_view, name="confirm"),
     path('verify/', verify_email_view, name="verify_email"),
+
+    # password related stuff
     path('password_change/', auth_views.PasswordChangeView.as_view(
             template_name='register/password_change.html',
             success_url=reverse_lazy('accounts:password_change_complete')

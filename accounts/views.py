@@ -98,6 +98,7 @@ def organiser_list_view(request):
 
 
 def profile_view(request, organiser):
+	print(organiser)
 	o_object = get_object_or_404(Organiser, organisation_name = organiser)
 	event_list = Event.objects.filter(creator = o_object)
 	event_list = event_list.order_by('date')
@@ -109,9 +110,9 @@ def profile_view(request, organiser):
 	}
 
 	if(logged_in):
-		return render(request, "event/profile_organiser.html", context)
+		return render(request, "accounts/profile_organiser.html", context)
 	else:
-		return render(request, "event/profile_customer.html", context)
+		return render(request, "accounts/profile_customer.html", context)
 
 
 @login_required(login_url='accounts:login')
@@ -214,7 +215,7 @@ class accounts(View):
             form = Register2(request.POST)
             if form.is_valid():
                 valid = True
-                if Organiser.objects.filter(organisation_name = req.get('oname')).exists():
+                if Organiser.objects.filter(organisation_name = req.get('oname')).exists() or req.get('oname') == "edit" or req.get('oname') == "delete":
                     valid = False
                     form.add_error('oname', 'Diese Organisation ist bereits registriert.')
                 if valid:
