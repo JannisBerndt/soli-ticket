@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import login_view, logout_view, profile_update_view, profile_delete_view, accounts, error_view, organiser_list_view, confirm_view, verify_email_view, profile_view
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/<str:organiser>', profile_view, name='profile'),
     path('profile/edit/', profile_update_view, name='profile_update'),
     path('profile/delete/', profile_delete_view, name='profile_delete'),
+    path('profile/<str:organiser>/events/', include('events.urls'), name='new_events'),
     path('register/', accounts.as_view(), name='register'),
     path('error/', error_view, name='register_error'),
     path('confirm/', confirm_view, name="confirm"),
