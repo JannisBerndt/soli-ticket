@@ -73,6 +73,7 @@ def verify_email_view(request):
         buildAndSendEmail(organiser)
     context = {
         'code': code,
+        'organiser': organiser,
 	}
     return render(request, 'register/check_your_emails.html', context)
 
