@@ -26,7 +26,7 @@ def event_detail_view(request, id, organisation_name):
 	if request.method == 'POST':
 		order_formset = OrderFormSet(request.POST)
 		contact_form = OrderContactForm(request.POST)
-
+		print('POSTTTT')
 		if not organisation.paypal_email:
 			return render(request, 'event/error.html')
 
