@@ -43,7 +43,6 @@ class BaseOrderFormset(BaseFormSet):
 				form.cleaned_data['price'] = buyable.price * form.cleaned_data.get('amount')
 		return self
 
-OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=5, max_num=5, can_delete=False)
 
 class OrderContactForm(forms.Form):
 	email = forms.EmailField(required=True)

@@ -10,7 +10,7 @@ from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
 from accounts.models import Organiser, Customer, Order
-from accounts.forms import OrderForm, OrderContactForm, OrderFormSet
+from accounts.forms import OrderForm, OrderContactForm, OrderFormSet, BaseOrderFormset
 import uuid
 import random
 import string
@@ -20,6 +20,7 @@ def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
 	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
+	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), max_num=5, can_delete=False)
 	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
 
