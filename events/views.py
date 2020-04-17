@@ -10,7 +10,7 @@ from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
 from accounts.models import Organiser, Customer, Order
-from accounts.forms import OrderForm, OrderContactForm, OrderFormSet, BaseOrderFormset
+from accounts.forms import OrderForm, OrderContactForm, BaseOrderFormset
 import uuid
 import random
 import string
