@@ -17,7 +17,7 @@ Liste aller Veranstalter
           <div class="w-col w-col-6">
             {{ myFilter.form.city|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nach Ort suchen...'}" }}
             <input type="submit" value="Suchen" class="submit-button-2 w-button">
-            <a class="submit-button-2 w-button" href="{% url 'accounts:organiser_list' %}">All anzeigen</a>
+            <a class="submit-button w-button" href="{% url 'accounts:organiser_list' %}">Alle anzeigen</a>
           </div>
           <div class="w-col w-col-3"></div>
         </div>
