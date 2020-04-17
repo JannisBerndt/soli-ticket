@@ -128,7 +128,7 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			organiser_form.save()
 			address.save()
-			return redirect('accounts:profile', organiser=organiser)
+			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:
 		organiser_form = OrganiserForm(instance = organiser)
 		address_form = UserAddressForm(instance = address)
