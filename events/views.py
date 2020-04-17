@@ -170,7 +170,7 @@ def event_update_view(request, id, organiser):
 			for obj in buyable_formset.deleted_objects:
 				obj.delete()
 
-			return redirect('accounts:profile', organiser=organiser)
+			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:
 		event_form = EventForm(instance = event)
 		location_form = EventlocationForm(instance = location)
