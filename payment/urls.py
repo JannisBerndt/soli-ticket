@@ -1,13 +1,10 @@
-from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include
-
-from .views import payment_canceled, payment_done, payment_process, payment_ipn
+from .views import payment_canceled_view, payment_done_view, payment_process_view, payment_ipn_view
 
 app_name = "payment"
 urlpatterns = [
-	path('done/', payment_done, name='done'),
-	path('canceled/', payment_canceled, name='canceled'),
-	path('process/', payment_process, name='process'),
-	path('notify/', payment_ipn, name='ipn')
+	path('done/', payment_done_view, name='done'),
+	path('canceled/', payment_canceled_view, name='canceled'),
+	path('process/', payment_process_view, name='process'),
+	path('notify/', payment_ipn_view, name='ipn'),
 ]

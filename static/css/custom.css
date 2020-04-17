@@ -4,6 +4,90 @@
     margin-top: 0px;
 }
 
+.errorlist li {
+    color: red;
+}
+
 .red-background {
     background-color: #ff4a4aeb !important;
+}
+
+#external_link {
+    background-image: url(../images/icons8-external-link-26.png);
+    background-size: 1em;
+    background-repeat: no-repeat;
+    background-position: 98% 44%;
+    padding-right: 1.7em;
+    margin-right: auto;
+    display: inline-block;
+}
+
+#additionals {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    line-height: 0px;
+}
+
+.cookie-banner {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10px;
+    width: 90%;
+    padding: 5px 14px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #eee;
+    border-radius: 8px;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@media (max-width: 600px) {
+    .cookie-banner {
+        flex-direction: column;
+        font-size: 12px;
+    }
+}
+
+.more-info {
+    margin: 6px;
+}
+
+.close-banner:hover {
+    color: black;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#to-top-button {
+    display: none;
+    position: relative;
+    left: calc(100% - 68px);
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0px 0px 5px #8bcafd;
+    border: 2px solid #8bcafd;
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+    background-image: url(../images/scroll-to-top-arrow.png);
+    background-size: 1.5em;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#to-top-button:hover {
+    background-color: #93d7c5;
+    border-color: #85d8c2;
+    box-shadow: 0px 0px 5px #85d8c2;
+}
+
+#copyToClip {
+    cursor: pointer;
 }

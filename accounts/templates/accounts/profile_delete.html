@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<title>Profil löschen</title>
+Profil löschen
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
                 <input type="submit" class="button-3 w-button red-background" value="Löschen :("></input>
             </div>
             <div class="container-4 w-container">
-                <a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="button-3 w-button">Abbrechen :)</a>
+                <a href="{% url 'accounts:profile' organiser_user.organisation_name %}" class="button-3 w-button">Abbrechen :)</a>
             </div>
         </form>
       </div>

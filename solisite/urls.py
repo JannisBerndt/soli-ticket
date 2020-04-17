@@ -15,18 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import landingpage_view, privacy_policy_view, imprint_view, about_view, blog_view, faq_view, agb_view
+from .views import landingpage_view, privacy_policy_view, imprint_view, about_view, blog_view, faq_view, agb_view, contact_view
+from events.views import event_detail_redirect_view, profile_redirect_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', landingpage_view, name='home'),
 	path('privacy_policy/', privacy_policy_view, name='privacy_policy'),
 	path('imprint/', imprint_view, name='imprint'),
 	path('about/', about_view, name='about'),
-    path('accounts/', include('accounts.urls')),
-    path('event/', include('events.urls')),
-	path('payment/', include('payment.urls')),
     path('blog/', blog_view, name='blog'),
 	path('faq/', faq_view, name='faq'),
     path('agb/', agb_view, name='agb'),
+    path('contact/', contact_view, name='contact'),
+    path('admin/', admin.site.urls),
+    path('', include('accounts.urls')),
+
+    # redirects and old urls
+    path('event/<int:id>/', event_detail_redirect_view, name='event_detail_redirect'),
+    path('event/<str:organiser>/', profile_redirect_view, name='profile_redirect'),
 ]

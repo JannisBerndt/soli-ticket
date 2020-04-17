@@ -5,7 +5,7 @@
 {% load custom_tags %}
 
 {% block title %}
-<title>Veranstaltung bearbeiten</title>
+Veranstaltung bearbeiten
 {% endblock %}
 
 {% block content %}
@@ -25,47 +25,50 @@
                     <div class="w-row">
                         <div class="w-col w-col-3"></div>
                         <div class="w-col w-col-6">
-							{{ event_form.name.errors }}
 							<label for="{{ event_form.name.id_for_label }}">Name der Veranstaltung</label>
-							{{event_form.name}}
-                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="{{ event_form.name.id_for_label }}" data-name="Name der Organisation" placeholder="Veranstaltungsname" id="Name-der-Organisation" required=""> -->
-							{{ location_form.location_name.errors }}
+							{{ event_form.name.errors }}
+							{{ event_form.name|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Veranstaltungsname'}" }}
 							<label for="{{ location_form.location_name.id_for_label }}">Wo Hätte die Veranstaltung stattgefunden?</label>
-							{{ location_form.location_name }}
-                            <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Name-Des-Veranstaltungsortes" data-name="Name Des Veranstaltungsortes" placeholder="Name des Veranstaltungsortes" id="Name-Des-Veranstaltungsortes" required=""> -->
+							{{ location_form.location_name.errors }}
+							{{ location_form.location_name|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Name des Veranstaltungsortes'}" }}
                             <div class="w-row">
                                 <div class="w-col w-col-9">
 									{{ location_form.street.errors }}
-									{{ location_form.street }}
-                                    <!-- <input type="text" class="text-field-2 text-field-ind w-input" maxlength="256" name="Stra-e" data-name="Straße" placeholder="Straße (Optional)" id="Stra-e"> -->
+									{{ location_form.street|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Straße (optional)'}" }}
                                 </div>
                                 <div class="w-col w-col-3">
 									{{ location_form.house_number.errors }}
-									{{ location_form.house_number }}
-                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="HN" data-name="HN" placeholder="HausNr (Optional)" id="HN"> -->
+									{{ location_form.house_number|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'HausNr (optional)'}" }}
                                 </div>
                             </div>
                             <div class="w-row">
                                 <div class="w-col w-col-4">
 									{{ location_form.post_code.errors }}
-									{{ location_form.post_code }}
-                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="PLZ" data-name="PLZ" placeholder="Postleitzahl (Optional)" id="PLZ"> -->
+									{{ location_form.post_code|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Postleitzahl (optional)'}" }}
                                 </div>
                                 <div class="w-col w-col-8">
 									{{ location_form.city.errors }}
-									{{ location_form.city }}
-                                    <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="Ort" data-name="Ort" placeholder="Ort (Optional)" id="Ort"> -->
+									{{ location_form.city|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Ort (optional)'}" }}
                                 </div>
 							</div>
 							{{ event_form.date.errors }}
 							<label for="{{ event_form.date.id_for_label }}">Wann Hätte die Veranstaltung stattgefunden?</label>
-							{{ event_form.date }}
+							{{ event_form.date|setHTMLAttributes:"{'class':'text-field-2 w-input', 'autocomplete': 'off', 'placeholder':'Format: DD.MM.YYYY'}" }}
+                            <script>
+                                $(function () {
+                                  $("#id_date").datepicker({
+                                      language:"de-DE",
+                                      format:"dd.mm.yyyy",
+                                      autoHide: true,
+                                      weekStart: 1,
+                                  });
+                                });
+                            </script>
                             <!-- <input type="text" class="text-field-2 w-input" maxlength="256" name="DateTime" data-name="DateTime" placeholder="" id="DateTime" required=""> -->
                             <label for="{{ event_form.description.id_for_label }}" class="field-label-3">Kurzbeschreibung / Spendenaufruf</label>
 							<label for="{{ event_form.description.id_for_label }}" class="field-label-2">Ergänzen Sie hier neben mehr Informationen zu Ihrer Veranstaltung gerne auch eine persönliche Botschaft an Ihre Unterstützer (Ihren &quot;Spendenaufruf&quot;)</label>
 							{{ event_form.description.errors }}
-							{{ event_form.description }}
-                            <!-- <textarea placeholder="Erzählen Sie mehr!" maxlength="5000" id="field-4" name="field-4" required="" data-name="Field 4" class="textarea text-field-2 w-input"></textarea> -->
+							{{ event_form.description|setHTMLAttributes:"{'class':'textarea text-field-2 w-input', 'placeholder':'Erzählen Sie mehr!'}" }}
 							<label for="Name-der-Organisation-2" class="field-label-2">Fügen Sie nun die verschiedenen Dinge hinzu, die Ihre Besucher/Kunden üblicherweise vor und während Ihrer Veranstaltungen erworben hätten. Dazu gehören natürlich die Tickets, aber auch z.B. die Portion Popcorn, die Cola oder Anderes.</label>
                             <div class="w-layout-grid grid-7">
                                 <label>Tickets/Getränke/...</label>
@@ -76,7 +79,7 @@
                                     {{buyable_form.id}}
                                     <div>
                                         {{ buyable_form.buyable_name.errors }}
-                                        {{ buyable_form.buyable_name }}
+                                        {{ buyable_form.buyable_name|setHTMLAttributes:"{'class':'text-field-2 w-input', 'placeholder':'Bezeichnung des Tickets/Getränks/der Speise'}" }}
                                         {{ buyable_form.DELETE.label }}
 								        {{ buyable_form.DELETE}}
                                     </div>
@@ -92,7 +95,7 @@
                             </div>
 							<div class="w-row">
 								<div class="w-col w-col-3"><input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button"></div>
-								<div class="w-col w-col-9"><a href="{% url 'events:event_organiser_list' organiser_user.organisation_name %}" class="button-4 w-button">Abbrechen</a></div>
+								<div class="w-col w-col-9"><a href="{% url 'accounts:profile' organiser_user.organisation_name %}" class="button-4 w-button">Abbrechen</a></div>
 							</div>
 						</div>
                         <div class="w-col w-col-3 w-col-tiny-tiny-stack"></div>
@@ -108,4 +111,3 @@
         </div>
     </div>
 {% endblock %}
-

@@ -9,7 +9,7 @@ from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
 
-#region Imports, die aus der paypal.standarf.ipn.views kommen. 
+#region Imports, die aus der paypal.standarf.ipn.views kommen.
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
 from django.core.mail import send_mail
 import logging
@@ -30,18 +30,14 @@ CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
 logger = logging.getLogger(__name__)
 #endregion
 
-def payment_process(request):
+def payment_process_view(request, id, organisation_name):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	
+
 	host = settings.HOST_URL_BASE
 
 	orders = Order.objects.filter(invoiceUID = invoiceUID)
-	
+
 	if orders is None:
 		return Exception
 
@@ -53,7 +49,7 @@ def payment_process(request):
 	strasse = o_adresse.strasse
 	ort = o_adresse.ort
 	plz = o_adresse.plz
-	
+
 	print(hnummer + '\n' + strasse + '\n' + ort + '\n' + plz)
 	"""
 
@@ -63,11 +59,10 @@ def payment_process(request):
 		'business': paypal_email,
 		'invoice': str(invoiceUID),
 		'currency_code': 'EUR',
-		'notify_url': '{host_base_url}payment/notify/'.format(host_base_url = host),
-		'return_url': '{host_base_url}payment/done/'.format(host_base_url = host),
-		'cancel_return': '{host_base_url}payment/canceled/'.format(host_base_url = host),
+		'notify_url': '{host_base_url}{notify}'.format(host_base_url = host, notify=reverse('accounts:events:payment:ipn', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'return_url': '{host_base_url}{done}'.format(host_base_url = host, done=reverse('accounts:events:payment:done', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'cancel_return': '{host_base_url}{canceled}'.format(host_base_url = host, canceled=reverse('accounts:events:payment:canceled', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
 		'submit':'PayPal',
-		'custom':'DAS ist die Info im Custom-Feld'
 	}
 
 
@@ -106,48 +101,33 @@ def payment_process(request):
 	paypal_dict['quantity_2'] = 3
 
 	for order in orders:
-		
+
 		platzhalter = 'item_name_'+str(i)
 		buyable = Buyable.objects.get(id = order.article_id)
 		wert = buyable.buyable_name
 		paypal_dict[platzhalter] = wert
 		i+=1
 	"""
-	
+
 	form = PayPalPaymentsForm(initial=paypal_dict)
 	print(form)
 	context = {
 		'form': form,
-		'organiser_user': organiser_user,
 	}
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
-def payment_done(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/done.html', context)
+def payment_done_view(request, id, organisation_name):
+	return render(request, 'payment/done.html', {'organiser': organisation_name,})
 
 @csrf_exempt
-def payment_canceled(request):
-	try:
-		organiser_user = Organiser.objects.get(username = request.user.username)
-	except:
-		organiser_user = None
-	context = {
-		'organiser_user': organiser_user,
-	}
-	return render(request, 'payment/canceled.html', context)
+def payment_canceled_view(request, id, organisation_name):
+	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
 @csrf_exempt
-def payment_ipn(request):
+def payment_ipn_view(request, id, organisation_name):
     """
     PayPal IPN endpoint (notify_url).
     Used by both PayPal Payments Pro and Payments Standard to confirm transactions.
@@ -242,16 +222,16 @@ def payment_ipn(request):
     return HttpResponse("OKAY")
 
 def sendDankesEmail(ipn_obj):
-	
+
 	# Orderobjekt für E-Mail Adresse des Käufers. Organisation für Name des Veranstalters.
 	o_Order = Order.objects.filter(invoiceUID = ipn_obj.invoice)[0]
 	o_Organisation = Organiser.objects.get(paypal_email = ipn_obj.receiver_email)
 
 	subject = 'Vielen vielen Dank für Ihre Unterstützung.'
-	html_message = render_to_string('mail_Danke.html', {'Veranstalter' : o_Organisation.organisation_name})
+	html_message = render_to_string('email/thanks_for_paying.html', {'Veranstalter' : o_Organisation.organisation_name})
 	plain_message = strip_tags(html_message)
 	to = 'roessler.paul@web.de'
-	
+
 
 
 	if settings.PAYPAL_TEST:
