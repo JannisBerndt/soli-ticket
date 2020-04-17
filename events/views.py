@@ -96,7 +96,7 @@ def event_create_view(request, organisation_name):
 				organiser.save()
 			except:
 				pass
-			return redirect('accounts:profile', organiser=organiser)
+			return redirect('accounts:profile', organisation_name=organisation_name)
 	else:
 		event_form = EventForm()
 		location_form = EventlocationForm()
