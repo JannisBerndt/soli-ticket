@@ -20,6 +20,7 @@ def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
 	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
+	print(buyables.count())
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), max_num=5, can_delete=False)
 	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
