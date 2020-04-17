@@ -31,10 +31,12 @@ def event_detail_view(request, id, organisation_name):
 			return render(request, 'event/error.html')
 
 		if order_formset.is_valid() and contact_form.is_valid():
+			print('Both Valid')
 			sum = 0
 			o_uid = invoiceUID_generator()
 	
 			for order_form in order_formset.orders_to_be_saved():
+				print(order_form)
 				order = order_form.save(commit=False)
 				order.article = buyables[int(order_form.prefix[-1])]
 				order.price = buyables[int(order_form.prefix[-1])].price * order.amount
