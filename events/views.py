@@ -24,11 +24,13 @@ def event_detail_view(request, id, organisation_name):
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), max_num=5, can_delete=False)
 	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
+	print(order_formset)
 
 	if request.method == 'POST':
 		order_formset = OrderFormSet(request.POST)
 		contact_form = OrderContactForm(request.POST)
 		print('POSTTTT')
+		print(order_formset)
 		if not organisation.paypal_email:
 			return render(request, 'event/error.html')
 
