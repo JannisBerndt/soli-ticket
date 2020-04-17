@@ -21,8 +21,6 @@ def event_detail_view(request, id, organisation_name):
 	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
 	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), can_delete=False)
-	order_formset = OrderFormSet()
-	contact_form = OrderContactForm()
 
 	if request.method == 'POST':
 		order_formset = OrderFormSet(request.POST)
@@ -49,6 +47,9 @@ def event_detail_view(request, id, organisation_name):
 				request.session["sum"] = float(sum)
 				request.session["paypal_email"] = organisation.paypal_email
 				return redirect(reverse('accounts:events:payment:process', kwargs={'organisation_name': organisation.organisation_name, 'id': id}))
+	else:
+		order_formset = OrderFormSet()
+		contact_form = OrderContactForm()
 
 	withoutMwst = True
 	for buyable in buyables:
