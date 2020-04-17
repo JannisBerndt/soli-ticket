@@ -30,7 +30,7 @@ CONTENT_TYPE_ERROR = ("Invalid Content-Type - PayPal is only expected to use "
 logger = logging.getLogger(__name__)
 #endregion
 
-def payment_process_view(request, id, organiser):
+def payment_process_view(request, id, organisation_name):
 	invoiceUID = request.session["invoiceUID"]
 	paypal_email = request.session["paypal_email"]
 
@@ -59,9 +59,9 @@ def payment_process_view(request, id, organiser):
 		'business': paypal_email,
 		'invoice': str(invoiceUID),
 		'currency_code': 'EUR',
-		'notify_url': '{host_base_url}{notify}'.format(host_base_url = host, notify=reverse('accounts:events:payment:ipn', kwargs={'organiser': organiser, 'id': id})[1:]),
-		'return_url': '{host_base_url}{done}'.format(host_base_url = host, done=reverse('accounts:events:payment:done', kwargs={'organiser': organiser, 'id': id})[1:]),
-		'cancel_return': '{host_base_url}{canceled}'.format(host_base_url = host, canceled=reverse('accounts:events:payment:canceled', kwargs={'organiser': organiser, 'id': id})[1:]),
+		'notify_url': '{host_base_url}{notify}'.format(host_base_url = host, notify=reverse('accounts:events:payment:ipn', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'return_url': '{host_base_url}{done}'.format(host_base_url = host, done=reverse('accounts:events:payment:done', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
+		'cancel_return': '{host_base_url}{canceled}'.format(host_base_url = host, canceled=reverse('accounts:events:payment:canceled', kwargs={'organisation_name': organisation_name, 'id': id})[1:]),
 		'submit':'PayPal',
 	}
 
@@ -117,17 +117,17 @@ def payment_process_view(request, id, organiser):
 	return render(request, 'payment/process.html', context)
 
 @csrf_exempt
-def payment_done_view(request, id, organiser):
-	return render(request, 'payment/done.html', {'organiser': organiser,})
+def payment_done_view(request, id, organisation_name):
+	return render(request, 'payment/done.html', {'organiser': organisation_name,})
 
 @csrf_exempt
-def payment_canceled_view(request, id, organiser):
+def payment_canceled_view(request, id, organisation_name):
 	return render(request, 'payment/canceled.html')
 
 #region IPN-Handling
 @require_POST
 @csrf_exempt
-def payment_ipn_view(request, id, organiser):
+def payment_ipn_view(request, id, organisation_name):
     """
     PayPal IPN endpoint (notify_url).
     Used by both PayPal Payments Pro and Payments Standard to confirm transactions.

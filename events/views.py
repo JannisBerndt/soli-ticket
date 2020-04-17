@@ -1,105 +1,66 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
-from accounts.models import Organiser, Customer, Order
 from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
 from django.conf import settings
-from django import forms
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from decimal import Decimal
 from .models import Event, Eventlocation, Buyable
 from .forms import EventForm, EventlocationForm, BuyableForm, BuyableFormSet, BuyableInlineFormSet, BuyableModelFormSet, validate_with_initial
-from accounts.forms import OrderForm, OrderContactForm
+from accounts.models import Organiser, Customer, Order
+from accounts.forms import OrderForm, OrderContactForm, OrderFormSet
 import uuid
 import random
 import string
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 import pdb
 
-def event_detail_view(request, id, organiser):
+def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
-	o_organiser = Organiser.objects.get(organisation_name=event.creator.organisation_name)
-
+	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
-	location = event.location
-	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, fields=['amount',], extra=buyables.count())
-	order_formset = OrderFormSet(queryset=Order.objects.none())
+	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
 
 	if request.method == 'POST':
-		try:
-			customer = Customer.objects.get(username=request.user.username)
-		except:
-			customer = None
-
-		order_formset = OrderFormSet(request.POST, instance=customer)
+		order_formset = OrderFormSet(request.POST)
 		contact_form = OrderContactForm(request.POST)
 
-		o_Event = Event.objects.get(id = id)
-		o_Organisation = Organiser.objects.get(id = o_Event.creator_id)
-
-		if not o_Organisation.paypal_email:
+		if not organisation.paypal_email:
 			return render(request, 'event/error.html')
 
 		if order_formset.is_valid() and contact_form.is_valid():
-			i=0
 			sum = 0
-			orders = []
-
-			# Neue RechnungsUID wird generiert und es werden sich Orders, die dazu bereits in der DB existieren geholt
 			o_uid = invoiceUID_generator()
-			o_orders = Order.objects.filter(invoiceUID = o_uid)
-
-			#Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
-			while o_orders:
-				o_uid = invoiceUID_generator()
-				o_orders = Order.objects.filter(invoiceUID = o_uid)
-
-			for order_form in order_formset:
+	
+			for order_form in order_formset.orders_to_be_saved():
 				order = order_form.save(commit=False)
-				if order.amount:
-					order.article = buyables[i]
-					order.price = buyables[i].price * order.amount
-					order.customer = customer
-					order.customer_mail = contact_form.cleaned_data["email"]
-					order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
-					order.invoiceUID = o_uid
-					order.save()
-					sum += order.price
-					orders.append(order)
-				i += 1
-			sum = float(sum)
-			if orders:
-				o_organiser = event.creator
-				context = {
-					'sum': sum,
-					'organiser': o_organiser,
-					'orders': orders,
-					'event': event,
-					'authenticated': request.user.is_authenticated,
-				}
+				order.article = buyables[int(order_form.prefix[-1])]
+				order.price = buyables[int(order_form.prefix[-1])].price * order.amount
+				order.customer_mail = contact_form.cleaned_data["email"]
+				order.acceptedTac = contact_form.cleaned_data["acceptedTac"]
+				order.invoiceUID = o_uid
+				order.save()
+				sum += order.price
 
-				if o_organiser.paypal_email:
-					request.session["invoiceUID"] = o_uid
-					request.session["sum"] = sum
-					request.session["paypal_email"] = o_organiser.paypal_email
-					print(organiser)
-					return redirect(reverse('accounts:events:payment:process', kwargs={'organiser': organiser, 'id': id}))
+			if organisation.paypal_email:
+				request.session["invoiceUID"] = o_uid
+				request.session["sum"] = float(sum)
+				request.session["paypal_email"] = organisation.paypal_email
+				return redirect(reverse('accounts:events:payment:process', kwargs={'organisation_name': organisation.organisation_name, 'id': id}))
 
 	withoutMwst = True
 	for buyable in buyables:
 		if buyable.tax_rate != 0.00:
 			withoutMwst = False
 
-	formset = zip(buyables, order_formset)
 	context = {
 		'event': event,
 		'buyables': buyables,
-		'location': location,
 		'order_formset': order_formset,
-		'formset': formset,
-		'organiser': organiser,
+		'formset': zip(buyables, order_formset),
+		'organiser': organisation,
 		'contact_form': contact_form,
 		'withoutMwst': withoutMwst,
 	}
@@ -107,7 +68,7 @@ def event_detail_view(request, id, organiser):
 
 
 @login_required(login_url='accounts:login')
-def event_create_view(request, organiser):
+def event_create_view(request, organisation_name):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	if request.method == 'POST':
@@ -150,7 +111,7 @@ def event_create_view(request, organiser):
 	return render(request, "event/event_create.html", context)
 
 @login_required(login_url='accounts:login')
-def event_update_view(request, id, organiser):
+def event_update_view(request, id, organisation_name):
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
 	event = get_object_or_404(Event, id=id)
@@ -184,7 +145,7 @@ def event_update_view(request, id, organiser):
 	}
 	return render(request, "event/event_update.html", context)
 
-def event_delete_view(request, id, organiser):
+def event_delete_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
 	user = request.user
 	organiser = get_object_or_404(Organiser, username=user.username)
@@ -207,7 +168,14 @@ def event_detail_redirect_view(request, id):
 
 
 def invoiceUID_generator(size = 7, chars= string.digits):
-    return 'ST'+''.join(random.choice(chars) for _ in range(size))
+	uid = 'ST'+''.join(random.choice(chars) for _ in range(size))
+	existingUIDs = Order.objects.filter(invoiceUID = uid).values('invoiceUID')
+
+	# Sollten schon Orders dazu existieren, wird solange eine neue UID erzeugt und die Daten geholt, bis des Queryset o_orders leer ist.
+	while existingUIDs:
+		uid = 'ST'+''.join(random.choice(chars) for _ in range(size))
+		existingUIDs = Order.objects.filter(invoiceUID = uid).values('invoiceUID')
+	return uid
 
 
 def send_email_firstEvent(organiser):

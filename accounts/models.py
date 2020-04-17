@@ -55,7 +55,7 @@ class Organiser(User):
         return self.organisation_name
 
     def get_share_url(self):
-        return "{}{}".format(HOST_URL_BASE, reverse("accounts:profile", kwargs={"organiser": self.organisation_name})[1:])
+        return "{}{}".format(HOST_URL_BASE, reverse("accounts:profile", kwargs={"organisation_name": self.organisation_name})[1:])
 
     def get_confirm_url(self):
         return "{}{}?confirmationCode={}&id={}".format(HOST_URL_BASE, reverse("accounts:confirm")[1:], self.confirmationCode, self.id)

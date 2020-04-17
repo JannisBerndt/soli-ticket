@@ -34,10 +34,10 @@ class Event(models.Model):
 	location = models.ForeignKey(Eventlocation, on_delete=models.SET_NULL, null=True, related_name='+')
 
 	def get_absolute_url(self):
-		return reverse("accounts:events:event_detail", kwargs={'organiser': self.creator, "id": self.id})
+		return reverse("accounts:events:event_detail", kwargs={'organisation_name': self.creator.organisation_name, "id": self.id})
 
 	def get_share_url(self):
-		return "{}{}".format(HOST_URL_BASE, reverse("accounts:events:event_detail", kwargs={'organiser': self.creator, "id": self.id})[1:])
+		return "{}{}".format(HOST_URL_BASE, reverse("accounts:events:event_detail", kwargs={'organisation_name': self.creator.organisation_name, "id": self.id})[1:])
 
 	def __str__(self):
 		return self.name
