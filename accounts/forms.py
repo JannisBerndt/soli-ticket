@@ -14,7 +14,6 @@ class OrderForm(forms.ModelForm):
 class BaseOrderFormset(BaseFormSet):
 	def clean(self):
 		if any(self.errors):
-			print('Has Errors')
 			print(self.errors)
 			# Don't bother validating the formset unless each form is valid on its own
 			return

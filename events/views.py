@@ -20,27 +20,21 @@ def event_detail_view(request, id, organisation_name):
 	event = get_object_or_404(Event, id=id)
 	organisation = event.creator
 	buyables = Buyable.objects.filter(belonging_event=event)
-	print(buyables.count())
-	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), max_num=5, can_delete=False)
+	OrderFormSet = inlineformset_factory(Customer, Order, form=OrderForm, formset=BaseOrderFormset, fields=['amount',], extra=buyables.count(), can_delete=False)
 	order_formset = OrderFormSet()
 	contact_form = OrderContactForm()
-	print(order_formset)
 
 	if request.method == 'POST':
 		order_formset = OrderFormSet(request.POST)
 		contact_form = OrderContactForm(request.POST)
-		print('POSTTTT')
-		print(order_formset)
 		if not organisation.paypal_email:
 			return render(request, 'event/error.html')
 
 		if order_formset.is_valid() and contact_form.is_valid():
-			print('Both Valid')
 			sum = 0
 			o_uid = invoiceUID_generator()
 	
 			for order_form in order_formset.orders_to_be_saved():
-				print(order_form)
 				order = order_form.save(commit=False)
 				order.article = buyables[int(order_form.prefix[-1])]
 				order.price = buyables[int(order_form.prefix[-1])].price * order.amount
