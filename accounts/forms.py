@@ -77,6 +77,7 @@ class Register2(forms.ModelForm):
 	ort = forms.CharField(label='Ort', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Ort', 'placeholder': 'Ort'}))
 	telnr = forms.CharField(required=False, label='Telefonnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer', 'placeholder': '(optional)'}))
 	
+
 	class Meta:
 		model = Organiser
 		fields = [
@@ -90,16 +91,19 @@ class Register2(forms.ModelForm):
 			'plz',
 			'ort',
 			'telnr',
+			'picture',
 		]
 
 class Register3(forms.ModelForm):
 	paypal_email =	forms.EmailField(required=False,widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
 	acceptedTac = forms.BooleanField(required=True)
+	picture = forms.ImageField(required = False)
 	class Meta:
 		model = Organiser
 		fields = [
 			'paypal_email',
 			'acceptedTac',
+			'picture',
 		]
 
 

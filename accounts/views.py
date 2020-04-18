@@ -19,7 +19,7 @@ from urllib.parse import urlencode
 from events.models import Event
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from django.core.files.storage import default_storage
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -163,7 +163,7 @@ class accounts(View):
 					 'register/check_your_emails.html',
                      'register/register_finished.html']
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
-            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
+            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description", "picture"]
 
 
     def get(self, request, *args, **kwargs):
@@ -252,6 +252,7 @@ class accounts(View):
                 request.session[tag] = form.cleaned_data[tag]
 
 
+
             #To Do: Implementierung der Datenbank
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],
@@ -273,10 +274,16 @@ class accounts(View):
 
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
+
+            breakpoint()
+            organiser.picture = request.FILES.get('picture')
+            #file = request.FILES['picture']
+            #file_name = default_storage.save(file.name, file)
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
 
+            breakpoint()
             buildAndSendEmail(organiser_user)
 
 

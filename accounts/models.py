@@ -51,6 +51,8 @@ class Organiser(User):
     acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
 
 
+    picture = models.ImageField(default = "default.png")
+
     def __str__(self):
         return self.organisation_name
 

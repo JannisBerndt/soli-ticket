@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from solisite.settings import EMAIL_HOST_USER
 
+from django.conf.urls.static import static
+from django.conf import settings
 app_name='accounts'
 urlpatterns = [
     path('login/', login_view, name = 'login'),
@@ -44,4 +46,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
             template_name='register/password_reset_done.html'
         ), name='password_reset_complete'),
+    #path(settings.MEDIA_URL, document_root = settings.MEDIA_URL),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
