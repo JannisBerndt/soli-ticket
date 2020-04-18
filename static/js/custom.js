@@ -44,10 +44,10 @@ window.onload = function() {
         localStorage.setItem('cookieAccepted', 1)
         $('.cookie-banner').fadeOut();
     })
-}
 
-window.onscroll = function() {
-    setToTopButtonVisibility(this.to_top_button);
+    window.onscroll = function() {
+        setToTopButtonVisibility(this.to_top_button);
+    }
 }
 
 function setToTopButtonVisibility(button) {

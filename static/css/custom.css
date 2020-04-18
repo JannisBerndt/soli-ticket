@@ -44,13 +44,6 @@
     line-height: 18px;
 }
 
-@media (max-width: 600px) {
-    .cookie-banner {
-        flex-direction: column;
-        font-size: 12px;
-    }
-}
-
 .more-info {
     margin: 6px;
 }
@@ -88,6 +81,53 @@
     box-shadow: 0px 0px 5px #85d8c2;
 }
 
-#copyToClip {
+.copy-link-container {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 36px;
+    display: table;
+}
+
+#link {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    cursor: text;
+    border-radius: 8px 0px 0px 8px;
+    box-shadow: inset 0px 0px 4px 2px rgba(204, 204, 204, 0.5);
+}
+
+#copy-button {
+    display: table-cell;
+    width: 36px;
+    margin: 0px;
     cursor: pointer;
+    border: 1px solid #cccccc;
+    border-radius: 0px 8px 8px 0px;
+    background-image: url(../images/icons8-copy-24.png), linear-gradient(#eeeeee, #cccccc);
+    background-size: 1.5em, 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+#copy-button:active {
+    background-image: url(../images/icons8-copy-24.png);
+    background-color: #eeeeee;
+    box-shadow: inset 0px 0px 4px 2px rgba(204, 204, 204, 0.5);
+}
+
+@media (max-width: 600px) {
+    .cookie-banner {
+        flex-direction: column;
+        font-size: 12px;
+    }
+
+    .copy-link-container {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        display: table;
+    }
 }
