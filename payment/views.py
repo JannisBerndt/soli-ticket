@@ -8,6 +8,7 @@ from events.models import Buyable
 from accounts.models import Order, UserAddress
 from django.db.models.query import RawQuerySet
 from accounts.models import Order, Organiser
+from . import CustomPayPalPaymentForm
 
 #region Imports, die aus der paypal.standarf.ipn.views kommen.
 # Wir wollen ja, wenn eine IPN kommt gegebenenfalls eine E-Mail verschicken
@@ -109,7 +110,7 @@ def payment_process_view(request, id, organisation_name):
 		i+=1
 	"""
 
-	form = PayPalPaymentsForm(initial=paypal_dict)
+	form = CustomPayPalPaymentForm.CustomPayPalPaymentForm(initial=paypal_dict)
 	print(form)
 	context = {
 		'form': form,

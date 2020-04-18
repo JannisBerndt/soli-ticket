@@ -277,8 +277,7 @@ class accounts(View):
 
             breakpoint()
             organiser.picture = request.FILES.get('picture')
-            #file = request.FILES['picture']
-            #file_name = default_storage.save(file.name, file)
+
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
