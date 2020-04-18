@@ -25,14 +25,13 @@
 		</div>
 	  </div>
 	  <p class="paragraph-2">{{ event.description|linebreaksbr }}</p>
-	  <h6 class="heading-20">Link zum Teilen dieser Veranstaltung:</h6>
-		  <div class="w-form">
-			<div class="w-layout-grid grid-4">
-				<div></div>
-				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="{{event.get_share_url}}">
-				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="copyLink();" id="copyToClip" title="In Zwischenablage kopieren">
-			</div>
-		  </div>
+	  <div class="w-container">
+      <h6 class="heading-20">Teilen Sie diesen Link mit ihren Unterstützern, um sie zum Spenden aufzurufen</h6>
+      <div class="copy-link-container">
+        <input class="text-field-2 w-input" id="link" value="{{ event.get_share_url }}" readonly onclick="copyLink();">
+        <div id="copy-button" onclick="copyLink();" title="In Zwischenablage kopieren"></div>
+      </div>
+    </div>
       <div class="divider"></div>
       <div class="columns-3 w-row">
         <div class="w-col w-col-4"><img src="{% static 'images/sentiment_satisfied_alt-black-48dp.svg' %}" alt="" class="image-4">
