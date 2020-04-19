@@ -68,38 +68,41 @@
   {% endblock additionaljs %}
 </head>
 <body>
-    <div class="navbar">
-        <div data-collapse="medium" data-animation="default" data-duration="400" class="navigation w-nav">
-            <div class="navigation-wrap">
-                <div class="columns w-row">
-                    <div class="w-col w-col-3"><a href="https://www.soli-ticket.de" class="w-inline-block"><img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="63" alt="" class="image"></a></div>
-                    <div class="column w-col w-col-9">
-                      <a href="https://www.soli-ticket.de" class="link-block w-inline-block">
-                        <h1 class="heading"><strong class="bold-text">Soli-Ticket</strong></h1>
-                      </a>
-                    </div>
-                </div>
-                <div class="menu">
-                  <nav role="navigation" class="navigation-items w-nav-menu">
-                    <a href="{% url 'home' %}" class="w-nav-link">Home</a>
-                    {% if organiser_user %}
-                    <a href="{% url 'accounts:profile' organiser_user.organisation_name %}" class="w-nav-link">Mein Profil</a>
-                    {% endif %}
-                    <a href="{% url 'blog' %}" class="w-nav-link">News</a>
-                    <a href="{% url 'about' %}" class="w-nav-link">Über Uns</a>
-                    <a href="{% url 'faq' %}" class="w-nav-link">FAQ</a>
-                    {% if organiser_user %}
-                    <a href="{% url 'accounts:logout' %}" class="w-nav-link">Abmelden</a>
-                    {% else %}
-                    <a href="{% url 'accounts:login' %}" class="w-nav-link">Anmelden</a>
-                    {% endif %}
-                  </nav>
-                  <div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
-                </div>
-            </div>
-        </div>
-        <div class="headerline"></div>
+  <div id="navbar-space-reserver">    
+    <div class="navbar position-fixed">
+      <div data-collapse="medium" data-animation="default" data-duration="400" class="navigation w-nav">
+          <div class="navigation-wrap">
+              <div class="logo-title-wrapper">
+                  <div class="logo">
+                    <a href="https://www.soli-ticket.de" class="w-inline-block">
+                      <img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="" alt="" class=""></div>
+                    </a>
+                  <div class="title">
+                      <h1 class="heading"><a href="https://www.soli-ticket.de" class="link-block w-inline-block"><strong class="bold-text">Soli-Ticket</strong></a></h1>
+                  </div>
+              </div>
+              <div class="menu">
+                <nav role="navigation" class="navigation-items w-nav-menu">
+                  <a href="{% url 'home' %}" class="w-nav-link">Home</a>
+                  {% if organiser_user %}
+                  <a href="{% url 'accounts:profile' organiser_user.organisation_name %}" class="w-nav-link">Mein Profil</a>
+                  {% endif %}
+                  <a href="{% url 'blog' %}" class="w-nav-link">News</a>
+                  <a href="{% url 'about' %}" class="w-nav-link">Über Uns</a>
+                  <a href="{% url 'faq' %}" class="w-nav-link">FAQ</a>
+                  {% if organiser_user %}
+                  <a href="{% url 'accounts:logout' %}" class="w-nav-link">Abmelden</a>
+                  {% else %}
+                  <a href="{% url 'accounts:login' %}" class="w-nav-link">Anmelden</a>
+                  {% endif %}
+                </nav>
+                <div class="menu-button w-nav-button"><img src="{% static 'images/menu-icon_1menu-icon.png' %}" width="22" alt="" class="menu-icon"></div>
+              </div>
+          </div>
+      </div>
+      <div class="headerline"></div>
     </div>
+  </div>
 	{% block content %}
 
 	{% endblock %}
