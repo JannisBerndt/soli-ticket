@@ -29,6 +29,11 @@
     line-height: 0px;
 }
 
+#cookie-banner-placeholder {
+    width: 100%;
+    display: none;
+}
+
 .cookie-banner {
     margin-left: 5%;
     margin-right: 5%;
