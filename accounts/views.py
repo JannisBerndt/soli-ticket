@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views import View
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
@@ -32,6 +32,7 @@ def login_view(request):
             password = request.POST.get('password')
             try:
                 organiser = Organiser.objects.get(email=username)
+                print(organiser)
                 username = organiser.username
             except:
                 pass
