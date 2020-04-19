@@ -47,9 +47,9 @@ def login_view(request):
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        params = urlencode({'code': o_organiser.confirmationCode})
-                        url = "{}?{}".format(reverse('accounts:verify_email'), params)
-                        return redirect(url)
+                        buildAndSendEmail(o_organiser)
+                        request.session['username'] = username
+                        return redirect('accounts:verify_email')
                     else:
                         login(request, user)
                         return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
@@ -67,12 +67,11 @@ def logout_view(request):
 
 
 def verify_email_view(request):
-    code = request.GET["code"]
-    organiser = get_object_or_404(Organiser, confirmationCode=code)
+    assert(request.session.get('username')), "The username has to be in the session before this view is called!"
+    organiser = get_object_or_404(Organiser, username=request.session.get('username'))
     if request.method == 'POST':
         buildAndSendEmail(organiser)
     context = {
-        'code': code,
         'organiser': organiser,
 	}
     return render(request, 'register/check_your_emails.html', context)
@@ -286,10 +285,9 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-
-            params = urlencode({'code': organiser_user.confirmationCode})
-            url = "{}?{}".format(reverse('accounts:verify_email'), params)
-            return redirect(url)
+            
+            request.session['username'] = organiser_user.username
+            return redirect('accounts:verify_email')
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
