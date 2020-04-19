@@ -35,11 +35,6 @@ def login_view(request):
                 username = organiser.username
             except:
                 pass
-            try:
-                organiser = Organiser.objects.get(organisation_name=username)
-                username = organiser.username
-            except:
-                pass
 
             user = authenticate(request, username=username, password=password)
 
