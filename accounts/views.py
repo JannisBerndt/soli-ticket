@@ -89,7 +89,7 @@ def organiser_list_view(request):
     cities = addresses.values('ort').order_by('ort')
     context = {
         'organisers': organisers,
-        'cities': cities,
+        'cities': zip(range(cities.count()), cities),
         'myFilter': myFilter,
     }
     return render(request, 'accounts/organiser_list.html', context)

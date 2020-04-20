@@ -25,8 +25,8 @@ Liste aller Veranstalter
     </div>
   <div class="divider"></div>
   </div>
-  {% for city in cities %}
-    <div class="ort w-container">
+  {% for index, city in cities %}
+    <div class="ort w-container" id="{{ index }}">
       <h4 class="veranstaltungsort">{{ city.ort }}</h4>
       {% for organiser in organisers %}
         {% if organiser.user_address.ort == city.ort %}
