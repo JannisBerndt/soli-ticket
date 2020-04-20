@@ -24,19 +24,18 @@ Liste aller Veranstalter
       </form>
     </div>
   <div class="divider"></div>
-</div>
-
-  {% for city in cities %}
-  <div class="ort w-container">
-	<h4 class="veranstaltungsort">{{ city.ort }}</h4>
-	{% for organiser in organisers %}
-		{% if organiser.user_address.ort == city.ort %}
-			<a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
-		{% endif %}
-	{% endfor %}
-    <div class="platz"></div>
-    <div class="divider"></div>
   </div>
+  {% for city in cities %}
+    <div class="ort w-container">
+      <h4 class="veranstaltungsort">{{ city.ort }}</h4>
+      {% for organiser in organisers %}
+        {% if organiser.user_address.ort == city.ort %}
+          <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
+        {% endif %}
+      {% endfor %}
+      <div class="platz"></div>
+      <div class="divider"></div>
+    </div>
   {% endfor %}
   <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
 </div>
