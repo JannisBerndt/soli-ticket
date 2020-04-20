@@ -78,8 +78,19 @@ def error_view(request):
 
 
 def organiser_list_view(request):
+    print(request.GET)
+    try:
+        start = int(request.GET["start"])
+        step = int(request.GET["step"])
+        stop = start + step
+    except:
+        start = 0
+        step = 10
+        stop = start + step
     organisers = Organiser.objects.filter(is_active=True)
-
+    print(organisers.values('user_address__ort'))
+    organisers = organisers.order_by('user_address__ort')[start:stop]
+    print(organisers.values('user_address__ort'))
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
     list_of_ids = []
@@ -89,8 +100,11 @@ def organiser_list_view(request):
     cities = addresses.values('ort').order_by('ort')
     context = {
         'organisers': organisers,
-        'cities': zip(range(cities.count()), cities),
+        'cities': cities,
         'myFilter': myFilter,
+        'currentStart': start,
+        'nextStart': start + step,
+        'step': step,
     }
     return render(request, 'accounts/organiser_list.html', context)
 

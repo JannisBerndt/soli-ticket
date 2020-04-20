@@ -23,10 +23,18 @@ Liste aller Veranstalter
         </div>
       </form>
     </div>
+    <div style="text-align: right;">
+      <p style="display: inline;">Auf einmal anzeigen:</p>
+      <a href="./?start={{currentStart}}&step=10" style="display: inline;">10</a>
+      <a href="./?start={{currentStart}}&step=20" style="display: inline;">20</a>
+      <a href="./?start={{currentStart}}&step=30" style="display: inline;">30</a>
+      <a href="./?start={{currentStart}}&step=40" style="display: inline;">40</a>
+      <a href="./?start={{currentStart}}&step=50" style="display: inline;">50</a>
+    </div>
   <div class="divider"></div>
   </div>
-  {% for index, city in cities %}
-    <div class="ort w-container" id="{{ index }}">
+  {% for city in cities %}
+    <div class="ort w-container">
       <h4 class="veranstaltungsort">{{ city.ort }}</h4>
       {% for organiser in organisers %}
         {% if organiser.user_address.ort == city.ort %}
@@ -37,6 +45,9 @@ Liste aller Veranstalter
       <div class="divider"></div>
     </div>
   {% endfor %}
-  <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
+  <div class="w-container">
+    <a href="./?start={{nextStart}}&step={{step}}" id="next-page" style="text-align: right;">Nächste Seite --></a>
+    <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
+  </div>
 </div>
 {% endblock %}
