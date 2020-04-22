@@ -80,25 +80,25 @@ def error_view(request):
 
 def organiser_list_view(request):
     try:
-        step = int(request.GET["step"])
+        entries_per_page = int(request.GET["epP"])
         page = int(request.GET["page"])
     except:
-        step = 10
+        entries_per_page = 10
         page = 1
     assert(page > 0), "Falscher URL Parameter!"
-    assert(step >= 1), "Falscher URL Parameter!"
+    assert(entries_per_page >= 1), "Falscher URL Parameter!"
 
     organisers = Organiser.objects.filter(is_active=True)
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
 
     organisers_total = organisers.count()
-    pages = range(1, int(math.ceil(float(organisers_total) / float(step))) + 1)
+    pages = range(1, int(math.ceil(float(organisers_total) / float(entries_per_page))) + 1)
     lastPage = pages[-1]
     if page > lastPage:
         print("Automatically shifting to the last Page!")
         page = lastPage
-    organisers = organisers.order_by('user_address__ort')[step*(page - 1):step*page]
+    organisers = organisers.order_by('user_address__ort')[entries_per_page*(page - 1):entries_per_page*page]
 
     list_of_ids = []
     for organiser in organisers:
@@ -117,7 +117,7 @@ def organiser_list_view(request):
         'myFilter': myFilter,
         'currentPage': page,
         'lastPage': lastPage,
-        'step': step,
+        'entries_per_page': entries_per_page,
         'organisers_num': organisers_total,
         'pages': pages,
         'currentSearch': currentSearch,

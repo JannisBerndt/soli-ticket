@@ -25,12 +25,12 @@ Liste aller Veranstalter
     </div>
     <div class="pages-container">
       {% if currentPage > 1 %}
-        <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&step={{step}}" id="previous-page"></a>
+        <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
       {% endif %}
       <!-- Automatically collapse the Page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
         {% for p in pages %}
-          <a href="{{currentSearch}}page={{p}}&step={{step}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
+          <a href="{{currentSearch}}page={{p}}&epP={{entries_per_page}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
         {% endfor %}
       {% else %}
         {% for p in pages %}
@@ -38,21 +38,21 @@ Liste aller Veranstalter
           {% elif p|add:'4' == currentPage or p|add:'-4' == currentPage %}
             <a class="page-index">...</a>
           {% else %}
-            <a href="{{currentSearch}}page={{p}}&step={{step}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
+            <a href="{{currentSearch}}page={{p}}&epP={{entries_per_page}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
           {% endif %}
         {% endfor %}
       {% endif %}
       {% if currentPage < lastPage %}
-        <a href="{{currentSearch}}page={{currentPage|add:'1'}}&step={{step}}" id="next-page"></a>
+        <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
       {% endif %}
     </div>
     <div style="text-align: right;">
       <p style="display: inline;">Einträge pro Seite:</p>
-      <a href="{{currentSearch}}page={{currentPage}}&step=10" style="display: inline;">10</a>
-      <a href="{{currentSearch}}page={{currentPage}}&step=20" style="display: inline;">20</a>
-      <a href="{{currentSearch}}page={{currentPage}}&step=30" style="display: inline;">30</a>
-      <a href="{{currentSearch}}page={{currentPage}}&step=40" style="display: inline;">40</a>
-      <a href="{{currentSearch}}page={{currentPage}}&step=50" style="display: inline;">50</a>
+      <a href="{{currentSearch}}page={{currentPage}}&epP=10" style="display: inline;">10</a>
+      <a href="{{currentSearch}}page={{currentPage}}&epP=20" style="display: inline;">20</a>
+      <a href="{{currentSearch}}page={{currentPage}}&epP=30" style="display: inline;">30</a>
+      <a href="{{currentSearch}}page={{currentPage}}&epP=40" style="display: inline;">40</a>
+      <a href="{{currentSearch}}page={{currentPage}}&epP=50" style="display: inline;">50</a>
     </div>
   <div class="divider"></div>
   </div>
@@ -71,12 +71,12 @@ Liste aller Veranstalter
   <div class="w-container">
     <div class="pages-container">
       {% if currentPage > 1 %}
-        <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&step={{step}}" id="previous-page"></a>
+        <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
       {% endif %}
-      <!-- Automatically collapse the Page indices to a smaller amount if a specified threshhold is reached. -->
+      <!-- Automatically collapse the page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
         {% for p in pages %}
-          <a href="{{currentSearch}}page={{p}}&step={{step}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
+          <a href="{{currentSearch}}page={{p}}&epP={{entries_per_page}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
         {% endfor %}
       {% else %}
         {% for p in pages %}
@@ -84,12 +84,12 @@ Liste aller Veranstalter
           {% elif p|add:'4' == currentPage or p|add:'-4' == currentPage %}
             <a class="page-index">...</a>
           {% else %}
-            <a href="{{currentSearch}}page={{p}}&step={{step}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
+            <a href="{{currentSearch}}page={{p}}&epP={{entries_per_page}}" class="page-index {% if currentPage == p %}current-page{% endif %}">{{ p }}</a>
           {% endif %}
         {% endfor %}
       {% endif %}
       {% if currentPage < lastPage %}
-        <a href="{{currentSearch}}page={{currentPage|add:'1'}}&step={{step}}" id="next-page"></a>
+        <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
       {% endif %}
     </div>
     <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
