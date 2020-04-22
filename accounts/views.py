@@ -13,6 +13,7 @@ from django.conf import settings
 from solisite.settings import DEBUG
 import string
 import random
+import math
 from .filters import OrganiserFilter
 from django.db.models.query import QuerySet
 from urllib.parse import urlencode
@@ -78,33 +79,48 @@ def error_view(request):
 
 
 def organiser_list_view(request):
-    print(request.GET)
     try:
-        start = int(request.GET["start"])
         step = int(request.GET["step"])
-        stop = start + step
+        page = int(request.GET["page"])
     except:
-        start = 0
         step = 10
-        stop = start + step
+        page = 1
+    assert(page > 0), "Falscher URL Parameter!"
+    assert(step >= 1), "Falscher URL Parameter!"
+
     organisers = Organiser.objects.filter(is_active=True)
-    print(organisers.values('user_address__ort'))
-    organisers = organisers.order_by('user_address__ort')[start:stop]
-    print(organisers.values('user_address__ort'))
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
+
+    organisers_total = organisers.count()
+    pages = range(1, int(math.ceil(float(organisers_total) / float(step))) + 1)
+    lastPage = pages[-1]
+    if page > lastPage:
+        print("Automatically shifting to the last Page!")
+        page = lastPage
+    organisers = organisers.order_by('user_address__ort')[step*(page - 1):step*page]
+
     list_of_ids = []
     for organiser in organisers:
         list_of_ids.append(organiser.user_address.id)
     addresses = UserAddress.objects.filter(id__in=list_of_ids).distinct()
     cities = addresses.values('ort').order_by('ort')
+
+    try:
+        currentSearch = "?city=" + request.GET["city"] + "&"
+    except:
+        currentSearch = "?"
+
     context = {
         'organisers': organisers,
         'cities': cities,
         'myFilter': myFilter,
-        'currentStart': start,
-        'nextStart': start + step,
+        'currentPage': page,
+        'lastPage': lastPage,
         'step': step,
+        'organisers_num': organisers_total,
+        'pages': pages,
+        'currentSearch': currentSearch,
     }
     return render(request, 'accounts/organiser_list.html', context)
 
