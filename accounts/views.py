@@ -82,6 +82,7 @@ def organiser_list_view(request):
     try:
         entries_per_page = int(request.GET["epP"])
         page = int(request.GET["page"])
+        print("GOT IT")
     except:
         entries_per_page = 10
         page = 1
