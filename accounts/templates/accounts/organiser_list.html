@@ -54,7 +54,7 @@ Liste aller Veranstalter
       <a class="epP-index {% if entries_per_page == 40 %}current-epP{% endif %}" href="{{currentSearch}}page={{currentPage}}&epP=40">40</a>
       <a class="epP-index {% if entries_per_page == 50 %}current-epP{% endif %}" href="{{currentSearch}}page={{currentPage}}&epP=50">50</a>
     </div>
-  <div class="divider"></div>
+    <div class="divider"></div>
   </div>
   {% for city in cities %}
     <div class="ort w-container">
@@ -68,6 +68,12 @@ Liste aller Veranstalter
       <div class="divider"></div>
     </div>
   {% endfor %}
+  {% if not organisers_num %}
+    <div class="ort w-container">
+      <div class="platz"></div>
+      <div class="divider"></div>
+    </div>
+  {% endif %}
   <div class="w-container">
     <div class="pages-container">
       {% if currentPage > 1 %}
