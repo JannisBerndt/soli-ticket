@@ -190,7 +190,7 @@
     display: table;
     border: 1px solid #cccccc;
     border-radius: 8px;
-    margin: auto;
+    margin: auto auto 15px auto;
 }
 
 .pages-container > * {
@@ -254,6 +254,50 @@
     background-position: 50% 50%;
 }
 
+.epP-container {
+    display: table;
+    margin-left: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-top: 1px solid #8fcdff;
+    border-right: 1px solid #8fcdff;
+    border-left: 1px solid #8fcdff;
+}
+
+.epP-container > * {
+    display: table-cell;
+    padding: 4px 7px 4px 7px;
+    box-shadow: inset 0px 0px 4px 2px rgba(143, 205, 255, 0.5);
+}
+
+.epP-container .current-epP {
+    background-color: rgba(143, 205, 255, 0.3);
+}
+
+.epP-description {
+    border-top-left-radius: 8px;
+    border-right: 1px solid rgba(143, 205, 255, 0.7);
+}
+
+.epP-index {
+    border-right: 1px solid rgba(143, 205, 255, 0.7);
+    text-decoration: none;
+}
+
+.epP-index:hover {
+    box-shadow: inset 0px 0px 4px 2px rgba(56, 152, 236, 0.5);
+}
+
+.epP-index:active {
+    box-shadow: inset 0px 0px 4px 2px rgba(56, 152, 236, 0.5);
+    background-color: rgba(143, 205, 255, 0.3);
+}
+
+.epP-index:last-child {
+    border-top-right-radius: 8px;
+    border: none;
+}
+
 @media (max-width: 320px) {
     .pages-container > * {
         padding: 3px 4px 3px 4px;
@@ -265,5 +309,9 @@
 
     #next-page {
         width: 30px;
+    }
+
+    .epP-container > * {
+        padding: 3px 3px 3px 3px;
     }
 }
