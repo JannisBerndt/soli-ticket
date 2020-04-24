@@ -49,7 +49,7 @@ class Organiser(User):
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten')
     acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
 
-    picture = models.ImageField(default = "default.png")
+    picture = models.ImageField(null=True, blank=True, default = "default.png")
 
     def __str__(self):
         return self.organisation_name
