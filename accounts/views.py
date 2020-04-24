@@ -21,6 +21,11 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.files.storage import default_storage
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
 def login_view(request):
     if request.user.is_authenticated:
         username = request.user
@@ -276,7 +281,20 @@ class accounts(View):
             organiser.confirmationCode = confirmationCode_generator()
 
             breakpoint()
-            organiser.picture = request.FILES.get('picture')
+            picture = request.FILES.get('picture')
+            picture.name =  request.session["username"] + picture.name
+            breakpoint()
+            pic = Image.open(picture)
+            pic = pic.resize( (100,100) )
+            
+            breakpoint()
+
+            output = BytesIO()
+            pic.save(output, format='PNG', quality=100)
+            output.seek(0)
+
+            #change the imagefield value to be the newley modifed image value
+            organiser.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
 
             organiser.save()
 

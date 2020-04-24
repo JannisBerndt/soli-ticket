@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from solisite.settings import HOST_URL_BASE
 
-
 class UserAddress(models.Model):
     strasse = models.CharField(max_length=120)
     hnummer = models.CharField(max_length=120)
@@ -49,7 +48,6 @@ class Organiser(User):
     isActivated = models.BooleanField(default = True)
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten')
     acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
-
 
     picture = models.ImageField(default = "default.png")
 
