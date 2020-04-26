@@ -62,12 +62,12 @@ Liste aller Veranstalter
       {% for organiser in organisers %}
         {% if organiser.user_address.ort == city.ort %}
           <div class="columns-8 w-row">
-            <div class="w-col w-col-2 w-col-small-2">
+            <div class="w-col w-col-2 w-col-small-2" style="padding-top: 8px; padding-bottom: 9px;">
               <img src="{{ organiser.picture.url }}" alt="">
             </div>
             <div class="w-col w-col-10 w-col-small-10">
               <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
-              <p>{{ organiser.get_description_preview|linebreaksbr }}</p>
+              <p style="overflow: hidden; text-overflow: ellipsis; height: 84px; margin: 0px;">{{ organiser.description }}</p>
             </div>
           </div>
         {% endif %}
