@@ -13,94 +13,93 @@
 
 {% block content %}
 <div class="section-18">
-    <div class="w-container">
-      <div class="intro-text">
-        <div class="heading-jumbo">{{ event.name }}</div>
-        <div class="divider"></div>
-		<p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
-		<div class="w-row">
-			<div class="w-col w-col-4"></div>
-			<div class="w-col w-col-4"><a href="#Tickets" class="button-6 w-button">Zu den Tickets</a></div>
-			<div class="w-col w-col-4"></div>
-		</div>
+  <div class="w-container">
+    <div class="intro-text">
+      <div class="heading-jumbo">{{ event.name }}</div>
+      <div class="divider"></div>
+      <p class="paragraph-bigger cc-bigger-white-light">Ein Event von {{ event.creator }} hätte am {{ event.date }} stattgefunden.</p>
+      <div class="w-row">
+        <div class="w-col w-col-4"></div>
+        <div class="w-col w-col-4"><a href="#Tickets" class="button-6 w-button">Zu den Tickets</a></div>
+        <div class="w-col w-col-4"></div>
+      </div>
 	  </div>
 	  <p class="paragraph-2">{{ event.description|linebreaksbr }}</p>
-	  <h6 class="heading-20">Link zum Teilen dieser Veranstaltung:</h6>
-		  <div class="w-form">
-			<div class="w-layout-grid grid-4">
-				<div></div>
-				<input type="text" class="text-field-2 w-input" maxlength="256" name="field" data-name="Field" readonly id="link" value="{{event.get_share_url}}">
-				<img src="{% static 'images/icons8-copy-24.png' %}" alt="" onclick="copyLink();" id="copyToClip" title="In Zwischenablage kopieren">
-			</div>
-		  </div>
-      <div class="divider"></div>
-      <div class="columns-3 w-row">
-        <div class="w-col w-col-4"><img src="{% static 'images/sentiment_satisfied_alt-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Solidarität macht nicht arm! Helfen Sie mit dem Geld, das Sie sowieso ausgegeben hätten, den Fortbestand unserer Kulturlandschaft zu sichern.</p>
-        </div>
-        <div class="column-4 w-col w-col-4"><img src="{% static 'images/money_off-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Zahlungen gehen direkt an {{ event.creator.organisation_name }}. Soli-Ticket behält keine Gebühr ein. Es fällt lediglich die Gebühr des Zahlungsanbieters an.</p>
-        </div>
-        <div class="w-col w-col-4"><img src="{% static 'images/share-black-48dp.svg' %}" alt="" class="image-4">
-          <p class="paragraph">Solidarität ist ansteckend! <br>Jede Verlinkung oder Empfehlung hilft {{ event.creator }} und Soli-Ticket dabei, die Folgen der Krise zu mildern.</p>
-        </div>
+	  <div class="w-container">
+      <h6 class="heading-20">Teilen Sie diesen Link mit ihren Unterstützern, um sie zum Spenden aufzurufen</h6>
+      <div class="copy-link-container">
+        <input class="text-field-2 w-input" id="link" value="{{ event.get_share_url }}" readonly onclick="copyLink();">
+        <div id="copy-button" onclick="copyLink();" title="In Zwischenablage kopieren"></div>
       </div>
-      <div class="divider"></div>
     </div>
+    <div class="divider"></div>
+    <div class="columns-3 w-row">
+      <div class="w-col w-col-4"><img src="{% static 'images/sentiment_satisfied_alt-black-48dp.svg' %}" alt="" class="image-4">
+        <p class="paragraph">Solidarität macht nicht arm! Helfen Sie mit dem Geld, das Sie sowieso ausgegeben hätten, den Fortbestand unserer Kulturlandschaft zu sichern.</p>
+      </div>
+      <div class="column-4 w-col w-col-4"><img src="{% static 'images/money_off-black-48dp.svg' %}" alt="" class="image-4">
+        <p class="paragraph">Zahlungen gehen direkt an {{ event.creator.organisation_name }}. Soli-Ticket behält keine Gebühr ein. Es fällt lediglich die Gebühr des Zahlungsanbieters an.</p>
+      </div>
+      <div class="w-col w-col-4"><img src="{% static 'images/share-black-48dp.svg' %}" alt="" class="image-4">
+        <p class="paragraph">Solidarität ist ansteckend! <br>Jede Verlinkung oder Empfehlung hilft {{ event.creator }} und Soli-Ticket dabei, die Folgen der Krise zu mildern.</p>
+      </div>
+    </div>
+    <div class="divider"></div>
   </div>
-  <div id="Tickets" class="section-3">
-    <div class="w-container">
-      <div class="w-form">
-        <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST" target="_blank"> {% csrf_token %}
-          {{ order_formset.management_form }}
-          {{ order_formset.non_form_errors }}
-          <div class="w-layout-grid grid-3">
-            <label for="name"><strong>TICKETS</strong></label>
-            <label>PREIS (€) {% if not withoutMwst %}(incl. Mwst){% endif %}</label>
-            <label>Anzahl</label>
-            {% for buyable, order_form in formset %}
-              <p>{{ buyable.buyable_name }}</p>
-              <p class="price">{{ buyable.price }}</p>
-              <div>
-                {{ order_form.amount.errors }}
-                {{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
-              </div>
-            {% endfor %}
-            <p class="paragraph-4">Gesamt:</p>
-            <p class="paragraph-3" id="sum">0,00</p>
-          </div>
-          <p class="paragraph-5"></p>
-            <div class="divider"></div>
-          <div class="w-row">
-            <div class="w-col w-col-5">
-              <label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
-              {{ contact_form.email.errors }}
-              {{ contact_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+</div>
+<div id="Tickets" class="section-3">
+  <div class="w-container">
+    <div class="w-form">
+      <form id="wf-form-Ticket-Form" name="wf-form-Ticket-Form" data-name="Ticket Form" method="POST" target="_blank"> {% csrf_token %}
+        {{ order_formset.management_form }}
+        {{ order_formset.non_form_errors }}
+        <div class="w-layout-grid grid-3">
+          <label for="name"><strong>TICKETS</strong></label>
+          <label>PREIS (€) {% if not withoutMwst %}(incl. Mwst){% endif %}</label>
+          <label>Anzahl</label>
+          {% for buyable, order_form in formset %}
+            <p>{{ buyable.buyable_name }}</p>
+            <p class="price">{{ buyable.price }}</p>
+            <div>
+              {{ order_form.amount.errors }}
+              {{ order_form.amount|setHTMLAttributes:"{'class': 'text-field-2 w-input amount-field', 'oninput': 'calcSum()'}" }}
             </div>
-            <div class="column-5 w-col w-col-7"></div>
+          {% endfor %}
+          <p class="paragraph-4">Gesamt:</p>
+          <p class="paragraph-3" id="sum">0,00</p>
+        </div>
+        <p class="paragraph-5"></p>
+        <div class="divider"></div>
+        <div class="w-row">
+          <div class="w-col w-col-5">
+            <label for="name" class="field-label-6"><strong>Email-Adresse</strong></label>
+            {{ contact_form.email.errors }}
+            {{ contact_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
           </div>
-          <p class="paragraph-5">Hinweis: Mit Ihrer Zahlung unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB.<strong></strong></p>
-          <label class="w-checkbox">
-            {{ contact_form.acceptedTac.errors }}
-            {{ contact_form.acceptedTac|setHTMLAttributes:"{'class': 'w-checkbox-input'}" }}
-            <span for="Checkbox" class="w-form-label">Ich habe die AGB des Plattformbetreibers zur Kenntnis genommen und bin mit deren Geltung einverstanden</span>
-          </label>
-          <a href="{% url 'agb' %}" target="_blank" class="link-3">Link zu den AGB</a>
-          <input type="submit" value="Zahlungspflichtig bestellen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
-        </form>
-        <div class="w-form-done">
-          <div>Thank you! Your submission has been received!</div>
+          <div class="column-5 w-col w-col-7"></div>
         </div>
-        <div class="w-form-fail">
-          <div>Oops! Something went wrong while submitting the form.</div>
-        </div>
+        <p class="paragraph-5">Hinweis: Mit Ihrer Zahlung unterstützen Sie den jeweiligen Veranstalter. Dadurch ergeben sich keine Ansprüche auf den Besuch von Veranstaltungen oder den Erhalt von Waren oder Dienstleistungen.<br>Bitte beachten Sie unsere AGB.<strong></strong></p>
+        <label class="w-checkbox">
+          {{ contact_form.acceptedTac.errors }}
+          {{ contact_form.acceptedTac|setHTMLAttributes:"{'class': 'w-checkbox-input'}" }}
+          <span for="Checkbox" class="w-form-label">Ich habe die AGB des Plattformbetreibers zur Kenntnis genommen und bin mit deren Geltung einverstanden</span>
+        </label>
+        <a href="{% url 'agb' %}" target="_blank" class="link-3">Link zu den AGB</a>
+        <input type="submit" value="Zahlungspflichtig bestellen" data-wait="Please wait..." class="submit-button ticketconfirmbutton w-button">
+      </form>
+      <div class="w-form-done">
+        <div>Thank you! Your submission has been received!</div>
+      </div>
+      <div class="w-form-fail">
+        <div>Oops! Something went wrong while submitting the form.</div>
       </div>
     </div>
   </div>
-  <div class="section-4">
-    <div class="container-13 w-container">
-      <p class="paragraph-bigger cc-bigger-white-light">Über Soli-Ticket.de</p>
-      <p class="paragraph-5">Wir sind ein Team von Studierenden, die soli-ticket.de während der Corona-Krise ohne wirtschaftliche Hintergedanken entwickeln. Aufgrund der dynamischen Entwicklungen arbeiten wir unter Hochdruck daran, neue Funktionalitäten anzubieten. Wir halten alles so einfach wie möglich, um schnell helfen zu können. Bitte haben Sie Verständnis dafür, dass wir aber auch nicht zaubern können :-) Wir aktualisieren unsere Webseite regelmäßig bei Neuerungen! <br><strong>#SolidaritätIstAuchAnsteckend #StayAtHome #FlattenTheCurve </strong></p>
-    </div>
+</div>
+<div class="section-4">
+  <div class="container-13 w-container">
+    <p class="paragraph-bigger cc-bigger-white-light">Über Soli-Ticket.de</p>
+    <p class="paragraph-5">Wir sind ein Team von Studierenden, die soli-ticket.de während der Corona-Krise ohne wirtschaftliche Hintergedanken entwickeln. Aufgrund der dynamischen Entwicklungen arbeiten wir unter Hochdruck daran, neue Funktionalitäten anzubieten. Wir halten alles so einfach wie möglich, um schnell helfen zu können. Bitte haben Sie Verständnis dafür, dass wir aber auch nicht zaubern können :-) Wir aktualisieren unsere Webseite regelmäßig bei Neuerungen! <br><strong>#SolidaritätIstAuchAnsteckend #StayAtHome #FlattenTheCurve </strong></p>
   </div>
+</div>
 {% endblock %}

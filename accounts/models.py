@@ -49,7 +49,7 @@ class Organiser(User):
     confirmationCode = models.CharField(max_length = 60, default = 'nicht_migrierte_daten')
     acceptedTac = models.BooleanField() # The Organiser has accepted our terms and conditions
 
-    picture = models.ImageField(default = "default.png")
+    picture = models.ImageField(null=True, blank=True, default = "default.png")
 
     def __str__(self):
         return self.organisation_name
@@ -59,6 +59,18 @@ class Organiser(User):
 
     def get_confirm_url(self):
         return "{}{}?confirmationCode={}&id={}".format(HOST_URL_BASE, reverse("accounts:confirm")[1:], self.confirmationCode, self.id)
+
+    def get_description_preview(self):
+        charsPerLine = 98
+        desc = str(self.description)[0:3*charsPerLine]
+        nl = desc.count("\n")
+        if nl == 0:
+            return desc + " ..."
+        if nl == 1:
+            return desc[0:2*charsPerLine] + " ..."
+        if nl == 2:
+            return desc[0:1*charsPerLine] + " ..."
+        return desc + " ..."
 
     def getContactPerson(self):
         return self.contact_first_name + " " + self.contact_last_name
