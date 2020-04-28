@@ -136,7 +136,7 @@ def profile_update_view(request):
 			result = organiser_form.save(commit = False)
 
 			picture = request.FILES.get('picture')
-			picture.name =  request.session["username"] + picture.name
+			picture.name =  user.username + picture.name
 			breakpoint()
 			pic = Image.open(picture)
 			pic = pic.resize( (100,100) )
@@ -146,7 +146,8 @@ def profile_update_view(request):
 			output = BytesIO()
 			pic.save(output, format='PNG', quality=100)
 			output.seek(0)
-			result.picture = picture
+			result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+			result.save()
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:

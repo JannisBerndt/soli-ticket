@@ -120,6 +120,7 @@ class OrganiserForm(forms.ModelForm):
 			'email',
 			'paypal_email',
 			'description',
+			'picture',
 		]
 
 	def clean_paypal_email(self, *args, **kwargs):
@@ -142,6 +143,7 @@ class UserAddressForm(forms.ModelForm):
 			'hnummer',
 			'plz',
 			'ort',
+			
 		]
 	
 	def clean_ort(self):

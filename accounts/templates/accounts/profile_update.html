@@ -30,9 +30,9 @@ Mein Profil bearbeiten
 				{{ organiser_form.contact_last_name|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nachname'}" }}
 			</div>
 		  </div>
-		  <label for="picture">Profilbild</label>
+		  <label for="Name-der-Organisation">Name der Organisation</label>
 		  {{ organiser_form.picture.errors }}
-		  {{ organiser_form.picture|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+		  {{ organiser_form.picture}}
 		  <label for="Name-der-Organisation">Name der Organisation</label>
 		  {{ organiser_form.organisation_name.errors }}
 		  {{ organiser_form.organisation_name|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
