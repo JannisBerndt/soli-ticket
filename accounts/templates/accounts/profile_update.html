@@ -15,7 +15,7 @@ Mein Profil bearbeiten
         <div class="divider"></div>
       </div>
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST'> {% csrf_token %}
+        <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST' enctype="multipart/form-data"> {% csrf_token %}
 			<label for="name" class="field-label">E-Mail-Adresse</label>
 			{{ organiser_form.email.errors }}
 			{{ organiser_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
@@ -30,6 +30,9 @@ Mein Profil bearbeiten
 				{{ organiser_form.contact_last_name|setHTMLAttributes:"{'class': 'text-field-2 w-input', 'placeholder': 'Nachname'}" }}
 			</div>
 		  </div>
+		  <label for="picture">Profilbild</label>
+		  {{ organiser_form.picture.errors }}
+		  {{ organiser_form.picture|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
 		  <label for="Name-der-Organisation">Name der Organisation</label>
 		  {{ organiser_form.organisation_name.errors }}
 		  {{ organiser_form.organisation_name|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
