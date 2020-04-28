@@ -319,11 +319,11 @@ class accounts(View):
             breakpoint()
 
             output = BytesIO()
-            pic.save(output, format='PNG', quality=100)
+            pic.save(output, format="%s" %picture.name.split('.')[-1], quality=100)
             output.seek(0)
 
             #change the imagefield value to be the newley modifed image value
-            organiser.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+            organiser.picture = InMemoryUploadedFile(output,'ImageField', "%s.%s" %picture.name.split('.')[0] %picture.name.split('.')[-1], 'image/jpeg', sys.getsizeof(output), None)
 
             organiser.save()
 
