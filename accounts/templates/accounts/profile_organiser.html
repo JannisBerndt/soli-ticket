@@ -39,13 +39,7 @@ Events von {{ organiser }}
 			<a class="button-9 w-button" href="{% url 'accounts:profile_update' %}">Paypal E-Mail-Adresse hinzufügen</a>
 		{% endif %}
 	</div>
-	<div class="w-container">
-		<h6 class="heading-20">Teilen Sie diesen Link mit ihren Unterstützern, um sie zum Spenden aufzurufen</h6>
-		<div class="copy-link-container">
-		  <input class="text-field-2 w-input" id="link" value="{{ organiser.get_share_url }}" readonly onclick="copyLink();">
-		  <div id="copy-button" onclick="copyLink();" title="In Zwischenablage kopieren"></div>
-		</div>
-	</div>
+	{% include 'copy_link_field.html' with link=organiser.get_share_url %}
   </div>
   <div class="divider"></div>
   <div class="section-21">
