@@ -156,11 +156,26 @@ def profile_update_view(request):
 	user = request.user
 	organiser = Organiser.objects.get(username=user.username)
 	address = organiser.user_address
+
+
 	if request.method == 'POST':
 		organiser_form = OrganiserForm(request.POST, instance = organiser)
 		address_form = UserAddressForm(request.POST, instance = address)
 		if organiser_form.is_valid() and address_form.is_valid():
-			organiser_form.save()
+			result = organiser_form.save(commit = False)
+
+			picture = request.FILES.get('picture')
+			picture.name =  request.session["username"] + picture.name
+			breakpoint()
+			pic = Image.open(picture)
+			pic = pic.resize( (100,100) )
+            
+			breakpoint()
+
+			output = BytesIO()
+			pic.save(output, format='PNG', quality=100)
+			output.seek(0)
+			result.picture = picture
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:
