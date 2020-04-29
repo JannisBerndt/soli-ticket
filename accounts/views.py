@@ -135,18 +135,17 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			result = organiser_form.save(commit = False)
 
-			picture = request.FILES.get('picture')
-			picture.name =  user.username + picture.name
+			if(request.FILES.get('picture')):
+				picture = request.FILES.get('picture')
+				picture.name =  user.username + picture.name
 
-			pic = Image.open(picture)
-			pic = pic.resize( (100,100) )
-            
-
-
-			output = BytesIO()
-			pic.save(output, format='PNG', quality=100)
-			output.seek(0)
-			result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+				pic = Image.open(picture)
+				pic = pic.resize( (100,100) )
+				output = BytesIO()
+                
+				pic.save(output, format='PNG', quality=100)
+				output.seek(0)
+				result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
 			result.save()
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
