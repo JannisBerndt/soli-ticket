@@ -1,6 +1,7 @@
 from django import forms
 from accounts.models import Organiser, Order, UserAddress, Customer
 from django.forms import inlineformset_factory, BaseFormSet
+from django.forms.widgets import ClearableFileInput
 from events.models import Buyable, Event
 from .helpers.validators import *
 
@@ -106,9 +107,13 @@ class Register3(forms.ModelForm):
 			'picture',
 		]
 
+class MyPictureWidget(ClearableFileInput):
+	template_name = "widgets/my_picture_widget.html"
 
 class OrganiserForm(forms.ModelForm):
 	email = forms.EmailField(required=True)
+	picture = forms.ImageField(required=False, widget=MyPictureWidget)
+
 	class Meta:
 		model = Organiser
 		fields = [
