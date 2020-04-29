@@ -26,6 +26,8 @@ Liste aller Veranstalter
     <div class="pages-container">
       {% if currentPage > 1 %}
         <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
+      {% else %}
+        <a class="disabled" id="previous-page"></a>
       {% endif %}
       <!-- Automatically collapse the Page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
@@ -44,6 +46,8 @@ Liste aller Veranstalter
       {% endif %}
       {% if currentPage < lastPage %}
         <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
+      {% else %}
+        <a class="disabled" id="next-page"></a>
       {% endif %}
     </div>
     <div class="epP-container">
@@ -86,6 +90,8 @@ Liste aller Veranstalter
     <div class="pages-container">
       {% if currentPage > 1 %}
         <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
+      {% else %}
+        <a class="disabled" id="previous-page"></a>
       {% endif %}
       <!-- Automatically collapse the page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
@@ -104,6 +110,8 @@ Liste aller Veranstalter
       {% endif %}
       {% if currentPage < lastPage %}
         <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
+      {% else %}
+        <a class="disabled" id="next-page"></a>
       {% endif %}
     </div>
     <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
