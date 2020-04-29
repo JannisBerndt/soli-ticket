@@ -20,7 +20,12 @@ from urllib.parse import urlencode
 from events.models import Event
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.files.storage import default_storage
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -151,11 +156,26 @@ def profile_update_view(request):
 	user = request.user
 	organiser = Organiser.objects.get(username=user.username)
 	address = organiser.user_address
+
+
 	if request.method == 'POST':
 		organiser_form = OrganiserForm(request.POST, instance = organiser)
 		address_form = UserAddressForm(request.POST, instance = address)
 		if organiser_form.is_valid() and address_form.is_valid():
-			organiser_form.save()
+			result = organiser_form.save(commit = False)
+
+			if(request.FILES.get('picture')):
+				picture = request.FILES.get('picture')
+				picture.name =  user.username + picture.name
+
+				pic = Image.open(picture)
+				pic = pic.resize( (100,100) )
+				output = BytesIO()
+                
+				pic.save(output, format='PNG', quality=100)
+				output.seek(0)
+				result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+			result.save()
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:
@@ -192,7 +212,7 @@ class accounts(View):
 					 'register/check_your_emails.html',
                      'register/register_finished.html']
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
-            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
+            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description", "picture"]
 
 
     def get(self, request, *args, **kwargs):
@@ -281,6 +301,7 @@ class accounts(View):
                 request.session[tag] = form.cleaned_data[tag]
 
 
+
             #To Do: Implementierung der Datenbank
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],
@@ -302,12 +323,12 @@ class accounts(View):
 
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
+
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
 
             buildAndSendEmail(organiser_user)
-
 
             # Löschen der Sessions IDs:
             for tag in self.tags:

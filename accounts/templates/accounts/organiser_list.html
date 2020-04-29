@@ -26,6 +26,8 @@ Liste aller Veranstalter
     <div class="pages-container">
       {% if currentPage > 1 %}
         <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
+      {% else %}
+        <a class="disabled" id="previous-page"></a>
       {% endif %}
       <!-- Automatically collapse the Page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
@@ -44,6 +46,8 @@ Liste aller Veranstalter
       {% endif %}
       {% if currentPage < lastPage %}
         <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
+      {% else %}
+        <a class="disabled" id="next-page"></a>
       {% endif %}
     </div>
     <div class="epP-container">
@@ -61,7 +65,17 @@ Liste aller Veranstalter
       <h4 class="veranstaltungsort">{{ city.ort }}</h4>
       {% for organiser in organisers %}
         {% if organiser.user_address.ort == city.ort %}
-          <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser }}</a>
+          <div class="columns-8 w-row">
+            <div class="w-col w-col-2 w-col-small-2" style="padding-top: 8px; padding-bottom: 9px;">
+              <a href="{% url 'accounts:profile' organiser.organisation_name %}">
+                <img src="{{ organiser.picture.url }}" alt="" class="normalize-image">
+              </a>
+            </div>
+            <div class="w-col w-col-10 w-col-small-10">
+              <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
+              <p style="overflow: hidden; text-overflow: ellipsis; height: 84px; margin: 0px;">{{ organiser.description }}</p>
+            </div>
+          </div>
         {% endif %}
       {% endfor %}
       <div class="platz"></div>
@@ -78,6 +92,8 @@ Liste aller Veranstalter
     <div class="pages-container">
       {% if currentPage > 1 %}
         <a href="{{currentSearch}}page={{currentPage|add:'-1'}}&epP={{entries_per_page}}" id="previous-page"></a>
+      {% else %}
+        <a class="disabled" id="previous-page"></a>
       {% endif %}
       <!-- Automatically collapse the page indices to a smaller amount if a specified threshhold is reached. -->
       {% if lastPage < 10 %}
@@ -96,6 +112,8 @@ Liste aller Veranstalter
       {% endif %}
       {% if currentPage < lastPage %}
         <a href="{{currentSearch}}page={{currentPage|add:'1'}}&epP={{entries_per_page}}" id="next-page"></a>
+      {% else %}
+        <a class="disabled" id="next-page"></a>
       {% endif %}
     </div>
     <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
