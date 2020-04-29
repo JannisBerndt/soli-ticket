@@ -166,12 +166,8 @@ def profile_update_view(request):
 
 			picture = request.FILES.get('picture')
 			picture.name =  user.username + picture.name
-			breakpoint()
 			pic = Image.open(picture)
 			pic = pic.resize( (100,100) )
-            
-			breakpoint()
-
 			output = BytesIO()
 			pic.save(output, format='PNG', quality=100)
 			output.seek(0)
