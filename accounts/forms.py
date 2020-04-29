@@ -97,13 +97,12 @@ class Register2(forms.ModelForm):
 class Register3(forms.ModelForm):
 	paypal_email =	forms.EmailField(required=False,widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
 	acceptedTac = forms.BooleanField(required=True)
-	picture = forms.ImageField(required = False)
+	
 	class Meta:
 		model = Organiser
 		fields = [
 			'paypal_email',
 			'acceptedTac',
-			'picture',
 		]
 
 class MyPictureWidget(ClearableFileInput):

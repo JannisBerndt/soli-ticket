@@ -15,7 +15,7 @@
     </div>
     <div class="container">
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" class="form" enctype="multipart/form-data"> 
+        <form id="email-form" name="email-form" data-name="Email Form" class="form"> 
           {% csrf_token %}
           <div class="w-row">
             <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack w-col-stack"></div>
@@ -25,7 +25,6 @@
                 <font size="3" color="red" disabled = "True"> {{ error }} </font>
               {% endfor %}
               {{ register3.paypal_email }}
-              {{ register3.picture}}
               <p class="paragraph-20">Bitte geben Sie hier die Email-Adresse an, mit der Ihre Organisation bei PayPal angemeldet ist. Sollte Ihre Organisation noch kein PayPal-Geschäftskonto besitzen, können Sie hier eines erstellen:</p>
               <a id="external_link" href="https://www.paypal.com/de/webapps/mpp/merchant" target="_blank">Für nicht-gemeinnützige Organisationen</a>
               <a id="external_link" href="https://www.paypal.com/de/webapps/mpp/charity" target="_blank">Für gemeinnützige Organisationen‍</a>
@@ -38,7 +37,7 @@
                   <a href="{% url 'agb' %}">Link zu den AGB</a>
                 </span>
               </label>
-              <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post" enctype="multipart/form-data">
+              <input type="submit" value="Speichern" data-wait="Bitte warten..." class="submit-button w-button" formmethod="post">
             </div>
               <div class="w-col w-col-3 w-col-small-small-stack w-col-tiny-tiny-stack w-col-stack"></div>
           </div>
