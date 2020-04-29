@@ -1,9 +1,3 @@
 {% if widget.is_initial %}{{ widget.initial_text }}: <img src="{{ widget.value.url }}" class="normalize-image">
-{% if not widget.required %}
-<div class="reset-picture">
-    <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
-    <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
-</div>
-{% endif %}
 {{ widget.input_text }}:{% endif %}
 <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
