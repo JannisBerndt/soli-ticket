@@ -13,5 +13,6 @@ solisite/secret_key.txt
 solisite/settings.py
 soli-ticket.code-workspace
 
+solisite/media
 db_backups/
 db_backup.py
