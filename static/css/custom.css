@@ -326,3 +326,7 @@
     height: 100px !important;
     border-radius: 20%;
 }
+
+.normalize-image-col {
+    width: 120px !important;
+}
