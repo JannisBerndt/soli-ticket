@@ -68,12 +68,9 @@ window.onload = function() {
             var g = f.href.replace(/(&|\?)rnd=\d+/, '');
             f.href = g + (g.match(/\?/) ? '&' : '?');
             f.href += 'version=' + '1.0.0';
-            console.log("Hi")
           }
         } // for
     }
-
-    gg();
 }
 
 function setToTopButtonVisibility(button) {
