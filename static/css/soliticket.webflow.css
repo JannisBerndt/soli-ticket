@@ -2113,9 +2113,9 @@ figcaption {
 }
 
 .veranstalter {
-  margin-right: 15px;
+  margin-right: 0px;
   margin-bottom: 5px;
-  margin-left: 30px;
+  margin-left: 0px;
 }
 
 .section-19 {
@@ -2533,6 +2533,50 @@ figcaption {
   text-transform: none;
 }
 
+.grid-11 {
+  -ms-grid-columns: 0.25fr 5fr;
+  grid-template-columns: 0.25fr 5fr;
+  -ms-grid-rows: auto auto auto;
+  grid-template-rows: auto auto auto;
+}
+
+.logoliste {
+  width: 30px;
+}
+
+.logoliste.logolsite {
+  width: 30px;
+}
+
+.logoliste.auauau {
+  width: 30px;
+}
+
+.image-12 {
+  display: block;
+  width: 15%;
+  margin: 25px auto 5px;
+}
+
+.button-14 {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #8fcdff;
+}
+
+.columns-8 {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.section-30 {
+  margin-top: 100px;
+}
+
+.heading-34 {
+  margin-bottom: 20px;
+}
+
 @media screen and (max-width: 991px) {
   .section.cc-cta {
     padding-right: 0px;
@@ -2723,6 +2767,28 @@ figcaption {
     padding-right: 15px;
     text-align: center;
   }
+  .heading-2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-decoration: none;
+  }
   .div-block-4 {
     margin-right: 20px;
     margin-left: 20px;
@@ -2888,6 +2954,10 @@ figcaption {
   }
   .heading {
     line-height: 28px;
+  }
+  .heading-2 {
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
   .container-5 {
     padding-top: 151px;
@@ -3451,5 +3521,23 @@ figcaption {
   }
   .checkbox-label-2 {
     text-align: left;
+  }
+  .grid-11 {
+    -ms-grid-columns: 0.25fr 3fr;
+    grid-template-columns: 0.25fr 3fr;
+  }
+  .image-12 {
+    position: static;
+    display: block;
+    width: 30%;
+    margin: 30px auto 20px;
+    float: none;
+    clear: none;
+    -o-object-fit: fill;
+    object-fit: fill;
+  }
+  .section-30 {
+    margin-right: 5px;
+    margin-left: 5px;
   }
 }

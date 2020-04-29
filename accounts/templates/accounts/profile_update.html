@@ -11,11 +11,12 @@ Mein Profil bearbeiten
 <div class="section-20">
     <div class="w-container">
       <div class="div-block-9">
+		<img src="{{ organiser_user.picture.url }}" alt="" class="normalize-image image-12">
         <h1 class="heading-23">Profil bearbeiten</h1>
         <div class="divider"></div>
       </div>
       <div class="w-form">
-        <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST'> {% csrf_token %}
+        <form id="email-form" name="email-form" data-name="Email Form" action="#" class="form" method='POST' enctype="multipart/form-data"> {% csrf_token %}
 			<label for="name" class="field-label">E-Mail-Adresse</label>
 			{{ organiser_form.email.errors }}
 			{{ organiser_form.email|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
@@ -33,6 +34,9 @@ Mein Profil bearbeiten
 		  <label for="Name-der-Organisation">Name der Organisation</label>
 		  {{ organiser_form.organisation_name.errors }}
 		  {{ organiser_form.organisation_name|setHTMLAttributes:"{'class': 'text-field-2 w-input'}" }}
+		  <label for="Name-der-Organisation">Logo hochladen</label>
+		  {{ organiser_form.picture.errors }}
+		  {{ organiser_form.picture }}
 		  <label for="Art">Erzählen sie ihren Spendern etwas über sich und ihre aktuelle situation</label>
 		  {{ organiser_form.description.errors }}
 		  {{ organiser_form.description|setHTMLAttributes:"{'rows': 2,'class': 'textarea-2 w-input', 'placeholder': '(optional)'}" }}

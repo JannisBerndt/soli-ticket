@@ -1,6 +1,7 @@
 from django import forms
 from accounts.models import Organiser, Order, UserAddress, Customer
 from django.forms import inlineformset_factory, BaseFormSet
+from django.forms.widgets import ClearableFileInput
 from events.models import Buyable, Event
 from .helpers.validators import *
 
@@ -77,6 +78,7 @@ class Register2(forms.ModelForm):
 	ort = forms.CharField(label='Ort', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Ort', 'placeholder': 'Ort'}))
 	telnr = forms.CharField(required=False, label='Telefonnummer', widget=forms.TextInput(attrs={'class': 'text-field-2 w-input', 'id': 'Telenummer', 'placeholder': '(optional)'}))
 	
+
 	class Meta:
 		model = Organiser
 		fields = [
@@ -95,6 +97,7 @@ class Register2(forms.ModelForm):
 class Register3(forms.ModelForm):
 	paypal_email =	forms.EmailField(required=False,widget=forms.EmailInput(attrs={'class': 'text-field-2 w-input', 'id': 'email', 'placeholder' : 'Email-Adresse'}))
 	acceptedTac = forms.BooleanField(required=True)
+	
 	class Meta:
 		model = Organiser
 		fields = [
@@ -102,9 +105,13 @@ class Register3(forms.ModelForm):
 			'acceptedTac',
 		]
 
+class MyPictureWidget(ClearableFileInput):
+	template_name = "widgets/my_picture_widget.html"
 
 class OrganiserForm(forms.ModelForm):
 	email = forms.EmailField(required=True)
+	picture = forms.ImageField(required=False, widget=MyPictureWidget)
+
 	class Meta:
 		model = Organiser
 		fields = [
@@ -116,6 +123,7 @@ class OrganiserForm(forms.ModelForm):
 			'email',
 			'paypal_email',
 			'description',
+			'picture',
 		]
 
 	def clean_paypal_email(self, *args, **kwargs):
@@ -138,6 +146,7 @@ class UserAddressForm(forms.ModelForm):
 			'hnummer',
 			'plz',
 			'ort',
+			
 		]
 	
 	def clean_ort(self):
