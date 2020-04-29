@@ -92,7 +92,6 @@ class Register2(forms.ModelForm):
 			'plz',
 			'ort',
 			'telnr',
-			'picture',
 		]
 
 class Register3(forms.ModelForm):

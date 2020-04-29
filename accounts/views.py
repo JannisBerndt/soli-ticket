@@ -164,14 +164,17 @@ def profile_update_view(request):
 		if organiser_form.is_valid() and address_form.is_valid():
 			result = organiser_form.save(commit = False)
 
-			picture = request.FILES.get('picture')
-			picture.name =  user.username + picture.name
-			pic = Image.open(picture)
-			pic = pic.resize( (100,100) )
-			output = BytesIO()
-			pic.save(output, format='PNG', quality=100)
-			output.seek(0)
-			result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+			if(request.FILES.get('picture')):
+				picture = request.FILES.get('picture')
+				picture.name =  user.username + picture.name
+
+				pic = Image.open(picture)
+				pic = pic.resize( (100,100) )
+				output = BytesIO()
+                
+				pic.save(output, format='PNG', quality=100)
+				output.seek(0)
+				result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
 			result.save()
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
@@ -321,29 +324,11 @@ class accounts(View):
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
 
-            breakpoint()
-            picture = request.FILES.get('picture')
-            picture.name =  request.session["username"] + picture.name
-            breakpoint()
-            pic = Image.open(picture)
-            pic = pic.resize( (100,100) )
-            
-            breakpoint()
-
-            output = BytesIO()
-            pic.save(output, format="%s" %picture.name.split('.')[-1], quality=100)
-            output.seek(0)
-
-            #change the imagefield value to be the newley modifed image value
-            organiser.picture = InMemoryUploadedFile(output,'ImageField', "%s.%s" %picture.name.split('.')[0] %picture.name.split('.')[-1], 'image/jpeg', sys.getsizeof(output), None)
-
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
 
-            breakpoint()
             buildAndSendEmail(organiser_user)
-
 
             # Löschen der Sessions IDs:
             for tag in self.tags:
