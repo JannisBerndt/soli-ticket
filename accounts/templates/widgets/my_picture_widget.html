@@ -1,4 +1,4 @@
-{% if widget.is_initial %}{{ widget.initial_text }}: <img src="{{ widget.value.url }}"></a>
+{% if widget.is_initial %}{{ widget.initial_text }}: <img src="{{ widget.value.url }}" class="normalize-image">
 {% if not widget.required %}
 <div class="reset-picture">
     <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">

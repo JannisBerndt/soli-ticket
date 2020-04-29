@@ -316,3 +316,13 @@
     margin: 0px;
     vertical-align: middle;
 }
+
+#id_picture::before {
+    border: 2px solid black;
+}
+
+.normalize-image {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 20%;
+}
