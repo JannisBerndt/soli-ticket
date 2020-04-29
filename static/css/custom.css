@@ -310,3 +310,9 @@
         padding: 3px 3px 3px 3px;
     }
 }
+
+.reset-picture > * {
+    display: inline-block;
+    margin: 0px;
+    vertical-align: middle;
+}
