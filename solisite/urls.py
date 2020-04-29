@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import landingpage_view, privacy_policy_view, imprint_view, about_view, blog_view, faq_view, agb_view, contact_view
 from events.views import event_detail_redirect_view, profile_redirect_view
+from . import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', landingpage_view, name='home'),
@@ -34,3 +36,5 @@ urlpatterns = [
     path('event/<int:id>/', event_detail_redirect_view, name='event_detail_redirect'),
     path('event/<str:organiser>/', profile_redirect_view, name='profile_redirect'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
