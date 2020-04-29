@@ -48,5 +48,5 @@ urlpatterns = [
         ), name='password_reset_complete'),
     #path(settings.MEDIA_URL, document_root = settings.MEDIA_URL),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
