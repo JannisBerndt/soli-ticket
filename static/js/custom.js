@@ -58,6 +58,22 @@ window.onload = function() {
     window.onscroll = function() {
         setToTopButtonVisibility(this.to_top_button);
     }
+
+    function gg() {
+        var h, a, f;
+        a = document.getElementsByTagName('link');
+        for (h = 0; h < a.length; h++) {
+          f = a[h];
+          if (f.rel.toLowerCase().match(/stylesheet/) && f.href) {
+            var g = f.href.replace(/(&|\?)rnd=\d+/, '');
+            f.href = g + (g.match(/\?/) ? '&' : '?');
+            f.href += 'version=' + '1.0.0';
+            console.log("Hi")
+          }
+        } // for
+    }
+
+    gg();
 }
 
 function setToTopButtonVisibility(button) {
