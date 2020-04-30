@@ -330,3 +330,10 @@
 .normalize-image-col {
     width: 120px !important;
 }
+
+.organizer-description {
+    overflow: hidden;
+    text-overflow: clip;
+    height: 84px;
+    margin: 0px;
+}
