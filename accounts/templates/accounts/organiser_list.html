@@ -37,7 +37,46 @@ Liste aller Veranstalter
     <div class="platz"></div>
     <div class="divider"></div>
   </div>
+  {% for city in cities %}
+    <div class="ort w-container">
+      <h4 class="veranstaltungsort">{{ city.ort }}</h4>
+      {% for organiser in organisers %}
+        {% if organiser.user_address.ort == city.ort %}
+          <div class="columns-8 w-row">
+            <div class="normalize-image-col w-col w-col-2 w-col-small-2" style="padding-top: 8px; padding-bottom: 9px;">
+              <a href="{% url 'accounts:profile' organiser.organisation_name %}">
+                <img src="{{ organiser.picture.url }}" alt="" class="normalize-image">
+              </a>
+            </div>
+            <div class="w-col w-col-10 w-col-small-10">
+              <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
+              <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description|shorten_to:"390" }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="platz"></div>
+      <div class="divider"></div>
+    </div>
   {% endfor %}
   <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
 </div>
+<script>
+  window.onload = function () {
+    var descs = document.getElementsByClassName("organizer-description");
+    var max_tries = 300;
+    for(var i = 0; i < descs.length; i++) {
+      if(descs[i].clientHeight < descs[i].scrollHeight) {
+        var content = descs[i].firstChild;
+        var j = 0;
+        while(content.offsetHeight > 80 && j < max_tries) {
+          j++;
+          content.innerHTML = content.innerHTML.slice(0, -1);
+        }
+        content.innerHTML = content.innerHTML.slice(0, -3);
+        content.innerHTML = content.innerHTML + "...";
+      }
+    }
+  }
+</script>
 {% endblock %}
