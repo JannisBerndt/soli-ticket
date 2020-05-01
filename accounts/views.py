@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views import View
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
@@ -13,13 +13,19 @@ from django.conf import settings
 from solisite.settings import DEBUG
 import string
 import random
+import math
 from .filters import OrganiserFilter
 from django.db.models.query import QuerySet
 from urllib.parse import urlencode
 from events.models import Event
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.files.storage import default_storage
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -32,11 +38,7 @@ def login_view(request):
             password = request.POST.get('password')
             try:
                 organiser = Organiser.objects.get(email=username)
-                username = organiser.username
-            except:
-                pass
-            try:
-                organiser = Organiser.objects.get(organisation_name=username)
+                print(organiser)
                 username = organiser.username
             except:
                 pass
@@ -47,9 +49,9 @@ def login_view(request):
                 o_organiser = Organiser.objects.get(username = user.username)
                 if o_organiser is not None:
                     if o_organiser.isActivated == False:
-                        params = urlencode({'code': o_organiser.confirmationCode})
-                        url = "{}?{}".format(reverse('accounts:verify_email'), params)
-                        return redirect(url)
+                        buildAndSendEmail(o_organiser)
+                        request.session['username'] = username
+                        return redirect('accounts:verify_email')
                     else:
                         login(request, user)
                         return redirect('accounts:profile', Organiser.objects.get(username=username).organisation_name)
@@ -67,12 +69,11 @@ def logout_view(request):
 
 
 def verify_email_view(request):
-    code = request.GET["code"]
-    organiser = get_object_or_404(Organiser, confirmationCode=code)
+    assert(request.session.get('username')), "The username has to be in the session before this view is called!"
+    organiser = get_object_or_404(Organiser, username=request.session.get('username'))
     if request.method == 'POST':
         buildAndSendEmail(organiser)
     context = {
-        'code': code,
         'organiser': organiser,
 	}
     return render(request, 'register/check_your_emails.html', context)
@@ -83,19 +84,51 @@ def error_view(request):
 
 
 def organiser_list_view(request):
-    organisers = Organiser.objects.filter(is_active=True)
+    try:
+        entries_per_page = int(request.GET["epP"])
+        page = int(request.GET["page"])
+    except:
+        entries_per_page = 10
+        page = 1
+    assert(page > 0), "Falscher URL Parameter!"
+    assert(entries_per_page >= 1), "Falscher URL Parameter!"
 
+    organisers = Organiser.objects.filter(is_active=True, isActivated = True)
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
+
+    organisers_total = organisers.count()
+    if organisers_total:
+        pages = range(1, int(math.ceil(float(organisers_total) / float(entries_per_page))) + 1)
+    else:
+        pages = range(1, 2)
+    lastPage = pages[-1]
+    if page > lastPage:
+        print("Automatically shifting to the last Page!")
+        page = lastPage
+    organisers = organisers.order_by('user_address__ort')[entries_per_page*(page - 1):entries_per_page*page]
+
     list_of_ids = []
     for organiser in organisers:
         list_of_ids.append(organiser.user_address.id)
     addresses = UserAddress.objects.filter(id__in=list_of_ids).distinct()
     cities = addresses.values('ort').order_by('ort')
+
+    try:
+        currentSearch = "?city=" + request.GET["city"] + "&"
+    except:
+        currentSearch = "?"
+
     context = {
         'organisers': organisers,
         'cities': cities,
         'myFilter': myFilter,
+        'currentPage': page,
+        'lastPage': lastPage,
+        'entries_per_page': entries_per_page,
+        'organisers_num': organisers_total,
+        'pages': pages,
+        'currentSearch': currentSearch,
     }
     return render(request, 'accounts/organiser_list.html', context)
 
@@ -122,11 +155,26 @@ def profile_update_view(request):
 	user = request.user
 	organiser = Organiser.objects.get(username=user.username)
 	address = organiser.user_address
+
+
 	if request.method == 'POST':
 		organiser_form = OrganiserForm(request.POST, instance = organiser)
 		address_form = UserAddressForm(request.POST, instance = address)
 		if organiser_form.is_valid() and address_form.is_valid():
-			organiser_form.save()
+			result = organiser_form.save(commit = False)
+
+			if(request.FILES.get('picture')):
+				picture = request.FILES.get('picture')
+				picture.name =  user.username + picture.name
+
+				pic = Image.open(picture)
+				pic = pic.resize( (100,100) )
+				output = BytesIO()
+                
+				pic.save(output, format='PNG', quality=100)
+				output.seek(0)
+				result.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+			result.save()
 			address.save()
 			return redirect('accounts:profile', organisation_name=organiser.organisation_name)
 	else:
@@ -163,7 +211,7 @@ class accounts(View):
 					 'register/check_your_emails.html',
                      'register/register_finished.html']
     tags = ["email","pw","vname","nname","oname","art","strasse","username",
-            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description"]
+            "hnummer","plz","ort","telnr","kontoinhaber","iban","bic","kontourl", "description", "picture"]
 
 
     def get(self, request, *args, **kwargs):
@@ -252,6 +300,7 @@ class accounts(View):
                 request.session[tag] = form.cleaned_data[tag]
 
 
+
             #To Do: Implementierung der Datenbank
             objetct_useraddress = UserAddress(strasse = request.session["strasse"],
                                   hnummer = request.session["hnummer"],
@@ -273,12 +322,12 @@ class accounts(View):
 
             organiser.set_password(request.session["pw"])
             organiser.confirmationCode = confirmationCode_generator()
+
             organiser.save()
 
             organiser_user = Organiser.objects.get(username=request.session["username"])
 
             buildAndSendEmail(organiser_user)
-
 
             # Löschen der Sessions IDs:
             for tag in self.tags:
@@ -286,10 +335,9 @@ class accounts(View):
                     del request.session[tag]
                 except KeyError:
                     pass
-
-            params = urlencode({'code': organiser_user.confirmationCode})
-            url = "{}?{}".format(reverse('accounts:verify_email'), params)
-            return redirect(url)
+            
+            request.session['username'] = organiser_user.username
+            return redirect('accounts:verify_email')
 
         #To DO:
         # Umleitung auf Fehlerseite "Bitte Kontaktieren Sie uns"
