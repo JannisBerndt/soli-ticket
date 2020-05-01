@@ -1,4 +1,5 @@
 from accounts.models import Organiser
+from . import settings
 
 def organiser_user(request):
     if hasattr(request, 'user'):
@@ -12,4 +13,9 @@ def organiser_user(request):
 
     return {
         'organiser_user': organiser_user,
+    }
+
+def current_site_version(request):
+    return {
+        'site_version': settings.SITE_VERSION
     }

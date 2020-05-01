@@ -73,7 +73,7 @@ Liste aller Veranstalter
             </div>
             <div class="w-col w-col-10 w-col-small-10">
               <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
-              <p style="overflow: hidden; text-overflow: ellipsis; height: 84px; margin: 0px;">{% if organiser.description %}{{ organiser.description }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</p>
+              <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
             </div>
           </div>
         {% endif %}
@@ -119,4 +119,20 @@ Liste aller Veranstalter
     <p class="paragraph-29">Haben Sie Ihren Lieblings-Kulturbetrieb nicht gefunden?<br>Dann erzählen Sie ihm doch von dieser Seite!</p>
   </div>
 </div>
+<script>
+  window.onload = function () {
+    var descs = document.getElementsByClassName("organizer-description");
+
+    for(var i = 0; i < descs.length; i++) {
+      if(descs[i].clientHeight < descs[i].scrollHeight) {
+        var content = descs[i].firstChild;
+        while(content.offsetHeight > 80) {
+          content.innerHTML = content.innerHTML.slice(0, -1);
+        }
+        content.innerHTML = content.innerHTML.slice(0, -3);
+        content.innerHTML = content.innerHTML + "...";
+      }
+    }
+  }
+</script>
 {% endblock %}

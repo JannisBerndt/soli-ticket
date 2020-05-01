@@ -37,10 +37,10 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
 
   <!-- CSS -->
-  <link href="{% static 'css/custom.css' %}?{% now 'U' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'css/normalize.css' %}?{% now 'U' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'css/webflow.css' %}?{% now 'U' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'css/soliticket.webflow.css' %}?{% now 'U' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/custom.css' %}?v={{ site_version }}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/normalize.css' %}?v={{ site_version }}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/webflow.css' %}?v={{ site_version }}" rel="stylesheet" type="text/css">
+  <link href="{% static 'css/soliticket.webflow.css' %}?v={{ site_version }}" rel="stylesheet" type="text/css">
   {% block additionalcss %}{% endblock %}
 
   <!-- JAVASCRIPT -->
@@ -73,7 +73,7 @@
               <div class="logo-title-wrapper">
                   <div class="logo">
                     <a href="https://www.soli-ticket.de" class="w-inline-block">
-                      <img src="{% static 'images/2eb78c88-89bf-4170-9dba-9959af98a7f1_200x200.png' %}" width="" alt="" class=""></div>
+                      <img src="{% static 'images/soli-ticket-logo.png' %}" width="" alt="" class=""></div>
                     </a>
                   <div class="title">
                       <h1 class="heading"><a href="https://www.soli-ticket.de" class="link-block w-inline-block"><strong class="bold-text">Soli-Ticket</strong></a></h1>
