@@ -73,11 +73,7 @@ Liste aller Veranstalter
             </div>
             <div class="w-col w-col-10 w-col-small-10">
               <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
-<<<<<<< HEAD
               <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description|shorten_to:"390" }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
-=======
-              <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description|shorten_to:"320" }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
->>>>>>> develop
             </div>
           </div>
         {% endif %}
