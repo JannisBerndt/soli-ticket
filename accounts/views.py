@@ -98,7 +98,6 @@ def organiser_list_view(request):
     organisers = myFilter.qs
 
     organisers_total = organisers.count()
-    print(organisers_total)
     if organisers_total:
         pages = range(1, int(math.ceil(float(organisers_total) / float(entries_per_page))) + 1)
     else:

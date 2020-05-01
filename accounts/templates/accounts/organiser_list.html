@@ -73,7 +73,7 @@ Liste aller Veranstalter
             </div>
             <div class="w-col w-col-10 w-col-small-10">
               <a href="{% url 'accounts:profile' organiser.organisation_name %}" class="veranstalter">{{ organiser.organisation_name }}</a>
-              <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
+              <p class="organizer-description"><span>{% if organiser.description %}{{ organiser.description|shorten_to:"320" }}{% else %}Dieser Veranstalter hat keine Beschreibung{% endif %}</span></p>
             </div>
           </div>
         {% endif %}
@@ -122,11 +122,14 @@ Liste aller Veranstalter
 <script>
   window.onload = function () {
     var descs = document.getElementsByClassName("organizer-description");
-
+    var max_tries = 300;
     for(var i = 0; i < descs.length; i++) {
       if(descs[i].clientHeight < descs[i].scrollHeight) {
         var content = descs[i].firstChild;
-        while(content.offsetHeight > 80) {
+        var i = 0;
+        while(content.offsetHeight > 80 && i < max_tries) {
+          console.log(content.offsetHeight);
+          i++;
           content.innerHTML = content.innerHTML.slice(0, -1);
         }
         content.innerHTML = content.innerHTML.slice(0, -3);
