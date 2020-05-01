@@ -39,7 +39,6 @@ window.onload = function() {
     this.to_top_button = document.getElementById('to-top-button');
     this.cookie_banner = document.getElementById('cookie-banner');
     this.cookie_banner_placeholder = document.getElementById("cookie-banner-placeholder");
-    console.log("Dedicated Script File.");
 
     this.to_top_button.onclick = function() {window.scrollTo({top: 0, behavior: "smooth",})};
 
