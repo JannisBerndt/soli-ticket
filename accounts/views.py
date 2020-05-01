@@ -93,7 +93,7 @@ def organiser_list_view(request):
     assert(page > 0), "Falscher URL Parameter!"
     assert(entries_per_page >= 1), "Falscher URL Parameter!"
 
-    organisers = Organiser.objects.filter(is_active=True)
+    organisers = Organiser.objects.filter(is_active=True, isActivated = True)
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
 
