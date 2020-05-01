@@ -93,12 +93,11 @@ def organiser_list_view(request):
     assert(page > 0), "Falscher URL Parameter!"
     assert(entries_per_page >= 1), "Falscher URL Parameter!"
 
-    organisers = Organiser.objects.filter(is_active=True)
+    organisers = Organiser.objects.filter(is_active=True, isActivated = True)
     myFilter = OrganiserFilter(request.GET, queryset=organisers)
     organisers = myFilter.qs
 
     organisers_total = organisers.count()
-    print(organisers_total)
     if organisers_total:
         pages = range(1, int(math.ceil(float(organisers_total) / float(entries_per_page))) + 1)
     else:
